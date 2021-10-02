@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "540877391231",
+    "project_id": "imprvd-fc685",
+    "storage_bucket": "imprvd-fc685.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:540877391231:android:95694bdb4589db6917c64a",
+        "android_client_info": {
+          "package_name": "com.imprvd"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "540877391231-sqsm5t31029eju2e3t66sf3tjunnk68s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAclBpiUuo2LTW8JoRTrx0susHUpg2WxX4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "540877391231-sqsm5t31029eju2e3t66sf3tjunnk68s.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "540877391231-00giaqoqtpsb3cf5tc2tokr6tref9dcu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.app.imprvd"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
