@@ -5,6 +5,9 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 
+// Import RNSplashScreen
+#import "RNSplashScreen.h"
+
 #ifdef FB_SONARKIT_ENABLED
 #import <FlipperKit/FlipperClient.h>
 #import <FlipperKitLayoutPlugin/FlipperKitLayoutPlugin.h>
@@ -49,6 +52,8 @@ static void InitializeFlipper(UIApplication *application) {
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   [FIRApp configure];
+  // Set the splash screen to show by default.
+  [RNSplashScreen show]; 
   return YES;
 }
 
