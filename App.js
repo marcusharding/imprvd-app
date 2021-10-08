@@ -1,41 +1,47 @@
-// React
 import React, {useState, useEffect} from 'react';
-import {SafeAreaView, ScrollView, StatusBar, Text, View} from 'react-native';
-import SplashScreen from 'react-native-splash-screen';
+import {Text, View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-
-// Firebase
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import SplashScreen from 'react-native-splash-screen';
 import auth from '@react-native-firebase/auth';
 
-// Styles
-import {appTheme} from './src/styles/main';
+function HomeScreen() {
+	return (
+		<View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+			<Text>Home!</Text>
+		</View>
+	);
+}
 
-//Screens
-import TestScreen from './testScreen';
+function SettingsScreen() {
+	return (
+		<View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+			<Text>Settings!</Text>
+		</View>
+	);
+}
 
-const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator();
-
-const Home = () => {
+function Home() {
 	return (
 		<Tab.Navigator>
-			<Tab.Screen name="TestScreen" component={TestScreen} />
+			<Tab.Screen name="Feed" component={SettingsScreen} />
+			<Tab.Screen name="Messages" component={HomeScreen} />
 		</Tab.Navigator>
 	);
-};
+}
 
-const App = () => {
+const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+
+export default function App() {
 	const [initializing, setInitializing] = useState(true);
 	const [user, setUser] = useState();
 
-	const onAuthStateChanged = user => {
+	function onAuthStateChanged(user) {
 		setUser(user);
-		if (initializing) {
-			setInitializing(false);
-		}
-	};
+		if (initializing) setInitializing(false);
+	}
 
 	useEffect(() => {
 		SplashScreen.hide();
@@ -62,15 +68,8 @@ const App = () => {
 	}
 
 	return (
-		<SafeAreaView style={appTheme}>
-			<StatusBar />
-			<ScrollView contentInsetAdjustmentBehavior="automatic">
-				<View>
-					<Text>Welcome {user.email}</Text>
-				</View>
-			</ScrollView>
-		</SafeAreaView>
+		<View>
+			<Text>Welcome {user.email}</Text>
+		</View>
 	);
-};
-
-export default App;
+}
