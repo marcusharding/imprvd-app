@@ -1,38 +1,56 @@
+// React
 import React, {useState, useEffect} from 'react';
-import {Text, View} from 'react-native';
+import {Text, View, Button, Platform} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SplashScreen from 'react-native-splash-screen';
+import BackgroundColor from 'react-native-background-color';
+
+// Styles
+import {appTheme} from './src/styles/main';
+
+// Firebase
 import auth from '@react-native-firebase/auth';
 
-function HomeScreen() {
-	return (
-		<View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-			<Text>Home!</Text>
-		</View>
-	);
-}
+// Partials
+import PreLoader from './src/components/partials/preLoader';
 
-function SettingsScreen() {
-	return (
-		<View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-			<Text>Settings!</Text>
-		</View>
-	);
-}
+// Screens
+import SignUp from './src/components/screens/signup';
+import Dashboard from './src/components/screens/dashboard';
+import Login from './src/components/screens/login';
+import EmailVerification from './src/components/screens/emailVerification';
 
-function Home() {
-	return (
-		<Tab.Navigator>
-			<Tab.Screen name="Feed" component={SettingsScreen} />
-			<Tab.Screen name="Messages" component={HomeScreen} />
-		</Tab.Navigator>
-	);
-}
-
+// Navigators
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
+
+// Temprorary logout screen whilst I re-do the sign up process
+const logoutScreen = () => {
+	return (
+		<View>
+			<Button
+				color="#121212"
+				title="Log out"
+				onPress={() =>
+					auth()
+						.signOut()
+						.then(() => console.log('User signed out'))
+				}
+			/>
+		</View>
+	);
+};
+
+// Bottom tabs stack
+const TabStack = () => {
+	return (
+		<Tab.Navigator>
+			{/* <Tab.Screen name="Feed" component={SettingsScreen} /> */}
+		</Tab.Navigator>
+	);
+};
 
 export default function App() {
 	const [initializing, setInitializing] = useState(true);
@@ -44,32 +62,45 @@ export default function App() {
 	}
 
 	useEffect(() => {
+		if (Platform.OS === 'android') {
+			BackgroundColor.setColor('#121212');
+		}
 		SplashScreen.hide();
 		const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
 		return subscriber; // unsubscribe on unmount
 	});
 
 	if (initializing) {
-		return null;
+		return <PreLoader />;
 	}
 
-	if (!user) {
+	if (user && auth().currentUser.emailVerified) {
 		return (
-			<NavigationContainer>
-				<Stack.Navigator>
-					<Stack.Screen
-						name="Home"
-						component={Home}
+			<NavigationContainer options={{headerShown: false}} theme={appTheme}>
+				<Stack.Navigator screenOptions={{headerShown: false}}>
+					{/* <Stack.Screen
+						name="Dashboard"
+						component={Dashboard}
 						options={{headerShown: false}}
-					/>
+					/> */}
+					<Stack.Screen name="logout" component={logoutScreen} />
 				</Stack.Navigator>
 			</NavigationContainer>
 		);
 	}
 
 	return (
-		<View>
-			<Text>Welcome {user.email}</Text>
-		</View>
+		<NavigationContainer options={{headerShown: false}} theme={appTheme}>
+			<Stack.Navigator screenOptions={{headerShown: false}}>
+				<Stack.Screen name="Signup" component={SignUp} />
+				<Stack.Screen name="Login" component={Login} />
+				<Stack.Screen name="EmailVerification" component={EmailVerification} />
+				<Stack.Screen
+					name="Dashboard"
+					component={Dashboard}
+					options={{headerShown: false}}
+				/>
+			</Stack.Navigator>
+		</NavigationContainer>
 	);
 }

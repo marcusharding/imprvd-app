@@ -1,9 +1,24 @@
 /**
  * @format
  */
-
+// React
+import * as React from 'react';
 import {AppRegistry} from 'react-native';
-import App from './App';
 import {name as appName} from './app.json';
+import {SafeAreaView} from 'react-native';
 
-AppRegistry.registerComponent(appName, () => App);
+// Screens
+import App from './App';
+
+// Styles
+import {baseStyles} from './src/styles/main';
+
+const Index = () => {
+	return (
+		<SafeAreaView style={baseStyles.safeAreaView}>
+			<App />
+		</SafeAreaView>
+	);
+};
+
+AppRegistry.registerComponent(appName, () => Index);

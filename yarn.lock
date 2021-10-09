@@ -5743,6 +5743,11 @@ react-is@^16.13.0, react-is@^16.7.0, react-is@^16.8.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
+react-native-background-color@^0.0.8:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/react-native-background-color/-/react-native-background-color-0.0.8.tgz#661f737156a18a86ece362126e9c97e33fa42ed2"
+  integrity sha512-Or89KCBNyFsD0234g/MgWyRrhwtd5egHXdqUwal1e5FKpum8d/x1y5PQqF3OUFR0W/ztp5Vt3FaLc/LEY0Fy+Q==
+
 react-native-codegen@^0.0.7:
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/react-native-codegen/-/react-native-codegen-0.0.7.tgz#86651c5c5fec67a8077ef7f4e36f7ed459043e14"
@@ -5751,6 +5756,11 @@ react-native-codegen@^0.0.7:
     flow-parser "^0.121.0"
     jscodeshift "^0.11.0"
     nullthrows "^1.1.1"
+
+react-native-email-link@^1.11.3:
+  version "1.11.3"
+  resolved "https://registry.yarnpkg.com/react-native-email-link/-/react-native-email-link-1.11.3.tgz#22b04688a6efd750b0247da0b5162233ed65fa33"
+  integrity sha512-y60NO5asmF6bnuI4eFBjo7kwiPngnZG4DXixhrfa0pJaRRJdarPXG05qK8NVS3szG0fw7cRv4m9ZEfHykqycaQ==
 
 react-native-gesture-handler@^1.10.3:
   version "1.10.3"
