@@ -3,10 +3,10 @@
 // React
 import * as React from 'react';
 import {Component} from 'react';
-import {Text, View, TextInput, Button} from 'react-native';
+import {Text, View, TextInput, Button, TouchableOpacity} from 'react-native';
 
 // Styles
-import {baseStyles, typography, shorts, form} from '../../styles/main';
+import {baseStyles, typography, form, spacing} from '../../styles/main';
 
 // Firebase
 import auth from '@react-native-firebase/auth';
@@ -79,9 +79,11 @@ class SignUp extends Component {
 
 		return (
 			<View style={baseStyles.flexContainer}>
-				<Text styles={typography.pageHeading}>Sign Up</Text>
+				<Text style={typography.pageHeading}>Sign Up</Text>
 
-				<Text style={typography.subHeading}>Create your account.</Text>
+				<Text style={[typography.subHeading, spacing.marginBottom20]}>
+					Create your account.
+				</Text>
 
 				<TextInput
 					style={form.input}
@@ -109,11 +111,12 @@ class SignUp extends Component {
 					placeholderTextColor="#EFEFEF"
 				/>
 
-				<Button
-					color="#121212"
-					title="Continue"
+				<TouchableOpacity
+					activeOpacity={0.8}
 					onPress={() => this.registerNewUser()}
-				/>
+					style={baseStyles.buttonContainer}>
+					<Text style={typography.buttonText}>Continue</Text>
+				</TouchableOpacity>
 
 				<Text
 					style={form.inputText}

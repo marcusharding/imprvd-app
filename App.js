@@ -17,6 +17,7 @@ import auth from '@react-native-firebase/auth';
 import PreLoader from './src/components/partials/preLoader';
 
 // Screens
+import WelcomeScreen from './src/components/screens/welcomeScreen';
 import SignUp from './src/components/screens/signup';
 import Dashboard from './src/components/screens/dashboard';
 import Login from './src/components/screens/login';
@@ -92,6 +93,7 @@ export default function App() {
 	return (
 		<NavigationContainer options={{headerShown: false}} theme={appTheme}>
 			<Stack.Navigator screenOptions={{headerShown: false}}>
+				<Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
 				<Stack.Screen name="Signup" component={SignUp} />
 				<Stack.Screen name="Login" component={Login} />
 				<Stack.Screen name="EmailVerification" component={EmailVerification} />

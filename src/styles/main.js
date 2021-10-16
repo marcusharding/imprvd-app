@@ -10,6 +10,12 @@ const appTheme = {
 	},
 };
 
+const spacing = StyleSheet.create({
+	marginBottom20: {
+		marginBottom: 20,
+	},
+});
+
 const form = StyleSheet.create({
 	input: {
 		width: '100%',
@@ -52,6 +58,14 @@ const typography = StyleSheet.create({
 		textAlign: 'center',
 		fontFamily: 'Montserrat-Regular',
 	},
+
+	buttonText: {
+		fontSize: 18,
+		color: '#000000',
+		fontWeight: 'bold',
+		alignSelf: 'center',
+		textTransform: 'uppercase',
+	},
 });
 
 const baseStyles = StyleSheet.create({
@@ -69,9 +83,21 @@ const baseStyles = StyleSheet.create({
 		paddingRight: 20,
 		backgroundColor: '#121212',
 	},
+
+	headerIcon: {
+		height: 100,
+		width: 100,
+		resizeMode: 'stretch',
+	},
+
+	buttonContainer: {
+		elevation: 8,
+		width: '100%',
+		backgroundColor: '#03DAC6',
+		borderRadius: 10,
+		paddingVertical: 10,
+		paddingHorizontal: 12,
+	},
 });
 
-export {appTheme};
-export {typography};
-export {baseStyles};
-export {form};
+export {appTheme, typography, baseStyles, form, spacing};

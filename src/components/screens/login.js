@@ -3,13 +3,20 @@
 // React
 import * as React from 'react';
 import {Component} from 'react';
-import {Text, View, TextInput, Button, Alert} from 'react-native';
+import {
+	Text,
+	View,
+	TextInput,
+	Button,
+	Alert,
+	TouchableOpacity,
+} from 'react-native';
 
 // Firebase
 import auth from '@react-native-firebase/auth';
 
 // Styles
-import {typography, baseStyles, form} from '../../styles/main';
+import {typography, baseStyles, form, spacing} from '../../styles/main';
 
 // Partials
 import PreLoader from '../partials/preLoader';
@@ -75,7 +82,7 @@ class Login extends Component {
 			<View style={baseStyles.flexContainer}>
 				<Text style={typography.pageHeading}>Welcome back</Text>
 
-				<Text style={typography.subHeading}>
+				<Text style={[typography.subHeading, spacing.marginBottom20]}>
 					Log in to your account using your email or social networks.
 				</Text>
 
@@ -97,11 +104,12 @@ class Login extends Component {
 					placeholderTextColor="#EFEFEF"
 				/>
 
-				<Button
-					color="transparent"
-					title="Signin"
+				<TouchableOpacity
+					activeOpacity={0.8}
 					onPress={() => this.userLogin()}
-				/>
+					style={baseStyles.buttonContainer}>
+					<Text style={typography.buttonText}>Log In</Text>
+				</TouchableOpacity>
 
 				<Text
 					style={form.inputText}
