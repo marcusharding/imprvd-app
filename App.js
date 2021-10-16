@@ -1,11 +1,12 @@
 // React
 import React, {useState, useEffect} from 'react';
-import {Text, View, Button, Platform} from 'react-native';
+import {View, Button, Platform} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SplashScreen from 'react-native-splash-screen';
 import BackgroundColor from 'react-native-background-color';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 // Styles
 import {appTheme} from './src/styles/main';
@@ -47,8 +48,35 @@ const logoutScreen = () => {
 // Bottom tabs stack
 const TabStack = () => {
 	return (
-		<Tab.Navigator>
-			{/* <Tab.Screen name="Feed" component={SettingsScreen} /> */}
+		<Tab.Navigator
+			screenOptions={({route}) => ({
+				tabBarIcon: ({color, size}) => {
+					let iconName;
+
+					if (route.name === 'Dashboard') {
+						iconName = 'ios-home';
+					} else if (route.name === 'Benchmarks') {
+						iconName = 'ios-stats';
+					} else if (route.name === 'Workouts') {
+						iconName = 'ios-contacts';
+					} else if (route.name === 'Profile') {
+						iconName = 'ios-contact';
+					}
+
+					return <Icon name={iconName} size={size} color={color} />;
+				},
+				headerShown: false,
+				activeTintColor: '#34FFC8',
+				inactiveTintColor: 'white',
+				style: {
+					backgroundColor: '#121212',
+					borderTopColor: 'transparent',
+					paddingBottom: Platform.OS === 'android' ? 15 : 35,
+				},
+			})}>
+			<Tab.Screen name="Dashboard">
+				{props => <Dashboard {...props} />}
+			</Tab.Screen>
 		</Tab.Navigator>
 	);
 };
@@ -79,11 +107,9 @@ export default function App() {
 		return (
 			<NavigationContainer options={{headerShown: false}} theme={appTheme}>
 				<Stack.Navigator screenOptions={{headerShown: false}}>
-					{/* <Stack.Screen
-						name="Dashboard"
-						component={Dashboard}
-						options={{headerShown: false}}
-					/> */}
+					<Stack.Screen name="Dashboard">
+						{props => <TabStack {...props} />}
+					</Stack.Screen>
 					<Stack.Screen name="logout" component={logoutScreen} />
 				</Stack.Navigator>
 			</NavigationContainer>
