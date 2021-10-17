@@ -104,6 +104,14 @@ const baseStyles = StyleSheet.create({
 		marginRight: 'auto',
 		marginTop: 50,
 	},
+
+	profileIconPlaceholder: {
+		width: 30,
+		height: 30,
+		backgroundColor: '#373737',
+		borderRadius: 100,
+		marginLeft: 'auto',
+	},
 });
 
 export {appTheme, typography, baseStyles, form, spacing};
