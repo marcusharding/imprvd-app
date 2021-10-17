@@ -2,11 +2,11 @@
 import React, {useState, useEffect} from 'react';
 import {View, Button, Platform} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SplashScreen from 'react-native-splash-screen';
 import BackgroundColor from 'react-native-background-color';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // Styles
 import {appTheme} from './src/styles/main';
@@ -28,7 +28,7 @@ import Workouts from './src/components/screens/workouts';
 import Profile from './src/components/screens/profile';
 
 // Navigators
-const Tab = createBottomTabNavigator();
+const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 // Temprorary logout screen whilst I re-do the sign up process
@@ -52,37 +52,54 @@ const logoutScreen = () => {
 const TabStack = () => {
 	return (
 		<Tab.Navigator
-			screenOptions={({route}) => ({
-				tabBarIcon: ({color, size}) => {
-					let iconName;
-
-					if (route.name === 'Dashboard') {
-						iconName = 'add';
-					} else if (route.name === 'Benchmarks') {
-						iconName = 'add';
-					} else if (route.name === 'Workouts') {
-						iconName = 'add';
-					} else if (route.name === 'Profile') {
-						iconName = 'add';
-					}
-
-					return <Ionicons name={iconName} size={size} color={color} />;
-				},
-				headerShown: false,
-				tabBarActiveTintColor: '#34FFC8',
-				tabBarInactiveTintColor: 'white',
-				style: {
-					backgroundColor: '#121212',
-					borderTopColor: 'transparent',
-					paddingBottom: Platform.OS === 'android' ? 15 : 35,
-				},
-			})}>
-			<Tab.Screen name="Dashboard">
+			initialRouteName="Dashboard"
+			activeColor="#34FFC8"
+			inactiveColor="#FFFFFF"
+			barStyle={{backgroundColor: '#121212'}}>
+			<Tab.Screen
+				name="Dashboard"
+				options={{
+					tabBarLabel: 'Dashboard',
+					tabBarIcon: ({color}) => (
+						<MaterialCommunityIcons name="home" color={color} size={26} />
+					),
+				}}>
 				{props => <Dashboard {...props} />}
 			</Tab.Screen>
-			<Tab.Screen name="Benchmarks" component={Benchmarks} />
-			<Tab.Screen name="Workouts" component={Workouts} />
-			<Tab.Screen name="Profile" component={Profile} />
+			<Tab.Screen
+				name="Benchmarks"
+				component={Benchmarks}
+				options={{
+					tabBarLabel: 'Benchmarks',
+					tabBarIcon: ({color}) => (
+						<MaterialCommunityIcons name="poll" color={color} size={26} />
+					),
+				}}
+			/>
+			<Tab.Screen
+				name="Workouts"
+				component={Workouts}
+				options={{
+					tabBarLabel: 'Workouts',
+					tabBarIcon: ({color}) => (
+						<MaterialCommunityIcons
+							name="weight-lifter"
+							color={color}
+							size={26}
+						/>
+					),
+				}}
+			/>
+			<Tab.Screen
+				name="Profile"
+				component={Profile}
+				options={{
+					tabBarLabel: 'Profile',
+					tabBarIcon: ({color}) => (
+						<MaterialCommunityIcons name="account" color={color} size={26} />
+					),
+				}}
+			/>
 		</Tab.Navigator>
 	);
 };
