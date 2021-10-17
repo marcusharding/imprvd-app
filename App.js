@@ -24,6 +24,8 @@ import Dashboard from './src/components/screens/dashboard';
 import Login from './src/components/screens/login';
 import EmailVerification from './src/components/screens/emailVerification';
 import Benchmarks from './src/components/screens/benchmarks';
+import Workouts from './src/components/screens/workouts';
+import Profile from './src/components/screens/profile';
 
 // Navigators
 const Tab = createBottomTabNavigator();
@@ -55,13 +57,13 @@ const TabStack = () => {
 					let iconName;
 
 					if (route.name === 'Dashboard') {
-						iconName = 'md-home';
+						iconName = 'add';
 					} else if (route.name === 'Benchmarks') {
-						iconName = 'stats-chart';
+						iconName = 'add';
 					} else if (route.name === 'Workouts') {
-						iconName = 'ios-contacts';
+						iconName = 'add';
 					} else if (route.name === 'Profile') {
-						iconName = 'ios-contact';
+						iconName = 'add';
 					}
 
 					return <Ionicons name={iconName} size={size} color={color} />;
@@ -79,6 +81,8 @@ const TabStack = () => {
 				{props => <Dashboard {...props} />}
 			</Tab.Screen>
 			<Tab.Screen name="Benchmarks" component={Benchmarks} />
+			<Tab.Screen name="Workouts" component={Workouts} />
+			<Tab.Screen name="Profile" component={Profile} />
 		</Tab.Navigator>
 	);
 };
