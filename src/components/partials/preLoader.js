@@ -1,6 +1,5 @@
 // React
-import * as React from 'react';
-import {Component} from 'react';
+import React, {Component} from 'react';
 import {View, ActivityIndicator} from 'react-native';
 
 // Styles

@@ -98,6 +98,12 @@ const baseStyles = StyleSheet.create({
 		paddingVertical: 10,
 		paddingHorizontal: 12,
 	},
+
+	screenHeading: {
+		marginLeft: 'auto',
+		marginRight: 'auto',
+		marginTop: 50,
+	},
 });
 
 export {appTheme, typography, baseStyles, form, spacing};

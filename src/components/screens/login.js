@@ -1,16 +1,8 @@
 // Login.js
 
 // React
-import * as React from 'react';
-import {Component} from 'react';
-import {
-	Text,
-	View,
-	TextInput,
-	Button,
-	Alert,
-	TouchableOpacity,
-} from 'react-native';
+import React, {Component} from 'react';
+import {Text, View, TextInput, Alert, TouchableOpacity} from 'react-native';
 
 // Firebase
 import auth from '@react-native-firebase/auth';
@@ -61,9 +53,9 @@ class Login extends Component {
 					const isEmailVerified = auth().currentUser.emailVerified;
 
 					if (isEmailVerified) {
-						navigation.navigate('Dashboard');
+						navigation.navigate('DashboardScreen');
 					} else {
-						navigation.navigate('EmailVerification');
+						navigation.navigate('EmailVerificationScreen');
 					}
 				})
 				.catch(error => console.log(error));
@@ -113,7 +105,7 @@ class Login extends Component {
 
 				<Text
 					style={form.inputText}
-					onPress={() => navigation.navigate('Signup')}>
+					onPress={() => navigation.navigate('SignupScreen')}>
 					Don't have account?
 					<Text style={form.inputTextSpan}> Click here to signup</Text>
 				</Text>

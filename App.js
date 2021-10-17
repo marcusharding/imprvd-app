@@ -6,7 +6,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SplashScreen from 'react-native-splash-screen';
 import BackgroundColor from 'react-native-background-color';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 // Styles
 import {appTheme} from './src/styles/main';
@@ -18,11 +18,12 @@ import auth from '@react-native-firebase/auth';
 import PreLoader from './src/components/partials/preLoader';
 
 // Screens
-import WelcomeScreen from './src/components/screens/welcomeScreen';
+import Welcome from './src/components/screens/welcome';
 import SignUp from './src/components/screens/signup';
 import Dashboard from './src/components/screens/dashboard';
 import Login from './src/components/screens/login';
 import EmailVerification from './src/components/screens/emailVerification';
+import Benchmarks from './src/components/screens/benchmarks';
 
 // Navigators
 const Tab = createBottomTabNavigator();
@@ -54,20 +55,20 @@ const TabStack = () => {
 					let iconName;
 
 					if (route.name === 'Dashboard') {
-						iconName = 'ios-home';
+						iconName = 'md-home';
 					} else if (route.name === 'Benchmarks') {
-						iconName = 'ios-stats';
+						iconName = 'stats-chart';
 					} else if (route.name === 'Workouts') {
 						iconName = 'ios-contacts';
 					} else if (route.name === 'Profile') {
 						iconName = 'ios-contact';
 					}
 
-					return <Icon name={iconName} size={size} color={color} />;
+					return <Ionicons name={iconName} size={size} color={color} />;
 				},
 				headerShown: false,
-				activeTintColor: '#34FFC8',
-				inactiveTintColor: 'white',
+				tabBarActiveTintColor: '#34FFC8',
+				tabBarInactiveTintColor: 'white',
 				style: {
 					backgroundColor: '#121212',
 					borderTopColor: 'transparent',
@@ -77,6 +78,7 @@ const TabStack = () => {
 			<Tab.Screen name="Dashboard">
 				{props => <Dashboard {...props} />}
 			</Tab.Screen>
+			<Tab.Screen name="Benchmarks" component={Benchmarks} />
 		</Tab.Navigator>
 	);
 };
@@ -107,7 +109,7 @@ export default function App() {
 		return (
 			<NavigationContainer options={{headerShown: false}} theme={appTheme}>
 				<Stack.Navigator screenOptions={{headerShown: false}}>
-					<Stack.Screen name="Dashboard">
+					<Stack.Screen name="DashboardScreen">
 						{props => <TabStack {...props} />}
 					</Stack.Screen>
 					<Stack.Screen name="logout" component={logoutScreen} />
@@ -119,12 +121,15 @@ export default function App() {
 	return (
 		<NavigationContainer options={{headerShown: false}} theme={appTheme}>
 			<Stack.Navigator screenOptions={{headerShown: false}}>
-				<Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
-				<Stack.Screen name="Signup" component={SignUp} />
-				<Stack.Screen name="Login" component={Login} />
-				<Stack.Screen name="EmailVerification" component={EmailVerification} />
+				<Stack.Screen name="WelcomeScreen" component={Welcome} />
+				<Stack.Screen name="SignupScreen" component={SignUp} />
+				<Stack.Screen name="LoginScreen" component={Login} />
 				<Stack.Screen
-					name="Dashboard"
+					name="EmailVerificationScreen"
+					component={EmailVerification}
+				/>
+				<Stack.Screen
+					name="DashboardScreen"
 					component={Dashboard}
 					options={{headerShown: false}}
 				/>

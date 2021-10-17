@@ -1,6 +1,5 @@
 // React
-import * as React from 'react';
-import {Component} from 'react';
+import React, {Component} from 'react';
 import {Text, View, TouchableOpacity} from 'react-native';
 
 // Styles
@@ -9,7 +8,7 @@ import {baseStyles, typography, form, spacing} from '../../styles/main';
 // Partials
 import PreLoader from '../partials/preLoader';
 
-class WelcomeScreen extends Component {
+class Welcome extends Component {
 	constructor() {
 		super();
 
@@ -61,14 +60,14 @@ class WelcomeScreen extends Component {
 
 				<TouchableOpacity
 					activeOpacity={0.8}
-					onPress={() => navigation.navigate('Signup')}
+					onPress={() => navigation.navigate('SignupScreen')}
 					style={baseStyles.buttonContainer}>
 					<Text style={typography.buttonText}>Sign Up</Text>
 				</TouchableOpacity>
 
 				<Text
 					style={form.inputText}
-					onPress={() => navigation.navigate('Login')}>
+					onPress={() => navigation.navigate('LoginScreen')}>
 					Already Registered?
 					<Text style={form.inputTextSpan}> Click here to login</Text>
 				</Text>
@@ -77,4 +76,4 @@ class WelcomeScreen extends Component {
 	}
 }
 
-export default WelcomeScreen;
+export default Welcome;
