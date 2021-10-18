@@ -1247,10 +1247,10 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/eslint-plugin/-/eslint-plugin-1.1.0.tgz#e42b1bef12d2415411519fd528e64b593b1363dc"
   integrity sha512-W/J0fNYVO01tioHjvYWQ9m6RgndVtbElzYozBq1ZPrHO/iCzlqoySHl4gO/fpCl9QEFjvJfjPgtPMTMlsoq5DQ==
 
-"@react-native-firebase/app@^12.8.0":
-  version "12.9.1"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-12.9.1.tgz#bfa0f2db4c6158d545dfee2e8b0684cea0742a7b"
-  integrity sha512-AXjEsjx6nJ+3UC5J5mg9uYzzRT0cuHjXvQ1t3aK72C2v/EBKADus8vhhiE33CB8wpFTe7cQmw6ygfK1KblNBaw==
+"@react-native-firebase/app@^12.9.2":
+  version "12.9.2"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-12.9.2.tgz#40d2eaf7c262abce56ae639d6ce1ea6e1a0e8639"
+  integrity sha512-aZ32taypvRGini7wynqbFTDppnFrBUsZAVcqB3ePY5tYi7DTTGK62UxIUGDuQ66BsHv7AULMOTj87RT1s37EHA==
   dependencies:
     "@expo/config-plugins" "^4.0.2"
     opencollective-postinstall "^2.0.1"
@@ -1260,6 +1260,11 @@
   version "12.9.1"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/auth/-/auth-12.9.1.tgz#7a5a6f739703103e0fad052d1e307b938155600c"
   integrity sha512-YnutHqhYu1ql64+maVQ7YreJpn9QRI7KeknQEdZUR/t6co9nks3FRx26Zm5GHkRYJ/0HVtqlnhmtX5cJ4CZ/gg==
+
+"@react-native-firebase/storage@^12.9.2":
+  version "12.9.2"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/storage/-/storage-12.9.2.tgz#8b0571d17af012977008933be9e4c673fa59817b"
+  integrity sha512-0Wsx+c7eN0gyqpoZRXQ3Au3fuNfnDPsBTPAdr4db9LFk6yDEw/7Rw3kZZx6zode86FfY8Sn9wwFkcuCJrFouNA==
 
 "@react-native/assets@1.0.0":
   version "1.0.0"
@@ -5853,6 +5858,11 @@ react-native-gesture-handler@^1.10.3:
     hoist-non-react-statics "^3.3.0"
     invariant "^2.2.4"
     prop-types "^15.7.2"
+
+react-native-image-picker@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-4.1.2.tgz#1b4b4980a6878930675396c23dffbaa802cbbcc6"
+  integrity sha512-e4frAekSJkOgEmL9UOLukGhjtPwHSD7qSf3Rmwk+850ofxKqZFfAIfWc9MO3UmCb6G7oB6PkckyTOGOXybrN5A==
 
 react-native-iphone-x-helper@^1.3.1:
   version "1.3.1"
