@@ -26,6 +26,7 @@ import EmailVerification from './src/components/screens/emailVerification';
 import Benchmarks from './src/components/screens/benchmarks';
 import Workouts from './src/components/screens/workouts';
 import Profile from './src/components/screens/profile';
+import Social from './src/components/screens/social';
 
 // Navigators
 const Tab = createMaterialBottomTabNavigator();
@@ -66,6 +67,7 @@ const TabStack = () => {
 				}}>
 				{props => <Dashboard {...props} />}
 			</Tab.Screen>
+
 			<Tab.Screen
 				name="Benchmarks"
 				component={Benchmarks}
@@ -76,6 +78,7 @@ const TabStack = () => {
 					),
 				}}
 			/>
+
 			<Tab.Screen
 				name="Workouts"
 				component={Workouts}
@@ -90,13 +93,18 @@ const TabStack = () => {
 					),
 				}}
 			/>
+
 			<Tab.Screen
-				name="Profile"
-				component={Profile}
+				name="Social"
+				component={Social}
 				options={{
-					tabBarLabel: 'Profile',
+					tabBarLabel: 'Social',
 					tabBarIcon: ({color}) => (
-						<MaterialCommunityIcons name="account" color={color} size={26} />
+						<MaterialCommunityIcons
+							name="account-group"
+							color={color}
+							size={26}
+						/>
 					),
 				}}
 			/>
@@ -133,6 +141,7 @@ export default function App() {
 					<Stack.Screen name="DashboardScreen">
 						{props => <TabStack {...props} />}
 					</Stack.Screen>
+					<Stack.Screen name="ProfileScreen" component={Profile} />
 					<Stack.Screen name="logout" component={logoutScreen} />
 				</Stack.Navigator>
 			</NavigationContainer>

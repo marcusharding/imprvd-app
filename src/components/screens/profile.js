@@ -1,6 +1,6 @@
 // React
 import React, {Component} from 'react';
-import {View, Text, TouchableOpacity, Platform, Image} from 'react-native';
+import {View, Text, TouchableOpacity, Image} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as ImagePicker from 'react-native-image-picker';
 
@@ -78,7 +78,6 @@ class Profile extends Component {
 			});
 	}
 
-	// To Do - Write function to delete image
 	removeImage() {
 		const {fileName} = this.state;
 		const reference = storage().ref(fileName);
@@ -94,7 +93,6 @@ class Profile extends Component {
 			});
 	}
 
-	// To Do - Write function to fetch image on mount
 	fetchImageDownloadUrl(fileName) {
 		storage()
 			.ref(fileName)

@@ -117,6 +117,14 @@ const baseStyles = StyleSheet.create({
 		height: 120,
 		borderRadius: 100,
 	},
+
+	profileIcon: {
+		marginTop: 10,
+		marginLeft: 'auto',
+		borderRadius: 100,
+		width: 40,
+		height: 40,
+	},
 });
 
 export {appTheme, typography, baseStyles, form, spacing};
