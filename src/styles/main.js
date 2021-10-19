@@ -75,6 +75,13 @@ const baseStyles = StyleSheet.create({
 		justifyContent: 'center',
 	},
 
+	flexContainerRow: {
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'space-around',
+		alignItems: 'center',
+	},
+
 	safeAreaView: {
 		flex: 1,
 		position: 'relative',
@@ -103,6 +110,12 @@ const baseStyles = StyleSheet.create({
 		marginLeft: 'auto',
 		marginRight: 'auto',
 		marginTop: 50,
+	},
+
+	profileImage: {
+		width: 120,
+		height: 120,
+		borderRadius: 100,
 	},
 });
 

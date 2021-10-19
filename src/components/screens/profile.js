@@ -19,14 +19,20 @@ class Profile extends Component {
 
 		this.state = {
 			imagePath: null,
-			isLoading: false,
+			isLoading: true,
 			status: '',
 			fileName: 'profile_image',
 		};
 	}
 
+	componentDidMount() {
+		const {fileName} = this.state;
+		this.fetchImageDownloadUrl(fileName);
+	}
+
 	chooseFile() {
 		this.setState({status: ''});
+		const {fileName} = this.state;
 
 		const options = {
 			title: 'Select Image',
@@ -46,23 +52,9 @@ class Profile extends Component {
 				console.log('ImagePicker Error: ', response.errorMessage);
 			} else {
 				const path = response.assets[0].uri;
-				const fileName = this.state.fileName;
-				this.setState({imagePath: path});
 				this.uploadImageToStorage(path, fileName);
 			}
 		});
-	}
-
-	getFileName(name, path) {
-		if (name !== null) {
-			return name;
-		}
-
-		if (Platform.OS === 'ios') {
-			path = '~' + path.substring(path.indexOf('/Documents'));
-		}
-
-		return path.split('/').pop();
 	}
 
 	uploadImageToStorage(path, name) {
@@ -74,6 +66,7 @@ class Profile extends Component {
 		task
 			.then(() => {
 				console.log('image uploaded to firebase');
+				this.fetchImageDownloadUrl(name);
 				this.setState({
 					isLoading: false,
 					status: 'Image uploaded successfully',
@@ -85,41 +78,38 @@ class Profile extends Component {
 			});
 	}
 
-	getPlatformPath({path, uri}) {
-		return Platform.select({
-			android: {value: path},
-			ios: {value: uri},
-		});
-	}
-
-	getPlatformURI(imagePath) {
-		if (imagePath) {
-			let imgSource = imagePath;
-
-			if (isNaN(imagePath)) {
-				imgSource = {uri: this.state.imagePath};
-				if (Platform.OS === 'android') {
-					imgSource.uri = 'file:///' + imgSource.uri;
-				}
-			}
-			return imgSource;
-		}
-
-		return imagePath;
-	}
-
 	// To Do - Write function to delete image
 	removeImage() {
-		console.log('ImageRemoved');
+		const {fileName} = this.state;
+		const reference = storage().ref(fileName);
+
+		reference
+			.delete()
+			.then(() => {
+				console.log('File deleted succesfully');
+				this.setState({imagePath: null});
+			})
+			.catch(error => {
+				console.log('There was an error deleting the file => ', error);
+			});
 	}
 
 	// To Do - Write function to fetch image on mount
+	fetchImageDownloadUrl(fileName) {
+		storage()
+			.ref(fileName)
+			.getDownloadURL()
+			.then(response => {
+				this.setState({imagePath: response, isLoading: false});
+			})
+			.catch(error => {
+				console.log('Fetching download URL error => ', error);
+				this.setState({isLoading: false, status: 'Something went wrong'});
+			});
+	}
 
 	render() {
 		const {imagePath, isLoading} = this.state;
-		const imgSource = this.getPlatformURI(imagePath);
-
-		console.log(imagePath);
 
 		if (isLoading) {
 			return <PreLoader />;
@@ -131,31 +121,49 @@ class Profile extends Component {
 					Profile
 				</Text>
 
-				{!imgSource && (
-					<TouchableOpacity
-						activeOpacity={0.8}
-						onPress={() => this.chooseFile()}>
-						<MaterialCommunityIcons
-							name={'camera-plus'}
-							color={'#34FFC8'}
-							size={35}
-						/>
-					</TouchableOpacity>
-				)}
+				<View style={baseStyles.flexContainerRow}>
+					{!imagePath && (
+						<TouchableOpacity
+							activeOpacity={0.8}
+							onPress={() => this.chooseFile()}>
+							<MaterialCommunityIcons
+								name={'camera-plus'}
+								color={'#34FFC8'}
+								size={35}
+							/>
+						</TouchableOpacity>
+					)}
 
-				{imgSource && (
+					{imagePath && (
+						<TouchableOpacity
+							activeOpacity={0.8}
+							onPress={() => this.removeImage()}>
+							<MaterialCommunityIcons
+								name={'camera-off'}
+								color={'#34FFC8'}
+								size={35}
+							/>
+						</TouchableOpacity>
+					)}
+
+					{!imagePath && (
+						<MaterialCommunityIcons
+							name={'account-circle'}
+							color={'#808080'}
+							size={120}
+						/>
+					)}
+
+					{imagePath && (
+						<Image style={baseStyles.profileImage} source={{uri: imagePath}} />
+					)}
+
 					<TouchableOpacity
 						activeOpacity={0.8}
 						onPress={() => this.removeImage()}>
-						<MaterialCommunityIcons
-							name={'camera-off'}
-							color={'#34FFC8'}
-							size={35}
-						/>
+						<Text>Edit Profile</Text>
 					</TouchableOpacity>
-				)}
-
-				{imgSource && <Image source={imagePath} />}
+				</View>
 			</View>
 		);
 	}
