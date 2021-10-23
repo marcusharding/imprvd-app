@@ -1,5 +1,3 @@
-// Login.js
-
 // React
 import React, {Component} from 'react';
 import {Text, View, TextInput, Alert, TouchableOpacity} from 'react-native';
@@ -53,7 +51,10 @@ class Login extends Component {
 					const isEmailVerified = auth().currentUser.emailVerified;
 
 					if (isEmailVerified) {
-						navigation.navigate('DashboardScreen');
+						navigation.reset({
+							index: 0,
+							routes: [{name: 'DashboardScreen'}],
+						});
 					} else {
 						navigation.navigate('EmailVerificationScreen');
 					}
