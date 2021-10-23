@@ -13,21 +13,28 @@ const ProfileIcon = ({navigation}) => {
 	const [imagePath, setImagePath] = useState(null);
 	const fileName = 'profile_image';
 
-	useEffect(() => {
-		fetchImageDownloadUrl(fileName);
-	});
-
-	const fetchImageDownloadUrl = () => {
+	const fetchImageDownloadUrl = isMounted => {
 		storage()
 			.ref(fileName)
 			.getDownloadURL()
 			.then(response => {
-				setImagePath(response);
+				if (isMounted) {
+					setImagePath(response);
+				}
 			})
 			.catch(error => {
 				console.log('Fetching download URL error => ', error);
 			});
 	};
+
+	useEffect(() => {
+		let isMounted = true;
+
+		fetchImageDownloadUrl(isMounted);
+		return () => {
+			isMounted = false;
+		};
+	});
 
 	return (
 		<View>
@@ -38,7 +45,7 @@ const ProfileIcon = ({navigation}) => {
 					<MaterialCommunityIcons
 						name={'account-circle'}
 						color={'#808080'}
-						size={40}
+						size={35}
 						style={baseStyles.profileIcon}
 					/>
 				</TouchableOpacity>

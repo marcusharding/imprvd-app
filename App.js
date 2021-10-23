@@ -32,23 +32,6 @@ import Social from './src/components/screens/social';
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-// Temprorary logout screen whilst I re-do the sign up process
-const logoutScreen = () => {
-	return (
-		<View>
-			<Button
-				color="#121212"
-				title="Log out"
-				onPress={() =>
-					auth()
-						.signOut()
-						.then(() => console.log('User signed out'))
-				}
-			/>
-		</View>
-	);
-};
-
 // Bottom tabs stack
 const TabStack = () => {
 	return (
@@ -142,7 +125,7 @@ export default function App() {
 						{props => <TabStack {...props} />}
 					</Stack.Screen>
 					<Stack.Screen name="ProfileScreen" component={Profile} />
-					<Stack.Screen name="logout" component={logoutScreen} />
+					<Stack.Screen name="LoginScreen" component={Login} />
 				</Stack.Navigator>
 			</NavigationContainer>
 		);

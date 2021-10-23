@@ -12,6 +12,8 @@ import storage from '@react-native-firebase/storage';
 
 // Partials
 import PreLoader from '../partials/preLoader';
+import GoBackIcon from '../partials/goBackIcon';
+import LogoutButton from '../partials/logoutButton';
 
 class Profile extends Component {
 	constructor(props) {
@@ -108,6 +110,7 @@ class Profile extends Component {
 
 	render() {
 		const {imagePath, isLoading} = this.state;
+		const {navigation} = this.props;
 
 		if (isLoading) {
 			return <PreLoader />;
@@ -115,6 +118,7 @@ class Profile extends Component {
 
 		return (
 			<View>
+				<GoBackIcon navigation={navigation} />
 				<Text style={[typography.pageHeading, baseStyles.screenHeading]}>
 					Profile
 				</Text>
@@ -162,6 +166,8 @@ class Profile extends Component {
 						<Text>Edit Profile</Text>
 					</TouchableOpacity>
 				</View>
+
+				<LogoutButton navigation={navigation} />
 			</View>
 		);
 	}

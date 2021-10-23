@@ -88,6 +88,7 @@ const baseStyles = StyleSheet.create({
 		height: '100%',
 		paddingLeft: 20,
 		paddingRight: 20,
+		paddingTop: 10,
 		backgroundColor: '#121212',
 	},
 
@@ -113,8 +114,8 @@ const baseStyles = StyleSheet.create({
 	},
 
 	profileImage: {
-		width: 120,
-		height: 120,
+		width: 80,
+		height: 80,
 		borderRadius: 100,
 	},
 
@@ -122,8 +123,8 @@ const baseStyles = StyleSheet.create({
 		marginTop: 10,
 		marginLeft: 'auto',
 		borderRadius: 100,
-		width: 40,
-		height: 40,
+		width: 35,
+		height: 35,
 	},
 });
 
