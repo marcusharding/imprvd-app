@@ -10,10 +10,10 @@ import {baseStyles, typography} from '../../styles/main';
 
 class Social extends Component {
 	render() {
-		const {navigation} = this.props;
+		const {navigation, profileImagePath} = this.props;
 		return (
 			<View>
-				<ProfileIcon navigation={navigation} />
+				<ProfileIcon navigation={navigation} imagePath={profileImagePath} />
 
 				<Text style={[typography.pageHeading, baseStyles.screenHeading]}>
 					Social

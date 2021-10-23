@@ -20,7 +20,7 @@ class Profile extends Component {
 		super();
 
 		this.state = {
-			imagePath: null,
+			imagePath: props.profileImagePath,
 			isLoading: true,
 			status: '',
 			fileName: 'profile_image',

@@ -1,5 +1,5 @@
 // React
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {View, Image, TouchableOpacity} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -9,33 +9,7 @@ import {baseStyles} from '../../styles/main';
 // Firebase
 import storage from '@react-native-firebase/storage';
 
-const ProfileIcon = ({navigation}) => {
-	const [imagePath, setImagePath] = useState(null);
-	const fileName = 'profile_image';
-
-	const fetchImageDownloadUrl = isMounted => {
-		storage()
-			.ref(fileName)
-			.getDownloadURL()
-			.then(response => {
-				if (isMounted) {
-					setImagePath(response);
-				}
-			})
-			.catch(error => {
-				console.log('Fetching download URL error => ', error);
-			});
-	};
-
-	useEffect(() => {
-		let isMounted = true;
-
-		fetchImageDownloadUrl(isMounted);
-		return () => {
-			isMounted = false;
-		};
-	});
-
+const ProfileIcon = ({navigation, imagePath}) => {
 	return (
 		<View>
 			{!imagePath && (

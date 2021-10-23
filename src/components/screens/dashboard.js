@@ -11,17 +11,17 @@ import ProfileIcon from '../partials/profileIcon';
 import {baseStyles, typography} from '../../styles/main';
 
 class Dashboard extends Component {
-	constructor(props) {
+	constructor() {
 		super();
 
 		this.state = {};
 	}
 
 	render() {
-		const {navigation} = this.props;
+		const {navigation, profileImagePath} = this.props;
 		return (
 			<View>
-				<ProfileIcon navigation={navigation} />
+				<ProfileIcon navigation={navigation} imagePath={profileImagePath} />
 
 				<Text style={[typography.pageHeading, baseStyles.screenHeading]}>
 					Dashboard

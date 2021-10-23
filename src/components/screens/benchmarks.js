@@ -9,17 +9,17 @@ import {typography, baseStyles} from '../../styles/main';
 import ProfileIcon from '../partials/profileIcon';
 
 class Benchmarks extends Component {
-	constructor(props) {
+	constructor() {
 		super();
 
 		this.state = {};
 	}
 
 	render() {
-		const {navigation} = this.props;
+		const {navigation, profileImagePath} = this.props;
 		return (
 			<View>
-				<ProfileIcon navigation={navigation} />
+				<ProfileIcon navigation={navigation} imagePath={profileImagePath} />
 
 				<Text style={[typography.pageHeading, baseStyles.screenHeading]}>
 					Benchmarks
