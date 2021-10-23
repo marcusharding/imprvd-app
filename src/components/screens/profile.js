@@ -82,13 +82,14 @@ class Profile extends Component {
 
 	removeImage() {
 		const {fileName} = this.state;
+		const {setProfileImagePath} = this.props;
 		const reference = storage().ref(fileName);
 
 		reference
 			.delete()
 			.then(() => {
 				console.log('File deleted succesfully');
-				this.setState({imagePath: null});
+				setProfileImagePath(null);
 			})
 			.catch(error => {
 				console.log('There was an error deleting the file => ', error);
@@ -152,7 +153,7 @@ class Profile extends Component {
 						<MaterialCommunityIcons
 							name={'account-circle'}
 							color={'#808080'}
-							size={120}
+							size={80}
 						/>
 					)}
 

@@ -109,6 +109,7 @@ export default function App() {
 	};
 
 	// To do - Think of better way to begin handling all user data that needs to be pulled into the app
+	// Is also creating the Can't perform a React state update on an unmounted component. error
 	const fetchProfileImagePath = () => {
 		fetchImageDownloadUrl(user).then(response => {
 			setProfileImagePath(response);
@@ -140,7 +141,11 @@ export default function App() {
 					</Stack.Screen>
 					<Stack.Screen name="ProfileScreen">
 						{props => (
-							<Profile profileImagePath={profileImagePath} {...props} />
+							<Profile
+								profileImagePath={profileImagePath}
+								setProfileImagePath={setProfileImagePath}
+								{...props}
+							/>
 						)}
 					</Stack.Screen>
 					<Stack.Screen name="LoginScreen" component={Login} />
