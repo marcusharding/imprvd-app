@@ -1,5 +1,3 @@
-// emailVerification.js
-
 // React
 import React, {Component} from 'react';
 import {Text, View, AppState, Image, TouchableOpacity} from 'react-native';
@@ -7,6 +5,9 @@ import {openInbox} from 'react-native-email-link';
 
 // Firebase
 import auth from '@react-native-firebase/auth';
+
+// Partials
+import PreLoader from '../partials/preLoader';
 
 // Styles
 import {baseStyles, typography, form, spacing} from '../../styles/main';
@@ -24,12 +25,6 @@ class EmailVerification extends Component {
 		};
 	}
 
-	componentDidMount() {
-		this.checkAppState();
-		this.checkEmailVerified();
-		this.fetchData();
-	}
-
 	fetchData() {
 		fetch(
 			'https://contentmanagement.getimprvd.app/wp-json/wp/v2/app_screens?slug=email-verification',
@@ -37,8 +32,6 @@ class EmailVerification extends Component {
 			.then(response => response.json())
 			.then(json => {
 				const data = json[0].acf;
-
-				console.log(data);
 
 				this.setState({
 					title: data.screen_title,
@@ -102,9 +95,19 @@ class EmailVerification extends Component {
 			.catch(error => console.log(error.message));
 	}
 
+	componentDidMount() {
+		this.checkAppState();
+		this.checkEmailVerified();
+		this.fetchData();
+	}
+
 	render() {
-		const {title, subTitle, headerIcon} = this.state;
+		const {title, subTitle, headerIcon, isLoading} = this.state;
 		const user = auth().currentUser;
+
+		if (isLoading) {
+			return <PreLoader />;
+		}
 
 		return (
 			<View style={baseStyles.flexContainer}>

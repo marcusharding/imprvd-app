@@ -14,6 +14,10 @@ const spacing = StyleSheet.create({
 	marginBottom20: {
 		marginBottom: 20,
 	},
+
+	flex1: {
+		flex: 1,
+	},
 });
 
 const form = StyleSheet.create({
@@ -125,6 +129,11 @@ const baseStyles = StyleSheet.create({
 		borderRadius: 100,
 		width: 35,
 		height: 35,
+	},
+
+	addNewBenchmarkIcon: {
+		marginLeft: 'auto',
+		marginTop: 'auto',
 	},
 });
 

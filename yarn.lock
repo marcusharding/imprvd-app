@@ -5843,6 +5843,11 @@ react-native-codegen@^0.0.7:
     jscodeshift "^0.11.0"
     nullthrows "^1.1.1"
 
+react-native-dropdown-picker@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-dropdown-picker/-/react-native-dropdown-picker-5.2.0.tgz#9af407a3c079aed77cfcdbb7aba077dac283b79e"
+  integrity sha512-4xq2ca+pQmojmoU1uBhyQIRyqpgT/Eo2AClOedJm3cP24fLHsH1aUjlKrN6gWREhMRRD+lzvrHrNbOtqdpStXg==
+
 react-native-email-link@^1.11.3:
   version "1.12.2"
   resolved "https://registry.yarnpkg.com/react-native-email-link/-/react-native-email-link-1.12.2.tgz#61e8718dca98b362b3a847d7d05aa2b930ad7206"
