@@ -8,11 +8,14 @@ import auth from '@react-native-firebase/auth';
 
 const LogoutButton = ({navigation}) => {
 	const logout = () => {
-		navigation.navigate('LoginScreen');
 		auth()
 			.signOut()
 			.then(() => {
 				console.log('User signed out');
+				navigation.reset({
+					index: 0,
+					routes: [{name: 'LoginScreen'}],
+				});
 			})
 			.catch(error => console.log('Error logging out => ', error));
 	};
