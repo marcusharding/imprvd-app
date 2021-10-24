@@ -38,8 +38,6 @@ class EmailVerification extends Component {
 			.then(json => {
 				const data = json[0].acf;
 
-				console.log(data);
-
 				this.setState({
 					title: data.screen_title,
 					subTitle: data.screen_subtitle,
@@ -47,7 +45,12 @@ class EmailVerification extends Component {
 					isLoading: false,
 				});
 			})
-			.catch(error => console.log(error));
+			.catch(error => {
+				console.log(error);
+				this.setState({
+					isLoading: false,
+				});
+			});
 	}
 
 	checkAppState() {
