@@ -89,6 +89,7 @@ class Profile extends Component {
 			.delete()
 			.then(() => {
 				console.log('File deleted succesfully');
+				this.setState({imagePath: null});
 				setProfileImagePath(null);
 			})
 			.catch(error => {
@@ -97,11 +98,13 @@ class Profile extends Component {
 	}
 
 	fetchImageDownloadUrl(fileName) {
+		const {setProfileImagePath} = this.props;
 		storage()
 			.ref(fileName)
 			.getDownloadURL()
 			.then(response => {
 				this.setState({imagePath: response, isLoading: false});
+				setProfileImagePath(response);
 			})
 			.catch(error => {
 				console.log('Fetching download URL error => ', error);
@@ -163,7 +166,7 @@ class Profile extends Component {
 
 					<TouchableOpacity
 						activeOpacity={0.8}
-						onPress={() => this.removeImage()}>
+						onPress={() => console.log('Edit profile button clicked')}>
 						<Text>Edit Profile</Text>
 					</TouchableOpacity>
 				</View>
