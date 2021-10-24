@@ -15,6 +15,10 @@ const spacing = StyleSheet.create({
 		marginBottom: 20,
 	},
 
+	marginTop20: {
+		marginTop: 20,
+	},
+
 	flex1: {
 		flex: 1,
 	},

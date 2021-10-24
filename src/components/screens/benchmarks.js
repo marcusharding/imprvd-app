@@ -18,9 +18,6 @@ class Benchmarks extends Component {
 
 	render() {
 		const {navigation, profileImagePath} = this.props;
-		const {benchmarksList} = this.state;
-
-		console.log(benchmarksList);
 		return (
 			<View style={spacing.flex1}>
 				<View style={spacing.flex1}>

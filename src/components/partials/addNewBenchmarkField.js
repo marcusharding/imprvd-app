@@ -3,9 +3,9 @@ import React from 'react';
 import {TextInput} from 'react-native';
 
 // Styles
-import {baseStyles, form} from '../../styles/main';
+import {form} from '../../styles/main';
 
-const addNewBenchmarkField = ({fieldName}) => {
+const AddNewBenchmarkField = ({fieldName}) => {
 	return (
 		<TextInput
 			style={form.input}
@@ -17,4 +17,4 @@ const addNewBenchmarkField = ({fieldName}) => {
 	);
 };
 
-export default addNewBenchmarkField;
+export default AddNewBenchmarkField;

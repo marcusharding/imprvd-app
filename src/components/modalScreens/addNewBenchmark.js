@@ -1,15 +1,15 @@
 // React
 import React, {Component} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 
 // Partials
 import PreLoader from '../partials/preLoader';
 import GoBackIcon from '../partials/goBackIcon';
 import DropDownSelector from '../partials/dropDownPicker';
-import addNewBenchmarkField from '../partials/addNewBenchmarkField';
+import AddNewBenchmarkField from '../partials/addNewBenchmarkField';
 
 // Styles
-import {typography} from '../../styles/main';
+import {typography, spacing, baseStyles} from '../../styles/main';
 
 class addNewBenchmark extends Component {
 	constructor() {
@@ -19,6 +19,7 @@ class addNewBenchmark extends Component {
 			subTitle: '',
 			isLoading: true,
 			benchmarksList: [],
+			benchmarkFields: [],
 			selectedBenchmark: null,
 		};
 
@@ -72,6 +73,7 @@ class addNewBenchmark extends Component {
 	fetchBenchmarkTags(selectedBenchmark) {
 		this.setState({
 			isLoading: true,
+			benchmarkFields: [],
 		});
 
 		fetch(
@@ -90,7 +92,7 @@ class addNewBenchmark extends Component {
 	}
 
 	fetchBenchmarkFields(tagIds) {
-		const benchmarkFields = [];
+		const {benchmarkFields} = this.state;
 
 		tagIds.map(tagId => {
 			fetch(
@@ -103,8 +105,8 @@ class addNewBenchmark extends Component {
 							slug: tag.slug,
 							name: tag.name,
 						});
-						this.renderBenchmarkFields(benchmarkFields);
 						this.setState({
+							benchmarkFields: benchmarkFields,
 							isLoading: false,
 						});
 					});
@@ -113,21 +115,26 @@ class addNewBenchmark extends Component {
 		});
 	}
 
-	renderBenchmarkFields(benchmarkFields) {
-		if (benchmarkFields) {
-			return benchmarkFields.map(field => {
-				<addNewBenchmarkField fieldName={field.name} />;
-			});
-		}
-	}
-
 	componentDidMount() {
 		this.fetchData();
 	}
 
 	render() {
-		const {isLoading, subTitle, benchmarksList, selectedBenchmark} = this.state;
+		const {
+			isLoading,
+			subTitle,
+			benchmarksList,
+			selectedBenchmark,
+			benchmarkFields,
+		} = this.state;
 		const {navigation} = this.props;
+		let fieldsMarkup = null;
+
+		if (benchmarkFields.length > 0) {
+			fieldsMarkup = benchmarkFields.map(field => {
+				return <AddNewBenchmarkField key={field.slug} fieldName={field.name} />;
+			});
+		}
 
 		if (isLoading) {
 			return <PreLoader />;
@@ -136,13 +143,30 @@ class addNewBenchmark extends Component {
 		return (
 			<View>
 				<GoBackIcon navigation={navigation} />
-				<Text style={typography.subHeading}>{subTitle}</Text>
-				<DropDownSelector
-					list={benchmarksList}
-					setSelectedBenchmark={this.setSelectedBenchmark}
-					selectedBenchmark={selectedBenchmark}
-				/>
-				{this.renderBenchmarkFields()}
+				<Text
+					style={[
+						typography.subHeading,
+						spacing.marginBottom20,
+						spacing.marginTop20,
+					]}>
+					{subTitle}
+				</Text>
+				<View style={spacing.marginBottom20}>
+					<DropDownSelector
+						list={benchmarksList}
+						setSelectedBenchmark={this.setSelectedBenchmark}
+						selectedBenchmark={selectedBenchmark}
+					/>
+				</View>
+				{fieldsMarkup}
+				{fieldsMarkup && (
+					<TouchableOpacity
+						activeOpacity={0.8}
+						onPress={() => this.userLogin()}
+						style={[baseStyles.buttonContainer, spacing.marginTop20]}>
+						<Text style={typography.buttonText}>Add Benchmark</Text>
+					</TouchableOpacity>
+				)}
 			</View>
 		);
 	}
