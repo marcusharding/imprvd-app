@@ -75,12 +75,20 @@ const baseStyles = StyleSheet.create({
 		justifyContent: 'center',
 	},
 
+	flexContainerRow: {
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'space-around',
+		alignItems: 'center',
+	},
+
 	safeAreaView: {
 		flex: 1,
 		position: 'relative',
 		height: '100%',
 		paddingLeft: 20,
 		paddingRight: 20,
+		paddingTop: 10,
 		backgroundColor: '#121212',
 	},
 
@@ -103,6 +111,20 @@ const baseStyles = StyleSheet.create({
 		marginLeft: 'auto',
 		marginRight: 'auto',
 		marginTop: 50,
+	},
+
+	profileImage: {
+		width: 80,
+		height: 80,
+		borderRadius: 100,
+	},
+
+	profileIcon: {
+		marginTop: 10,
+		marginLeft: 'auto',
+		borderRadius: 100,
+		width: 35,
+		height: 35,
 	},
 });
 

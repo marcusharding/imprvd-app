@@ -81,7 +81,10 @@ class EmailVerification extends Component {
 				console.log(user.emailVerified);
 
 				if (emailVerified) {
-					navigation.navigate('DashboardScreen');
+					navigation.reset({
+						index: 0,
+						routes: [{name: 'DashboardScreen'}],
+					});
 				} else {
 					console.log('Email hasnt been verified');
 				}
