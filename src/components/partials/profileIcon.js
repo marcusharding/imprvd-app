@@ -6,9 +6,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 // Styles
 import {baseStyles} from '../../styles/main';
 
-// Firebase
-import storage from '@react-native-firebase/storage';
-
 const ProfileIcon = ({navigation, imagePath}) => {
 	return (
 		<View>
