@@ -20,10 +20,12 @@ class addNewBenchmark extends Component {
 			isLoading: true,
 			benchmarksList: [],
 			benchmarkFields: [],
+			benchmarkFieldsValues: [],
 			selectedBenchmark: null,
 		};
 
 		this.setSelectedBenchmark = this.setSelectedBenchmark.bind(this);
+		this.setFieldInputValue = this.setFieldInputValue.bind(this);
 	}
 
 	fetchData() {
@@ -70,6 +72,15 @@ class addNewBenchmark extends Component {
 		this.fetchBenchmarkTags(callback(selectedBenchmark));
 	}
 
+	setFieldInputValue(text, fieldSlug, index) {
+		const {benchmarkFieldsValues} = this.state;
+		benchmarkFieldsValues[index][fieldSlug] = text;
+
+		this.setState({
+			benchmarkFieldsValues: benchmarkFieldsValues,
+		});
+	}
+
 	fetchBenchmarkTags(selectedBenchmark) {
 		this.setState({
 			isLoading: true,
@@ -105,10 +116,10 @@ class addNewBenchmark extends Component {
 							slug: tag.slug,
 							name: tag.name,
 						});
-						this.setState({
-							benchmarkFields: benchmarkFields,
-							isLoading: false,
-						});
+					});
+					this.setState({
+						benchmarkFields: benchmarkFields,
+						isLoading: false,
 					});
 				})
 				.catch(error => console.log(error));
@@ -126,19 +137,34 @@ class addNewBenchmark extends Component {
 			benchmarksList,
 			selectedBenchmark,
 			benchmarkFields,
+			benchmarkFieldsValues,
 		} = this.state;
 		const {navigation} = this.props;
 		let fieldsMarkup = null;
 
 		if (benchmarkFields.length > 0) {
-			fieldsMarkup = benchmarkFields.map(field => {
-				return <AddNewBenchmarkField key={field.slug} fieldName={field.name} />;
+			fieldsMarkup = benchmarkFields.map((field, index) => {
+				const fieldName = field.name;
+				const fieldSlug = field.slug;
+				benchmarkFieldsValues[index] = {[fieldSlug]: ''};
+
+				return (
+					<AddNewBenchmarkField
+						key={field.slug}
+						index={index}
+						fieldName={fieldName}
+						fieldSlug={fieldSlug}
+						setFieldInputValue={this.setFieldInputValue}
+					/>
+				);
 			});
 		}
 
 		if (isLoading) {
 			return <PreLoader />;
 		}
+
+		console.log(benchmarkFieldsValues);
 
 		return (
 			<View>
