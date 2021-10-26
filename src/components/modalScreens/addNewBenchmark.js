@@ -6,7 +6,7 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import PreLoader from '../partials/preLoader';
 import GoBackIcon from '../partials/goBackIcon';
 import DropDownSelector from '../partials/dropDownPicker';
-import AddNewBenchmarkField from '../partials/addNewBenchmarkField';
+import AddNewBenchmarkFields from '../partials/addNewBenchmarkFields';
 
 // Styles
 import {typography, spacing, baseStyles} from '../../styles/main';
@@ -20,12 +20,10 @@ class addNewBenchmark extends Component {
 			isLoading: true,
 			benchmarksList: [],
 			benchmarkFields: [],
-			benchmarkFieldsValues: [],
 			selectedBenchmark: null,
 		};
 
 		this.setSelectedBenchmark = this.setSelectedBenchmark.bind(this);
-		this.setFieldInputValue = this.setFieldInputValue.bind(this);
 	}
 
 	fetchData() {
@@ -70,15 +68,6 @@ class addNewBenchmark extends Component {
 		}));
 
 		this.fetchBenchmarkTags(callback(selectedBenchmark));
-	}
-
-	setFieldInputValue(text, fieldSlug, index) {
-		const {benchmarkFieldsValues} = this.state;
-		benchmarkFieldsValues[index][fieldSlug] = text;
-
-		this.setState({
-			benchmarkFieldsValues: benchmarkFieldsValues,
-		});
 	}
 
 	fetchBenchmarkTags(selectedBenchmark) {
@@ -137,37 +126,16 @@ class addNewBenchmark extends Component {
 			benchmarksList,
 			selectedBenchmark,
 			benchmarkFields,
-			benchmarkFieldsValues,
 		} = this.state;
 		const {navigation} = this.props;
 		let fieldsMarkup = null;
-
-		if (benchmarkFields.length > 0) {
-			fieldsMarkup = benchmarkFields.map((field, index) => {
-				const fieldName = field.name;
-				const fieldSlug = field.slug;
-				benchmarkFieldsValues[index] = {[fieldSlug]: ''};
-
-				return (
-					<AddNewBenchmarkField
-						key={field.slug}
-						index={index}
-						fieldName={fieldName}
-						fieldSlug={fieldSlug}
-						setFieldInputValue={this.setFieldInputValue}
-					/>
-				);
-			});
-		}
 
 		if (isLoading) {
 			return <PreLoader />;
 		}
 
-		console.log(benchmarkFieldsValues);
-
 		return (
-			<View>
+			<View style={baseStyles.heightFull}>
 				<GoBackIcon navigation={navigation} />
 				<Text
 					style={[
@@ -184,7 +152,10 @@ class addNewBenchmark extends Component {
 						selectedBenchmark={selectedBenchmark}
 					/>
 				</View>
-				{fieldsMarkup}
+				<AddNewBenchmarkFields
+					benchmarkFields={benchmarkFields}
+					selectedBenchmark={selectedBenchmark}
+				/>
 				{fieldsMarkup && (
 					<TouchableOpacity
 						activeOpacity={0.8}

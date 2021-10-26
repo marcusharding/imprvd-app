@@ -83,6 +83,17 @@ const baseStyles = StyleSheet.create({
 		justifyContent: 'center',
 	},
 
+	heightFull: {
+		height: '100%',
+	},
+
+	flexCenter: {
+		flex: 1,
+		height: '100%',
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+
 	flexContainerRow: {
 		display: 'flex',
 		flexDirection: 'row',
