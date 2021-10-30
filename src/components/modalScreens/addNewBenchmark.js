@@ -134,7 +134,7 @@ class AddNewBenchmark extends Component {
 		}
 
 		return (
-			<SafeAreaView style={{flex: 1}}>
+			<SafeAreaView style={spacing.flex1}>
 				<GoBackIcon navigation={navigation} />
 				<Text
 					style={[

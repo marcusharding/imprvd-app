@@ -1,6 +1,6 @@
 // React
 import React, {Component} from 'react';
-import {TextInput, View, Text, TouchableOpacity} from 'react-native';
+import {TextInput, View, Text, TouchableOpacity, Alert} from 'react-native';
 
 // Styles
 import {form, baseStyles, typography, spacing} from '../../styles/main';
@@ -22,6 +22,15 @@ class AddNewBenchmarkFields extends Component {
 		this.setState({
 			[fieldSlug]: value,
 		});
+	}
+
+	addBenchmark() {
+		console.log(this.state.name);
+		if (this.state.name) {
+			console.log('name field filled out');
+		} else {
+			Alert.alert('Please fill out at least benchmark name field');
+		}
 	}
 
 	render() {
@@ -59,7 +68,7 @@ class AddNewBenchmarkFields extends Component {
 				{fields}
 				<TouchableOpacity
 					activeOpacity={0.8}
-					onPress={() => console.log('poo')}
+					onPress={() => this.addBenchmark()}
 					style={[baseStyles.buttonContainer, spacing.marginTop20]}>
 					<Text style={typography.buttonText}>Add Benchmark</Text>
 				</TouchableOpacity>
