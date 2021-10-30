@@ -6,10 +6,10 @@ import {View, Text, ScrollView, SafeAreaView} from 'react-native';
 import PreLoader from '../partials/preLoader';
 import GoBackIcon from '../partials/goBackIcon';
 import DropDownSelector from '../partials/dropDownPicker';
-import AddNewBenchmarkFields from '../partials/addNewBenchmarkFields';
+import AddNewBenchmarkFields from './addNewBenchmarkFields';
 
 // Styles
-import {typography, spacing, baseStyles} from '../../styles/main';
+import {typography, spacing} from '../../styles/main';
 
 class AddNewBenchmark extends Component {
 	constructor() {
