@@ -32,7 +32,7 @@ import Profile from './src/components/screens/profile';
 import Social from './src/components/screens/social';
 
 // modalScreens
-import addNewBenchmark from './src/components/modalScreens/addNewBenchmark';
+import AddNewBenchmark from './src/components/modalScreens/addNewBenchmark';
 
 // Navigators
 const Tab = createMaterialBottomTabNavigator();
@@ -153,7 +153,7 @@ export default function App() {
 					</Stack.Screen>
 					<Stack.Screen
 						name="AddNewBenchmarkScreen"
-						component={addNewBenchmark}
+						component={AddNewBenchmark}
 					/>
 					<Stack.Screen name="LoginScreen" component={Login} />
 				</Stack.Navigator>

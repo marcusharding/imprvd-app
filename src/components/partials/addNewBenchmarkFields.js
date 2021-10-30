@@ -1,9 +1,9 @@
 // React
 import React, {Component} from 'react';
-import {TextInput, View} from 'react-native';
+import {TextInput, View, Text, TouchableOpacity} from 'react-native';
 
 // Styles
-import {form, baseStyles} from '../../styles/main';
+import {form, baseStyles, typography, spacing} from '../../styles/main';
 
 // Partials
 import PreLoader from '../partials/preLoader';
@@ -18,35 +18,35 @@ class AddNewBenchmarkFields extends Component {
 		};
 	}
 
-	updateInputValue(value, fieldSlug) {}
-
-	setBenchmarkFields(updatedFields) {
+	updateInputValue(value, fieldSlug) {
 		this.setState({
-			fields: updatedFields,
-			isLoading: false,
+			[fieldSlug]: value,
 		});
 	}
 
-	componentDidUpdate(prevProps) {
-		const {benchmarkFields} = this.props;
-
-		if (prevProps.benchmarkFields !== benchmarkFields) {
-			// this.setBenchmarkFields(benchmarkFields);
-			console.log('They dont match');
-		}
-	}
-
 	render() {
-		const {selectedBenchmark} = this.props;
-		const {isLoading, fields} = this.state;
+		const {selectedBenchmark, benchmarkFields} = this.props;
 
-		// console.log(benchmarkFields);
+		const fields = benchmarkFields.map(field => {
+			return (
+				<TextInput
+					key={field.slug}
+					style={form.input}
+					placeholder={field.name}
+					value={this.state[field.slug]}
+					onChangeText={value => {
+						this.updateInputValue(value, field.slug);
+					}}
+					placeholderTextColor="#EFEFEF"
+				/>
+			);
+		});
 
 		if (!selectedBenchmark) {
 			return null;
 		}
 
-		if (selectedBenchmark && isLoading) {
+		if (selectedBenchmark && !benchmarkFields) {
 			return (
 				<View style={baseStyles.flexCenter}>
 					<PreLoader />
@@ -54,26 +54,17 @@ class AddNewBenchmarkFields extends Component {
 			);
 		}
 
-		if (fields) {
-			return null;
-			// fields.map((field, index) => {
-			// 	const fieldName = field.name;
-			// 	const fieldSlug = field.slug;
-			// 	this.setState({[fieldSlug]: ''});
-
-			// 	return (
-			// 		<TextInput
-			// 			style={form.input}
-			// 			placeholder={fieldName}
-			// 			value={this.state[fieldSlug]}
-			// 			onChangeText={value => {
-			// 				this.updateInputValue(value, fieldSlug);
-			// 			}}
-			// 			placeholderTextColor="#EFEFEF"
-			// 		/>
-			// 	);
-			// });
-		}
+		return (
+			<View>
+				{fields}
+				<TouchableOpacity
+					activeOpacity={0.8}
+					onPress={() => console.log('poo')}
+					style={[baseStyles.buttonContainer, spacing.marginTop20]}>
+					<Text style={typography.buttonText}>Add Benchmark</Text>
+				</TouchableOpacity>
+			</View>
+		);
 	}
 }
 

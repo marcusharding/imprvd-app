@@ -1,6 +1,6 @@
 // React
 import React, {Component} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, ScrollView, SafeAreaView} from 'react-native';
 
 // Partials
 import PreLoader from '../partials/preLoader';
@@ -11,7 +11,7 @@ import AddNewBenchmarkFields from '../partials/addNewBenchmarkFields';
 // Styles
 import {typography, spacing, baseStyles} from '../../styles/main';
 
-class addNewBenchmark extends Component {
+class AddNewBenchmark extends Component {
 	constructor() {
 		super();
 
@@ -91,29 +91,29 @@ class addNewBenchmark extends Component {
 			});
 	}
 
-	fetchBenchmarkFields(tagIds) {
+	fetchBenchmarkFields = async tagIds => {
 		const {benchmarkFields} = this.state;
+		const idCount = tagIds.length;
+		let counter = 0;
 
-		tagIds.map(tagId => {
-			fetch(
-				`https://contentmanagement.getimprvd.app/wp-json/wp/v2/tags?include=${tagId}`,
-			)
-				.then(response => response.json())
-				.then(json => {
-					json.map(tag => {
-						benchmarkFields.push({
-							slug: tag.slug,
-							name: tag.name,
-						});
-					});
-					this.setState({
-						benchmarkFields: benchmarkFields,
-						isLoading: false,
-					});
-				})
-				.catch(error => console.log(error));
-		});
-	}
+		for (const id of tagIds) {
+			const response = await fetch(
+				`https://contentmanagement.getimprvd.app/wp-json/wp/v2/tags?include=${id}`,
+			);
+			const json = await response.json();
+			benchmarkFields.push({
+				name: json[0].name,
+				slug: json[0].slug,
+			});
+			counter = counter + 1;
+			if (counter === idCount) {
+				this.setState({
+					benchmarkFields: benchmarkFields,
+					isLoading: false,
+				});
+			}
+		}
+	};
 
 	componentDidMount() {
 		this.fetchData();
@@ -128,14 +128,13 @@ class addNewBenchmark extends Component {
 			benchmarkFields,
 		} = this.state;
 		const {navigation} = this.props;
-		let fieldsMarkup = null;
 
 		if (isLoading) {
 			return <PreLoader />;
 		}
 
 		return (
-			<View style={baseStyles.heightFull}>
+			<SafeAreaView style={{flex: 1}}>
 				<GoBackIcon navigation={navigation} />
 				<Text
 					style={[
@@ -152,21 +151,15 @@ class addNewBenchmark extends Component {
 						selectedBenchmark={selectedBenchmark}
 					/>
 				</View>
-				<AddNewBenchmarkFields
-					benchmarkFields={benchmarkFields}
-					selectedBenchmark={selectedBenchmark}
-				/>
-				{fieldsMarkup && (
-					<TouchableOpacity
-						activeOpacity={0.8}
-						onPress={() => this.userLogin()}
-						style={[baseStyles.buttonContainer, spacing.marginTop20]}>
-						<Text style={typography.buttonText}>Add Benchmark</Text>
-					</TouchableOpacity>
-				)}
-			</View>
+				<ScrollView>
+					<AddNewBenchmarkFields
+						benchmarkFields={benchmarkFields}
+						selectedBenchmark={selectedBenchmark}
+					/>
+				</ScrollView>
+			</SafeAreaView>
 		);
 	}
 }
 
-export default addNewBenchmark;
+export default AddNewBenchmark;
