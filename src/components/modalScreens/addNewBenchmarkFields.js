@@ -9,8 +9,8 @@ import {form, baseStyles, typography, spacing} from '../../styles/main';
 import PreLoader from '../partials/preLoader';
 
 // Firebase
-import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 class AddNewBenchmarkFields extends Component {
 	constructor() {
@@ -18,33 +18,51 @@ class AddNewBenchmarkFields extends Component {
 
 		this.state = {
 			isLoading: true,
-			fields: null,
+			fieldValues: {},
 		};
 	}
 
 	updateInputValue(value, fieldSlug) {
 		this.setState({
-			[fieldSlug]: value,
+			fieldValues: {
+				...this.state.fieldValues,
+				[fieldSlug]: value,
+			},
 		});
+	}
+
+	slugifyString(string) {
+		return string
+			.toLowerCase()
+			.replace(/[^\w ]+/g, '')
+			.replace(/ +/g, '-');
 	}
 
 	addBenchmark() {
 		const {uid} = auth().currentUser;
-		const {selectedBenchmark, benchmarkFields} = this.props;
-		const reference = `/users/${uid}/benchmarks/${selectedBenchmark}`;
+		const {fieldValues} = this.state;
+		const {selectedBenchmark} = this.props;
+		const collection = `user-${uid}`;
+		const doc = `benchmarks-${selectedBenchmark}`;
 
-		database()
-			.ref(reference)
-			.set({})
-			.then(() => {
-				console.log('data set');
-			})
-			.catch(error => {
-				console.log('Error setting data => ', error);
-			});
+		if (fieldValues.name) {
+			console.log('name field populated');
+			const value = this.slugifyString(fieldValues.name);
 
-		if (this.state.name) {
-			console.log('name field filled out');
+			firestore()
+				.collection(collection)
+				.doc(doc)
+				.set({
+					[value]: {
+						...fieldValues,
+					},
+				})
+				.then(() => {
+					console.log('data set');
+				})
+				.catch(error => {
+					console.log('Error setting data => ', error);
+				});
 		} else {
 			Alert.alert('Please fill out at least benchmark name field');
 		}
@@ -53,22 +71,23 @@ class AddNewBenchmarkFields extends Component {
 	deleteBenchmark = async () => {
 		const {uid} = auth().currentUser;
 		const {selectedBenchmark} = this.props;
-		const reference = `/users/${uid}/benchmarks/${selectedBenchmark}`;
-		await database().ref(reference).remove();
+		const collection = `/users/${uid}/benchmarks/${selectedBenchmark}`;
+		await firestore().collection('Benchmarks').doc('pullups').delete();
 	};
 
 	componentDidMount() {
 		const {uid} = auth().currentUser;
-		const {selectedBenchmark} = this.props;
-		const reference = `/users/${uid}/benchmarks/${selectedBenchmark}`;
-		database()
-			.ref(reference)
-			.once('value')
-			.then(snapshot => {
-				console.log('User data: ', snapshot.val());
-			})
-			.catch(error => {
-				console.log('Error fetching data => ', error);
+		const collection = `user-${uid}`;
+
+		firestore()
+			.collection(collection)
+			.get()
+			.then(querySnapshot => {
+				console.log('User data => ', querySnapshot.size);
+
+				querySnapshot.forEach(documentSnapshot => {
+					console.log('Benchmark => ', documentSnapshot.data());
+				});
 			});
 	}
 
