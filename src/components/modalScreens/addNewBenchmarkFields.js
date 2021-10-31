@@ -22,11 +22,12 @@ class AddNewBenchmarkFields extends Component {
 		};
 	}
 
-	updateInputValue(value, fieldSlug) {
+	updateInputValue(value, fieldSlug, selectedBenchmark) {
 		this.setState({
 			fieldValues: {
 				...this.state.fieldValues,
 				[fieldSlug]: value,
+				category: selectedBenchmark,
 			},
 		});
 	}
@@ -52,11 +53,14 @@ class AddNewBenchmarkFields extends Component {
 			firestore()
 				.collection(collection)
 				.doc(doc)
-				.set({
-					[value]: {
-						...fieldValues,
+				.set(
+					{
+						[value]: {
+							...fieldValues,
+						},
 					},
-				})
+					{merge: true},
+				)
 				.then(() => {
 					console.log('data set');
 				})
@@ -68,12 +72,7 @@ class AddNewBenchmarkFields extends Component {
 		}
 	}
 
-	deleteBenchmark = async () => {
-		const {uid} = auth().currentUser;
-		const {selectedBenchmark} = this.props;
-		const collection = `/users/${uid}/benchmarks/${selectedBenchmark}`;
-		await firestore().collection('Benchmarks').doc('pullups').delete();
-	};
+	deleteBenchmark = async () => {};
 
 	componentDidMount() {
 		const {uid} = auth().currentUser;
@@ -102,7 +101,7 @@ class AddNewBenchmarkFields extends Component {
 					placeholder={field.name}
 					value={this.state[field.slug]}
 					onChangeText={value => {
-						this.updateInputValue(value, field.slug);
+						this.updateInputValue(value, field.slug, selectedBenchmark);
 					}}
 					placeholderTextColor="#EFEFEF"
 				/>

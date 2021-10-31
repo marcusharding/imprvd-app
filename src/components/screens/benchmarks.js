@@ -9,11 +9,35 @@ import {typography, baseStyles, spacing} from '../../styles/main';
 import ProfileIcon from '../partials/profileIcon';
 import AddNewBenchmarkIcon from '../partials/addNewBenchmarkIcon';
 
+// Firebase
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+
 class Benchmarks extends Component {
 	constructor() {
 		super();
 
 		this.state = {};
+	}
+
+	fetchBenchmarks() {
+		const {uid} = auth().currentUser;
+		const collection = `user-${uid}`;
+
+		firestore()
+			.collection(collection)
+			.get()
+			.then(querySnapshot => {
+				console.log(querySnapshot);
+				querySnapshot.forEach(documentSnapshot => {
+					console.log('Benchmark => ', documentSnapshot.data());
+					console.log('BREAK -----------------');
+				});
+			});
+	}
+
+	componentDidMount() {
+		this.fetchBenchmarks();
 	}
 
 	render() {
