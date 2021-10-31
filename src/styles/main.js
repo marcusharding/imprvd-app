@@ -53,18 +53,27 @@ const form = StyleSheet.create({
 
 const typography = StyleSheet.create({
 	pageHeading: {
-		color: 'white',
+		color: '#ffffff',
 		fontSize: 30,
 		paddingBottom: 20,
 		fontFamily: 'Gilroy-SemiBold',
 	},
 
 	subHeading: {
-		color: '#fff',
+		color: '#ffffff',
 		fontSize: 20,
 		paddingBottom: 20,
 		textAlign: 'center',
 		fontFamily: 'Montserrat-Regular',
+	},
+
+	benchmarkHeading: {
+		color: '#ffffff',
+		fontSize: 18,
+		fontWeight: 'bold',
+		fontFamily: 'Montserrat-Regular',
+		marginTop: 20,
+		marginBottom: 20,
 	},
 
 	buttonText: {

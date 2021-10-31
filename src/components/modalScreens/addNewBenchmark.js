@@ -93,7 +93,7 @@ class AddNewBenchmark extends Component {
 
 	fetchBenchmarkFields = async tagIds => {
 		const {benchmarkFields} = this.state;
-		const idCount = tagIds.length;
+		const count = tagIds.length;
 		let counter = 0;
 
 		for (const id of tagIds) {
@@ -106,7 +106,7 @@ class AddNewBenchmark extends Component {
 				slug: json[0].slug,
 			});
 			counter = counter + 1;
-			if (counter === idCount) {
+			if (counter === count) {
 				this.setState({
 					benchmarkFields: benchmarkFields,
 					isLoading: false,

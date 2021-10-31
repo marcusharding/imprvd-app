@@ -74,21 +74,7 @@ class AddNewBenchmarkFields extends Component {
 
 	deleteBenchmark = async () => {};
 
-	componentDidMount() {
-		const {uid} = auth().currentUser;
-		const collection = `user-${uid}`;
-
-		firestore()
-			.collection(collection)
-			.get()
-			.then(querySnapshot => {
-				console.log('User data => ', querySnapshot.size);
-
-				querySnapshot.forEach(documentSnapshot => {
-					console.log('Benchmark => ', documentSnapshot.data());
-				});
-			});
-	}
+	componentDidMount() {}
 
 	render() {
 		const {selectedBenchmark, benchmarkFields} = this.props;
