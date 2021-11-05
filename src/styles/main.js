@@ -161,4 +161,14 @@ const baseStyles = StyleSheet.create({
 	},
 });
 
-export {appTheme, typography, baseStyles, form, spacing};
+const ImprvdCarousel = StyleSheet.create({
+	benchmarkItem: {
+		backgroundColor: '#2A2A2A',
+		padding: 20,
+		width: '100%',
+		borderRadius: 5,
+		marginBottom: 20,
+	},
+});
+
+export {appTheme, typography, baseStyles, form, spacing, ImprvdCarousel};

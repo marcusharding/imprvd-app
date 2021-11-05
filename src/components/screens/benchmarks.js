@@ -1,7 +1,6 @@
 // React
 import React, {Component} from 'react';
-import {View, Text, Dimensions} from 'react-native';
-import Carousel from 'react-native-snap-carousel';
+import {View, Text} from 'react-native';
 
 // Styles
 import {typography, baseStyles, spacing} from '../../styles/main';
@@ -10,12 +9,12 @@ import {typography, baseStyles, spacing} from '../../styles/main';
 import ProfileIcon from '../partials/profileIcon';
 import AddNewBenchmarkIcon from '../partials/addNewBenchmarkIcon';
 import PreLoader from '../partials/preLoader';
+import ImprvdCarousel from '../partials/imprvdCarousel';
 
 // Firebase
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-
-const {width: screenWidth} = Dimensions.get('window');
+import { ScrollView } from 'react-native-gesture-handler';
 
 class Benchmarks extends Component {
 	constructor() {
@@ -25,23 +24,9 @@ class Benchmarks extends Component {
 			benchmarksList: [],
 			isLoading: true,
 			index: 0,
+			fakeData: [{title: 'poo'}, {title: 'yooooo'}],
 		};
 	}
-
-	// TO DO - Move all carousel functionality to its own partial
-	handleSnapToItem(index) {
-		this.setState({
-			index: index,
-		});
-	}
-
-	_renderItem = ({item, index}) => {
-		return (
-			<View>
-				<Text>{item.title}</Text>
-			</View>
-		);
-	};
 
 	fetchBenchmarksList = async () => {
 		const {benchmarksList} = this.state;
@@ -95,25 +80,14 @@ class Benchmarks extends Component {
 
 	render() {
 		const {navigation, profileImagePath} = this.props;
-		const {isLoading, benchmarksList} = this.state;
+		const {isLoading, benchmarksList, fakeData} = this.state;
 		let sections = null;
 
 		sections = benchmarksList.map(item => {
 			return (
 				<View key={item.label}>
 					<Text style={typography.benchmarkHeading}>{item.label}</Text>
-					<Carousel
-						ref={c => {
-							this._carousel = c;
-						}}
-						data={[0, 1, 2]}
-						renderItem={this._renderItem}
-						onSnapToItem={() => this.handleSnapToItem()}
-						sliderWidth={screenWidth}
-						itemWidth={screenWidth - 160}
-						layout={'default'}
-						firstItem={0}
-					/>
+					<ImprvdCarousel fakeData={fakeData} />
 				</View>
 			);
 		});
@@ -123,15 +97,17 @@ class Benchmarks extends Component {
 				<View style={spacing.flex1}>
 					<ProfileIcon navigation={navigation} imagePath={profileImagePath} />
 
-					<Text style={[typography.pageHeading, baseStyles.screenHeading]}>
-						Benchmarks
-					</Text>
+					<ScrollView style={spacing.flex1}>
+						<Text style={[typography.pageHeading, baseStyles.screenHeading]}>
+							Benchmarks
+						</Text>
 
-					{isLoading && <PreLoader />}
+						{isLoading && <PreLoader />}
 
-					{!isLoading && sections}
+						{!isLoading && sections}
 
-					{!isLoading && <AddNewBenchmarkIcon navigation={navigation} />}
+						{!isLoading && <AddNewBenchmarkIcon navigation={navigation} />}
+					</ScrollView>
 				</View>
 			</View>
 		);
