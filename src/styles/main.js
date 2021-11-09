@@ -156,8 +156,10 @@ const baseStyles = StyleSheet.create({
 	},
 
 	addNewBenchmarkIcon: {
-		marginLeft: 'auto',
-		marginTop: 'auto',
+		position: 'absolute',
+		bottom: 0,
+		right: 10,
+		marginBottom: 20,
 	},
 });
 

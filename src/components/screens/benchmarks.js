@@ -12,9 +12,7 @@ import PreLoader from '../partials/preLoader';
 import ImprvdCarousel from '../partials/imprvdCarousel';
 
 // Firebase
-import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
-import { ScrollView } from 'react-native-gesture-handler';
+import {ScrollView} from 'react-native-gesture-handler';
 
 class Benchmarks extends Component {
 	constructor() {
@@ -24,7 +22,6 @@ class Benchmarks extends Component {
 			benchmarksList: [],
 			isLoading: true,
 			index: 0,
-			fakeData: [{title: 'poo'}, {title: 'yooooo'}],
 		};
 	}
 
@@ -52,42 +49,20 @@ class Benchmarks extends Component {
 		});
 	};
 
-	// TO DO - Refactor this fetch so its called by the benchmarkLists map down below
-	// It should be a query for the current benchmark category thats within the loop and then massage the data
-	// As ive currently started to do
-	fetchBenchmarksData() {
-		const {uid} = auth().currentUser;
-		const collection = `user-${uid}`;
-
-		firestore()
-			.collection(collection)
-			.get()
-			.then(querySnapshot => {
-				querySnapshot.forEach(documentSnapshot => {
-					const data = Object.entries(documentSnapshot.data());
-					data.map(item => {
-						console.log(item[1].category);
-						console.log('BREAK -----------------');
-					});
-				});
-			});
-	}
-
 	componentDidMount() {
 		this.fetchBenchmarksList();
-		this.fetchBenchmarksData();
 	}
 
 	render() {
 		const {navigation, profileImagePath} = this.props;
-		const {isLoading, benchmarksList, fakeData} = this.state;
+		const {isLoading, benchmarksList} = this.state;
 		let sections = null;
 
 		sections = benchmarksList.map(item => {
 			return (
 				<View key={item.label}>
 					<Text style={typography.benchmarkHeading}>{item.label}</Text>
-					<ImprvdCarousel fakeData={fakeData} />
+					<ImprvdCarousel category={item.slug} />
 				</View>
 			);
 		});
@@ -97,17 +72,17 @@ class Benchmarks extends Component {
 				<View style={spacing.flex1}>
 					<ProfileIcon navigation={navigation} imagePath={profileImagePath} />
 
+					<Text style={[typography.pageHeading, baseStyles.screenHeading]}>
+						Benchmarks
+					</Text>
+
+					{isLoading && <PreLoader />}
+
 					<ScrollView style={spacing.flex1}>
-						<Text style={[typography.pageHeading, baseStyles.screenHeading]}>
-							Benchmarks
-						</Text>
-
-						{isLoading && <PreLoader />}
-
 						{!isLoading && sections}
-
-						{!isLoading && <AddNewBenchmarkIcon navigation={navigation} />}
 					</ScrollView>
+
+					{!isLoading && <AddNewBenchmarkIcon navigation={navigation} />}
 				</View>
 			</View>
 		);

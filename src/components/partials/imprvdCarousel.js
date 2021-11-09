@@ -6,6 +6,10 @@ import {View, Dimensions, Text} from 'react-native';
 // Partials
 import BenchmarkItem from './benchmarkItem';
 
+// Firebase
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+
 const {width: screenWidth} = Dimensions.get('window');
 
 class ImprvdCarousel extends Component {
@@ -14,6 +18,7 @@ class ImprvdCarousel extends Component {
 
 		this.state = {
 			index: 0,
+			data: [],
 		};
 	}
 
@@ -23,19 +28,44 @@ class ImprvdCarousel extends Component {
 		});
 	};
 
-	_renderItem = ({item, index}) => {
-		return <BenchmarkItem title={item.title} />;
+	_renderItem = ({item}) => {
+		return <BenchmarkItem item={item} />;
 	};
 
+	fetchBenchmarksData() {
+		const {category} = this.props;
+		const {data} = this.state;
+		const {uid} = auth().currentUser;
+		const collection = `user-${uid}`;
+		const doc = `benchmarks-${category}`;
+
+		firestore()
+			.collection(collection)
+			.doc(doc)
+			.get()
+			.then(documentSnapshot => {
+				if (documentSnapshot.exists) {
+					data.push(...Object.entries(documentSnapshot.data()));
+					this.setState({
+						data: data,
+					});
+				}
+			});
+	}
+
+	componentDidMount() {
+		this.fetchBenchmarksData();
+	}
+
 	render() {
-		const {fakeData} = this.props;
+		const {data} = this.state;
 
 		return (
 			<Carousel
 				ref={c => {
 					this._carousel = c;
 				}}
-				data={fakeData}
+				data={data}
 				renderItem={this._renderItem}
 				onSnapToItem={() => this.handleSnapToItem()}
 				sliderWidth={screenWidth}
