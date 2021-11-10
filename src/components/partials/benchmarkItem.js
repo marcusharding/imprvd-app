@@ -7,22 +7,23 @@ import {ImprvdCarousel} from '../../styles/main';
 
 const BenchmarkItem = ({item}) => {
 	const object = item[1];
-	// Is there a way I can spit out the key values infront of the value but also doing so without having to
-	// directly specify the name with dot notation
+	const keys = Object.keys(object);
+	const values = Object.values(object);
+
 	return (
 		<TouchableHighlight>
 			<View style={ImprvdCarousel.benchmarkItem}>
-				<Text>{object['name']}</Text>
+				{keys.map((key, index) => {
+					if (key === 'category') {
+						return;
+					}
 
-				{object['starting-max-reps'] && (
-					<Text>{object['starting-max-reps']}</Text>
-				)}
-
-				{object['current-max-reps'] && (
-					<Text>{object['current-max-reps']}</Text>
-				)}
-
-				{object['best-max-reps'] && <Text>{object['best-max-reps']}</Text>}
+					return (
+						<Text>
+							{key} {values[index]}
+						</Text>
+					);
+				})}
 			</View>
 		</TouchableHighlight>
 	);
