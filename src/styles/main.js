@@ -171,6 +171,22 @@ const ImprvdCarousel = StyleSheet.create({
 		borderRadius: 5,
 		marginBottom: 20,
 	},
+
+	benchmarkTextGroup: {
+		display: 'flex',
+		flexDirection: 'row',
+	},
+
+	benchmarkTextName: {
+		fontSize: 18,
+		color: '#ffffff',
+		marginBottom: 10,
+	},
+
+	benchmarkTextKey: {
+		marginRight: 15,
+		color: '#ffffff',
+	},
 });
 
 export {appTheme, typography, baseStyles, form, spacing, ImprvdCarousel};

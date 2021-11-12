@@ -78,7 +78,9 @@ class Benchmarks extends Component {
 
 					{isLoading && <PreLoader />}
 
-					<ScrollView style={spacing.flex1}>
+					<ScrollView
+						showsVerticalScrollIndicator={false}
+						style={spacing.flex1}>
 						{!isLoading && sections}
 					</ScrollView>
 

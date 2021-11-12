@@ -155,6 +155,7 @@ class AddNewBenchmark extends Component {
 					<AddNewBenchmarkFields
 						benchmarkFields={benchmarkFields}
 						selectedBenchmark={selectedBenchmark}
+						navigation={navigation}
 					/>
 				</ScrollView>
 			</SafeAreaView>

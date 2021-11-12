@@ -42,7 +42,7 @@ class AddNewBenchmarkFields extends Component {
 	addBenchmark() {
 		const {uid} = auth().currentUser;
 		const {fieldValues} = this.state;
-		const {selectedBenchmark} = this.props;
+		const {selectedBenchmark, navigation} = this.props;
 		const collection = `user-${uid}`;
 		const doc = `benchmarks-${selectedBenchmark}`;
 
@@ -63,6 +63,14 @@ class AddNewBenchmarkFields extends Component {
 				)
 				.then(() => {
 					console.log('data set');
+					navigation.reset({
+						index: 0,
+						routes: [
+							{name: 'DashboardScreen'},
+							{name: 'ProfileScreen'},
+							{name: 'AddNewBenchmarkScreen'},
+						],
+					});
 				})
 				.catch(error => {
 					console.log('Error setting data => ', error);

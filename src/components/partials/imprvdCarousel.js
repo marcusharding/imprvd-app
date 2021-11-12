@@ -1,7 +1,7 @@
 // React
 import Carousel from 'react-native-snap-carousel';
 import React, {Component} from 'react';
-import {View, Dimensions, Text} from 'react-native';
+import {Dimensions} from 'react-native';
 
 // Partials
 import BenchmarkItem from './benchmarkItem';
@@ -22,6 +22,14 @@ class ImprvdCarousel extends Component {
 		};
 	}
 
+	componentDidMount() {
+		this.fetchBenchmarksDataListener();
+	}
+
+	componentWillUnmount() {
+		this.unsubscribe();
+	}
+
 	handleSnapToItem = index => {
 		this.setState({
 			index: index,
@@ -32,18 +40,21 @@ class ImprvdCarousel extends Component {
 		return <BenchmarkItem item={item} />;
 	};
 
-	fetchBenchmarksData() {
+	fetchBenchmarksDataListener() {
 		const {category} = this.props;
 		const {data} = this.state;
 		const {uid} = auth().currentUser;
 		const collection = `user-${uid}`;
 		const doc = `benchmarks-${category}`;
 
-		firestore()
+		this.setState({
+			data: [],
+		});
+
+		this.unsubscribe = firestore()
 			.collection(collection)
 			.doc(doc)
-			.get()
-			.then(documentSnapshot => {
+			.onSnapshot(documentSnapshot => {
 				if (documentSnapshot.exists) {
 					data.push(...Object.entries(documentSnapshot.data()));
 					this.setState({
@@ -51,10 +62,6 @@ class ImprvdCarousel extends Component {
 					});
 				}
 			});
-	}
-
-	componentDidMount() {
-		this.fetchBenchmarksData();
 	}
 
 	render() {
@@ -69,9 +76,10 @@ class ImprvdCarousel extends Component {
 				renderItem={this._renderItem}
 				onSnapToItem={() => this.handleSnapToItem()}
 				sliderWidth={screenWidth}
-				itemWidth={screenWidth - 200}
+				itemWidth={screenWidth - 180}
 				layout={'default'}
 				firstItem={0}
+				activeSlideAlignment={'start'}
 			/>
 		);
 	}
