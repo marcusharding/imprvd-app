@@ -62,7 +62,7 @@ class Benchmarks extends Component {
 			return (
 				<View key={item.label}>
 					<Text style={typography.benchmarkHeading}>{item.label}</Text>
-					<ImprvdCarousel category={item.slug} />
+					<ImprvdCarousel navigation={navigation} category={item.slug} />
 				</View>
 			);
 		});

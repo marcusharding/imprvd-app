@@ -63,6 +63,7 @@ class AddNewBenchmarkFields extends Component {
 				)
 				.then(() => {
 					console.log('data set');
+					navigation.navigate('DashboardScreen');
 					navigation.reset({
 						index: 0,
 						routes: [

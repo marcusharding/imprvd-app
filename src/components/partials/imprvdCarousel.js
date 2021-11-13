@@ -37,7 +37,8 @@ class ImprvdCarousel extends Component {
 	};
 
 	_renderItem = ({item}) => {
-		return <BenchmarkItem item={item} />;
+		const {navigation} = this.props;
+		return <BenchmarkItem navigation={navigation} item={item} />;
 	};
 
 	fetchBenchmarksDataListener() {

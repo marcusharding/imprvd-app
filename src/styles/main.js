@@ -138,7 +138,6 @@ const baseStyles = StyleSheet.create({
 	screenHeading: {
 		marginLeft: 'auto',
 		marginRight: 'auto',
-		marginTop: 50,
 	},
 
 	profileImage: {
