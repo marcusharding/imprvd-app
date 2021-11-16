@@ -1,21 +1,24 @@
 // React
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
+import {CommonActions} from '@react-navigation/native';
 
 // Styles
 import {baseStyles, spacing, typography} from '../../styles/main';
 
 // Partials
 import GoBackIcon from '../partials/goBackIcon';
+import PreLoader from '../partials/preLoader';
 
 // Firebase
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
-const benchmarkSingle = ({route, navigation}) => {
+const BenchmarkSingle = ({route, navigation}) => {
 	const data = route.params.data;
 	const object = route.params.object;
 	const slug = route.params.slug;
+	const [isLoading, setLoading] = useState(false);
 
 	const deleteThisBenchmark = () => {
 		const {uid} = auth().currentUser;
@@ -29,13 +32,26 @@ const benchmarkSingle = ({route, navigation}) => {
 				[slug]: firestore.FieldValue.delete(),
 			})
 			.then(() => {
+				setLoading(true);
 				console.log('Benchmark Deleted');
-				navigation.navigate('Benchmarks');
+				CommonActions.reset({
+					index: 0,
+					routes: [{name: 'Benchmarks'}],
+				});
+				navigation.dispatch(
+					CommonActions.navigate({
+						name: 'Benchmarks',
+					}),
+				);
 			})
 			.catch(error => {
 				console.log('Error deleting benchmark => ', error);
 			});
 	};
+
+	if (isLoading) {
+		return <PreLoader />;
+	}
 
 	return (
 		<View>
@@ -44,7 +60,9 @@ const benchmarkSingle = ({route, navigation}) => {
 				{data.map(benchmark => {
 					if (benchmark[0] === 'name') {
 						return (
-							<Text style={[typography.pageHeading, baseStyles.screenHeading]}>
+							<Text
+								key={benchmark[0]}
+								style={[typography.pageHeading, baseStyles.screenHeading]}>
 								{benchmark[1]}
 							</Text>
 						);
@@ -69,4 +87,4 @@ const benchmarkSingle = ({route, navigation}) => {
 	);
 };
 
-export default benchmarkSingle;
+export default BenchmarkSingle;

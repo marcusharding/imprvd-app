@@ -1,6 +1,7 @@
 // React
 import React from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
+import {CommonActions} from '@react-navigation/native';
 
 // Styles
 import {ImprvdCarousel} from '../../styles/main';
@@ -13,11 +14,16 @@ const BenchmarkItem = ({item, navigation}) => {
 	data.splice(0, 0, data.splice(nameIndex, 1)[0]);
 
 	const onPressItem = () => {
-		navigation.navigate('BenchmarkSingleScreen', {
-			object: object,
-			data: data,
-			slug: slug,
-		});
+		navigation.dispatch(
+			CommonActions.navigate({
+				name: 'BenchmarkSingleScreen',
+				params: {
+					object: object,
+					data: data,
+					slug: slug,
+				},
+			}),
+		);
 	};
 
 	return (

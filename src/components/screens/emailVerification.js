@@ -2,6 +2,7 @@
 import React, {Component} from 'react';
 import {Text, View, AppState, Image, TouchableOpacity} from 'react-native';
 import {openInbox} from 'react-native-email-link';
+import {CommonActions} from '@react-navigation/native';
 
 // Firebase
 import auth from '@react-native-firebase/auth';
@@ -74,10 +75,15 @@ class EmailVerification extends Component {
 				console.log(user.emailVerified);
 
 				if (emailVerified) {
-					navigation.reset({
+					CommonActions.reset({
 						index: 0,
 						routes: [{name: 'DashboardScreen'}],
 					});
+					navigation.dispatch(
+						CommonActions.navigate({
+							name: 'DashboardScreen',
+						}),
+					);
 				} else {
 					console.log('Email hasnt been verified');
 				}

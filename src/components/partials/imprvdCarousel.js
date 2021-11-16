@@ -17,7 +17,6 @@ class ImprvdCarousel extends Component {
 		super();
 
 		this.state = {
-			index: 0,
 			data: [],
 		};
 	}
@@ -30,16 +29,40 @@ class ImprvdCarousel extends Component {
 		this.unsubscribe();
 	}
 
-	handleSnapToItem = index => {
-		this.setState({
-			index: index,
-		});
-	};
-
 	_renderItem = ({item}) => {
 		const {navigation} = this.props;
-		return <BenchmarkItem navigation={navigation} item={item} />;
+		return (
+			<BenchmarkItem
+				fetchBenchmarksData={this.fetchBenchmarksData}
+				navigation={navigation}
+				item={item}
+			/>
+		);
 	};
+
+	fetchBenchmarksData() {
+		const {category} = this.props;
+		const {data} = this.state;
+		const {uid} = auth().currentUser;
+		const collection = `user-${uid}`;
+		const doc = `benchmarks-${category}`;
+
+		this.setState({
+			data: [],
+		});
+
+		firestore()
+			.collection(collection)
+			.doc(doc)
+			.onSnapshot(documentSnapshot => {
+				if (documentSnapshot.exists) {
+					data.push(...Object.entries(documentSnapshot.data()));
+					this.setState({
+						data: data,
+					});
+				}
+			});
+	}
 
 	fetchBenchmarksDataListener() {
 		const {category} = this.props;
@@ -75,12 +98,13 @@ class ImprvdCarousel extends Component {
 				}}
 				data={data}
 				renderItem={this._renderItem}
-				onSnapToItem={() => this.handleSnapToItem()}
 				sliderWidth={screenWidth}
 				itemWidth={screenWidth - 180}
 				layout={'default'}
 				firstItem={0}
 				activeSlideAlignment={'start'}
+				enableSnap={false}
+				enableMomentum={true}
 			/>
 		);
 	}

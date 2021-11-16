@@ -1,6 +1,7 @@
 // React
 import React, {Component} from 'react';
 import {TextInput, View, Text, TouchableOpacity, Alert} from 'react-native';
+import {CommonActions} from '@react-navigation/native';
 
 // Styles
 import {form, baseStyles, typography, spacing} from '../../styles/main';
@@ -63,15 +64,15 @@ class AddNewBenchmarkFields extends Component {
 				)
 				.then(() => {
 					console.log('data set');
-					navigation.navigate('DashboardScreen');
-					navigation.reset({
+					CommonActions.reset({
 						index: 0,
-						routes: [
-							{name: 'DashboardScreen'},
-							{name: 'ProfileScreen'},
-							{name: 'AddNewBenchmarkScreen'},
-						],
+						routes: [{name: 'Benchmarks'}],
 					});
+					navigation.dispatch(
+						CommonActions.navigate({
+							name: 'Benchmarks',
+						}),
+					);
 				})
 				.catch(error => {
 					console.log('Error setting data => ', error);
@@ -124,9 +125,6 @@ class AddNewBenchmarkFields extends Component {
 					style={[baseStyles.buttonContainer, spacing.marginTop20]}>
 					<Text style={typography.buttonText}>Add Benchmark</Text>
 				</TouchableOpacity>
-				<Text style={{marginTop: 40}} onPress={() => this.deleteBenchmark()}>
-					Delete benchmark
-				</Text>
 			</View>
 		);
 	}
