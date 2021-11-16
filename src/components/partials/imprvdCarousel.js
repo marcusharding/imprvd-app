@@ -1,7 +1,7 @@
 // React
 import Carousel from 'react-native-snap-carousel';
 import React, {Component} from 'react';
-import {Dimensions} from 'react-native';
+import {Dimensions, View, Text} from 'react-native';
 
 // Partials
 import BenchmarkItem from './benchmarkItem';
@@ -9,6 +9,9 @@ import BenchmarkItem from './benchmarkItem';
 // Firebase
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+
+// Styles
+import {typography} from '../../styles/main';
 
 const {width: screenWidth} = Dimensions.get('window');
 
@@ -90,23 +93,31 @@ class ImprvdCarousel extends Component {
 
 	render() {
 		const {data} = this.state;
+		const {label} = this.props;
 
-		return (
-			<Carousel
-				ref={c => {
-					this._carousel = c;
-				}}
-				data={data}
-				renderItem={this._renderItem}
-				sliderWidth={screenWidth}
-				itemWidth={screenWidth - 180}
-				layout={'default'}
-				firstItem={0}
-				activeSlideAlignment={'start'}
-				enableSnap={false}
-				enableMomentum={true}
-			/>
-		);
+		if (data.length > 0) {
+			return (
+				<View>
+					<Text style={typography.benchmarkHeading}>{label}</Text>
+					<Carousel
+						ref={c => {
+							this._carousel = c;
+						}}
+						data={data}
+						renderItem={this._renderItem}
+						sliderWidth={screenWidth}
+						itemWidth={screenWidth - 180}
+						layout={'default'}
+						firstItem={0}
+						activeSlideAlignment={'start'}
+						enableSnap={false}
+						enableMomentum={true}
+					/>
+				</View>
+			);
+		}
+
+		return null;
 	}
 }
 

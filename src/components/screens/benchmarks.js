@@ -60,10 +60,12 @@ class Benchmarks extends Component {
 
 		sections = benchmarksList.map(item => {
 			return (
-				<View key={item.label}>
-					<Text style={typography.benchmarkHeading}>{item.label}</Text>
-					<ImprvdCarousel navigation={navigation} category={item.slug} />
-				</View>
+				<ImprvdCarousel
+					key={item.label}
+					label={item.label}
+					navigation={navigation}
+					category={item.slug}
+				/>
 			);
 		});
 
