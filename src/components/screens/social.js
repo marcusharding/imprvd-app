@@ -1,5 +1,3 @@
-// dashboard.js
-
 // React
 import React, {Component} from 'react';
 import {View, Text} from 'react-native';
@@ -10,13 +8,7 @@ import ProfileIcon from '../partials/profileIcon';
 // Styles
 import {baseStyles, typography} from '../../styles/main';
 
-class Dashboard extends Component {
-	constructor() {
-		super();
-
-		this.state = {};
-	}
-
+class Social extends Component {
 	render() {
 		const {navigation, profileImagePath} = this.props;
 		return (
@@ -24,11 +16,11 @@ class Dashboard extends Component {
 				<ProfileIcon navigation={navigation} imagePath={profileImagePath} />
 
 				<Text style={[typography.pageHeading, baseStyles.screenHeading]}>
-					Dashboard
+					Social
 				</Text>
 			</View>
 		);
 	}
 }
 
-export default Dashboard;
+export default Social;

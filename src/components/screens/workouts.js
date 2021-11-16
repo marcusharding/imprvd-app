@@ -5,6 +5,9 @@ import {View, Text} from 'react-native';
 // Styles
 import {typography, baseStyles} from '../../styles/main';
 
+// Partials
+import ProfileIcon from '../partials/profileIcon';
+
 class Workouts extends Component {
 	constructor(props) {
 		super();
@@ -13,8 +16,11 @@ class Workouts extends Component {
 	}
 
 	render() {
+		const {navigation, profileImagePath} = this.props;
 		return (
 			<View>
+				<ProfileIcon navigation={navigation} imagePath={profileImagePath} />
+
 				<Text style={[typography.pageHeading, baseStyles.screenHeading]}>
 					Workouts
 				</Text>

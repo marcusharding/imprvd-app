@@ -1,6 +1,7 @@
 // React
 import React, {Component} from 'react';
 import {Text, View, TouchableOpacity} from 'react-native';
+import {CommonActions} from '@react-navigation/native';
 
 // Styles
 import {baseStyles, typography, form, spacing} from '../../styles/main';
@@ -60,14 +61,26 @@ class Welcome extends Component {
 
 				<TouchableOpacity
 					activeOpacity={0.8}
-					onPress={() => navigation.navigate('SignupScreen')}
+					onPress={() =>
+						navigation.dispatch(
+							CommonActions.navigate({
+								name: 'SignupScreen',
+							}),
+						)
+					}
 					style={baseStyles.buttonContainer}>
 					<Text style={typography.buttonText}>Sign Up</Text>
 				</TouchableOpacity>
 
 				<Text
 					style={form.inputText}
-					onPress={() => navigation.navigate('LoginScreen')}>
+					onPress={() =>
+						navigation.dispatch(
+							CommonActions.navigate({
+								name: 'LoginScreen',
+							}),
+						)
+					}>
 					Already Registered?
 					<Text style={form.inputTextSpan}> Click here to login</Text>
 				</Text>

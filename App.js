@@ -1,6 +1,6 @@
 // React
 import React, {useState, useEffect} from 'react';
-import {View, Button, Platform} from 'react-native';
+import {Platform} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -17,6 +17,9 @@ import auth from '@react-native-firebase/auth';
 // Partials
 import PreLoader from './src/components/partials/preLoader';
 
+// Scripts
+import {fetchImageDownloadUrl} from './src/scripts/userData';
+
 // Screens
 import Welcome from './src/components/screens/welcome';
 import SignUp from './src/components/screens/signup';
@@ -26,30 +29,18 @@ import EmailVerification from './src/components/screens/emailVerification';
 import Benchmarks from './src/components/screens/benchmarks';
 import Workouts from './src/components/screens/workouts';
 import Profile from './src/components/screens/profile';
+import Social from './src/components/screens/social';
+import BenchmarkSingle from './src/components/modalScreens/benchmarkSingle';
+
+// modalScreens
+import AddNewBenchmark from './src/components/modalScreens/addNewBenchmark';
 
 // Navigators
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-// Temprorary logout screen whilst I re-do the sign up process
-const logoutScreen = () => {
-	return (
-		<View>
-			<Button
-				color="#121212"
-				title="Log out"
-				onPress={() =>
-					auth()
-						.signOut()
-						.then(() => console.log('User signed out'))
-				}
-			/>
-		</View>
-	);
-};
-
 // Bottom tabs stack
-const TabStack = () => {
+const TabStack = ({profileImagePath}) => {
 	return (
 		<Tab.Navigator
 			initialRouteName="Dashboard"
@@ -64,21 +55,22 @@ const TabStack = () => {
 						<MaterialCommunityIcons name="home" color={color} size={26} />
 					),
 				}}>
-				{props => <Dashboard {...props} />}
+				{props => <Dashboard {...props} profileImagePath={profileImagePath} />}
 			</Tab.Screen>
+
 			<Tab.Screen
 				name="Benchmarks"
-				component={Benchmarks}
 				options={{
 					tabBarLabel: 'Benchmarks',
 					tabBarIcon: ({color}) => (
 						<MaterialCommunityIcons name="poll" color={color} size={26} />
 					),
-				}}
-			/>
+				}}>
+				{props => <Benchmarks {...props} profileImagePath={profileImagePath} />}
+			</Tab.Screen>
+
 			<Tab.Screen
 				name="Workouts"
-				component={Workouts}
 				options={{
 					tabBarLabel: 'Workouts',
 					tabBarIcon: ({color}) => (
@@ -88,18 +80,24 @@ const TabStack = () => {
 							size={26}
 						/>
 					),
-				}}
-			/>
+				}}>
+				{props => <Workouts {...props} profileImagePath={profileImagePath} />}
+			</Tab.Screen>
+
 			<Tab.Screen
-				name="Profile"
-				component={Profile}
+				name="Social"
 				options={{
-					tabBarLabel: 'Profile',
+					tabBarLabel: 'Social',
 					tabBarIcon: ({color}) => (
-						<MaterialCommunityIcons name="account" color={color} size={26} />
+						<MaterialCommunityIcons
+							name="account-group"
+							color={color}
+							size={26}
+						/>
 					),
-				}}
-			/>
+				}}>
+				{props => <Social {...props} profileImagePath={profileImagePath} />}
+			</Tab.Screen>
 		</Tab.Navigator>
 	);
 };
@@ -107,11 +105,20 @@ const TabStack = () => {
 export default function App() {
 	const [initializing, setInitializing] = useState(true);
 	const [user, setUser] = useState();
+	const [profileImagePath, setProfileImagePath] = useState(null);
 
-	function onAuthStateChanged(user) {
+	const onAuthStateChanged = user => {
 		setUser(user);
 		if (initializing) setInitializing(false);
-	}
+	};
+
+	// To do - Think of better way to begin handling all user data that needs to be pulled into the app
+	// Is also creating the Can't perform a React state update on an unmounted component. error
+	const fetchProfileImagePath = () => {
+		fetchImageDownloadUrl(user).then(response => {
+			setProfileImagePath(response);
+		});
+	};
 
 	useEffect(() => {
 		if (Platform.OS === 'android') {
@@ -119,6 +126,7 @@ export default function App() {
 		}
 		SplashScreen.hide();
 		const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+		fetchProfileImagePath();
 		return subscriber; // unsubscribe on unmount
 	});
 
@@ -131,9 +139,28 @@ export default function App() {
 			<NavigationContainer options={{headerShown: false}} theme={appTheme}>
 				<Stack.Navigator screenOptions={{headerShown: false}}>
 					<Stack.Screen name="DashboardScreen">
-						{props => <TabStack {...props} />}
+						{props => (
+							<TabStack profileImagePath={profileImagePath} {...props} />
+						)}
 					</Stack.Screen>
-					<Stack.Screen name="logout" component={logoutScreen} />
+					<Stack.Screen name="ProfileScreen">
+						{props => (
+							<Profile
+								profileImagePath={profileImagePath}
+								setProfileImagePath={setProfileImagePath}
+								{...props}
+							/>
+						)}
+					</Stack.Screen>
+					<Stack.Screen
+						name="AddNewBenchmarkScreen"
+						component={AddNewBenchmark}
+					/>
+					<Stack.Screen
+						name="BenchmarkSingleScreen"
+						component={BenchmarkSingle}
+					/>
+					<Stack.Screen name="LoginScreen" component={Login} />
 				</Stack.Navigator>
 			</NavigationContainer>
 		);
