@@ -1,6 +1,7 @@
 // React
 import React, {Component} from 'react';
 import {Text, View, TextInput, Alert, TouchableOpacity} from 'react-native';
+import {CommonActions} from '@react-navigation/native';
 
 // Firebase
 import auth from '@react-native-firebase/auth';
@@ -51,12 +52,21 @@ class Login extends Component {
 					const isEmailVerified = auth().currentUser.emailVerified;
 
 					if (isEmailVerified) {
-						navigation.reset({
+						CommonActions.reset({
 							index: 0,
 							routes: [{name: 'DashboardScreen'}],
 						});
+						navigation.dispatch(
+							CommonActions.navigate({
+								name: 'DashboardScreen',
+							}),
+						);
 					} else {
-						navigation.navigate('EmailVerificationScreen');
+						navigation.dispatch(
+							CommonActions.navigate({
+								name: 'EmailVerificationScreen',
+							}),
+						);
 					}
 				})
 				.catch(error => console.log(error));
@@ -106,7 +116,13 @@ class Login extends Component {
 
 				<Text
 					style={form.inputText}
-					onPress={() => navigation.navigate('SignupScreen')}>
+					onPress={() =>
+						navigation.dispatch(
+							CommonActions.navigate({
+								name: 'SignupScreen',
+							}),
+						)
+					}>
 					Don't have account?
 					<Text style={form.inputTextSpan}> Click here to signup</Text>
 				</Text>

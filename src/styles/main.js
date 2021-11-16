@@ -14,6 +14,14 @@ const spacing = StyleSheet.create({
 	marginBottom20: {
 		marginBottom: 20,
 	},
+
+	marginTop20: {
+		marginTop: 20,
+	},
+
+	flex1: {
+		flex: 1,
+	},
 });
 
 const form = StyleSheet.create({
@@ -45,18 +53,27 @@ const form = StyleSheet.create({
 
 const typography = StyleSheet.create({
 	pageHeading: {
-		color: 'white',
+		color: '#ffffff',
 		fontSize: 30,
 		paddingBottom: 20,
 		fontFamily: 'Gilroy-SemiBold',
 	},
 
 	subHeading: {
-		color: '#fff',
+		color: '#ffffff',
 		fontSize: 20,
 		paddingBottom: 20,
 		textAlign: 'center',
 		fontFamily: 'Montserrat-Regular',
+	},
+
+	benchmarkHeading: {
+		color: '#ffffff',
+		fontSize: 18,
+		fontWeight: 'bold',
+		fontFamily: 'Montserrat-Regular',
+		marginTop: 20,
+		marginBottom: 20,
 	},
 
 	buttonText: {
@@ -73,6 +90,17 @@ const baseStyles = StyleSheet.create({
 		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'center',
+	},
+
+	heightFull: {
+		height: '100%',
+	},
+
+	flexCenter: {
+		flex: 1,
+		height: '100%',
+		justifyContent: 'center',
+		alignItems: 'center',
 	},
 
 	flexContainerRow: {
@@ -110,7 +138,6 @@ const baseStyles = StyleSheet.create({
 	screenHeading: {
 		marginLeft: 'auto',
 		marginRight: 'auto',
-		marginTop: 50,
 	},
 
 	profileImage: {
@@ -126,6 +153,39 @@ const baseStyles = StyleSheet.create({
 		width: 35,
 		height: 35,
 	},
+
+	addNewBenchmarkIcon: {
+		position: 'absolute',
+		bottom: 0,
+		right: 10,
+		marginBottom: 20,
+	},
 });
 
-export {appTheme, typography, baseStyles, form, spacing};
+const ImprvdCarousel = StyleSheet.create({
+	benchmarkItem: {
+		backgroundColor: '#2A2A2A',
+		padding: 20,
+		width: '100%',
+		borderRadius: 5,
+		marginBottom: 20,
+	},
+
+	benchmarkTextGroup: {
+		display: 'flex',
+		flexDirection: 'row',
+	},
+
+	benchmarkTextName: {
+		fontSize: 18,
+		color: '#ffffff',
+		marginBottom: 10,
+	},
+
+	benchmarkTextKey: {
+		marginRight: 15,
+		color: '#ffffff',
+	},
+});
+
+export {appTheme, typography, baseStyles, form, spacing, ImprvdCarousel};

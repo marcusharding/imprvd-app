@@ -3,27 +3,89 @@ import React, {Component} from 'react';
 import {View, Text} from 'react-native';
 
 // Styles
-import {typography, baseStyles} from '../../styles/main';
+import {typography, baseStyles, spacing} from '../../styles/main';
 
 // Partials
 import ProfileIcon from '../partials/profileIcon';
+import AddNewBenchmarkIcon from '../partials/addNewBenchmarkIcon';
+import PreLoader from '../partials/preLoader';
+import ImprvdCarousel from '../partials/imprvdCarousel';
+
+// Firebase
+import {ScrollView} from 'react-native-gesture-handler';
 
 class Benchmarks extends Component {
 	constructor() {
 		super();
 
-		this.state = {};
+		this.state = {
+			benchmarksList: [],
+			isLoading: true,
+			index: 0,
+		};
+	}
+
+	fetchBenchmarksList = async () => {
+		const {benchmarksList} = this.state;
+		let counter = 0;
+
+		const response = await fetch(
+			'https://contentmanagement.getimprvd.app/wp-json/wp/v2/app_benchmarks',
+		);
+		const json = await response.json();
+		const count = json.length;
+		json.map(benchmark => {
+			benchmarksList.push({
+				slug: benchmark.slug,
+				label: benchmark.title.rendered,
+			});
+			counter = counter + 1;
+			if (counter === count) {
+				this.setState({
+					benchmarksList: benchmarksList,
+					isLoading: false,
+				});
+			}
+		});
+	};
+
+	componentDidMount() {
+		this.fetchBenchmarksList();
 	}
 
 	render() {
 		const {navigation, profileImagePath} = this.props;
-		return (
-			<View>
-				<ProfileIcon navigation={navigation} imagePath={profileImagePath} />
+		const {isLoading, benchmarksList} = this.state;
+		let sections = null;
 
-				<Text style={[typography.pageHeading, baseStyles.screenHeading]}>
-					Benchmarks
-				</Text>
+		sections = benchmarksList.map(item => {
+			return (
+				<View key={item.label}>
+					<Text style={typography.benchmarkHeading}>{item.label}</Text>
+					<ImprvdCarousel navigation={navigation} category={item.slug} />
+				</View>
+			);
+		});
+
+		return (
+			<View style={spacing.flex1}>
+				<View style={spacing.flex1}>
+					<ProfileIcon navigation={navigation} imagePath={profileImagePath} />
+
+					<Text style={[typography.pageHeading, baseStyles.screenHeading]}>
+						Benchmarks
+					</Text>
+
+					{isLoading && <PreLoader />}
+
+					<ScrollView
+						showsVerticalScrollIndicator={false}
+						style={spacing.flex1}>
+						{!isLoading && sections}
+					</ScrollView>
+
+					{!isLoading && <AddNewBenchmarkIcon navigation={navigation} />}
+				</View>
 			</View>
 		);
 	}

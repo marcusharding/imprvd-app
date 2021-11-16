@@ -30,6 +30,10 @@ import Benchmarks from './src/components/screens/benchmarks';
 import Workouts from './src/components/screens/workouts';
 import Profile from './src/components/screens/profile';
 import Social from './src/components/screens/social';
+import BenchmarkSingle from './src/components/modalScreens/benchmarkSingle';
+
+// modalScreens
+import AddNewBenchmark from './src/components/modalScreens/addNewBenchmark';
 
 // Navigators
 const Tab = createMaterialBottomTabNavigator();
@@ -148,6 +152,14 @@ export default function App() {
 							/>
 						)}
 					</Stack.Screen>
+					<Stack.Screen
+						name="AddNewBenchmarkScreen"
+						component={AddNewBenchmark}
+					/>
+					<Stack.Screen
+						name="BenchmarkSingleScreen"
+						component={BenchmarkSingle}
+					/>
 					<Stack.Screen name="LoginScreen" component={Login} />
 				</Stack.Navigator>
 			</NavigationContainer>

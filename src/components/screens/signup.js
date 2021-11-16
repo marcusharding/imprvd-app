@@ -1,8 +1,7 @@
-// signup.js
-
 // React
 import React, {Component} from 'react';
 import {Text, View, TextInput, TouchableOpacity} from 'react-native';
+import {CommonActions} from '@react-navigation/native';
 
 // Styles
 import {baseStyles, typography, form, spacing} from '../../styles/main';
@@ -61,7 +60,11 @@ class SignUp extends Component {
 						.currentUser.sendEmailVerification()
 						.then(() => {
 							console.log('Verification email sent');
-							navigation.navigate('EmailVerificationScreen');
+							navigation.dispatch(
+								CommonActions.navigate({
+									name: 'EmailVerificationScreen',
+								}),
+							);
 						});
 				})
 				.catch(error => console.log(error));
@@ -119,7 +122,13 @@ class SignUp extends Component {
 
 				<Text
 					style={form.inputText}
-					onPress={() => navigation.navigate('LoginScreen')}>
+					onPress={() =>
+						navigation.dispatch(
+							CommonActions.navigate({
+								name: 'LoginScreen',
+							}),
+						)
+					}>
 					Already Registered?
 					<Text style={form.inputTextSpan}> Click here to login</Text>
 				</Text>
