@@ -1,3 +1,6 @@
+// React
+import {Alert} from 'react-native';
+
 // Firebase
 import storage from '@react-native-firebase/storage';
 
@@ -13,6 +16,7 @@ export const fetchImageDownloadUrl = async user => {
 			})
 			.catch(error => {
 				console.log('Fetching download URL error => ', error);
+				Alert.alert('Error:', error.message);
 			});
 
 		if (promise) {

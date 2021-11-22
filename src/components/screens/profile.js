@@ -1,6 +1,6 @@
 // React
 import React, {Component} from 'react';
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import {View, Text, TouchableOpacity, Image, Alert} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as ImagePicker from 'react-native-image-picker';
 
@@ -76,6 +76,7 @@ class Profile extends Component {
 			})
 			.catch(error => {
 				console.log('Uploading image error => ', error);
+				Alert.alert('Error:', error.message);
 				this.setState({isLoading: false, status: 'Something went wrong'});
 			});
 	}
@@ -94,6 +95,7 @@ class Profile extends Component {
 			})
 			.catch(error => {
 				console.log('There was an error deleting the file => ', error);
+				Alert.alert('Error:', error.message);
 			});
 	}
 
@@ -108,6 +110,7 @@ class Profile extends Component {
 			})
 			.catch(error => {
 				console.log('Fetching download URL error => ', error);
+				Alert.alert('Error:', error.message);
 				this.setState({isLoading: false, status: 'Something went wrong'});
 			});
 	}

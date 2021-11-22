@@ -1,6 +1,13 @@
 // React
 import React, {Component} from 'react';
-import {Text, View, AppState, Image, TouchableOpacity} from 'react-native';
+import {
+	Text,
+	View,
+	AppState,
+	Image,
+	TouchableOpacity,
+	Alert,
+} from 'react-native';
 import {openInbox} from 'react-native-email-link';
 import {CommonActions} from '@react-navigation/native';
 
@@ -43,6 +50,7 @@ class EmailVerification extends Component {
 			})
 			.catch(error => {
 				console.log(error);
+				Alert.alert('Error:', error.message);
 				this.setState({
 					isLoading: false,
 				});
@@ -103,7 +111,10 @@ class EmailVerification extends Component {
 				console.log('Verification email sent');
 				this.setState({reSendVerificationEmail: true});
 			})
-			.catch(error => console.log(error.message));
+			.catch(error => {
+				console.log(error.message);
+				Alert.alert('Error:', error.message);
+			});
 	}
 
 	componentDidMount() {

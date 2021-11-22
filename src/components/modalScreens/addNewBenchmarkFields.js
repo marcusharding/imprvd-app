@@ -76,6 +76,7 @@ class AddNewBenchmarkFields extends Component {
 				})
 				.catch(error => {
 					console.log('Error setting data => ', error);
+					Alert.alert('Error:', error.message);
 				});
 		} else {
 			Alert.alert('Please fill out at least benchmark name field');

@@ -1,6 +1,6 @@
 // React
 import React, {Component} from 'react';
-import {Text, View, TextInput, TouchableOpacity} from 'react-native';
+import {Text, View, TextInput, TouchableOpacity, Alert} from 'react-native';
 import {CommonActions} from '@react-navigation/native';
 
 // Styles
@@ -8,7 +8,6 @@ import {baseStyles, typography, form, spacing} from '../../styles/main';
 
 // Firebase
 import auth from '@react-native-firebase/auth';
-import {Alert} from 'react-native';
 
 // Partials
 import PreLoader from '../partials/preLoader';
@@ -67,7 +66,13 @@ class SignUp extends Component {
 							);
 						});
 				})
-				.catch(error => console.log(error));
+				.catch(error => {
+					console.log(error);
+					Alert.alert('Error:', error.message);
+					this.setState({
+						isLoading: false,
+					});
+				});
 		}
 	};
 

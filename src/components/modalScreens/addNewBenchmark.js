@@ -1,6 +1,6 @@
 // React
 import React, {Component} from 'react';
-import {View, Text, ScrollView, SafeAreaView} from 'react-native';
+import {View, Text, ScrollView, SafeAreaView, Alert} from 'react-native';
 
 // Partials
 import PreLoader from '../partials/preLoader';
@@ -57,7 +57,10 @@ class AddNewBenchmark extends Component {
 						});
 					}),
 			)
-			.catch(error => console.log(error));
+			.catch(error => {
+				console.log(error);
+				Alert.alert('Error:', error.message);
+			});
 	}
 
 	setSelectedBenchmark(callback) {
@@ -85,6 +88,7 @@ class AddNewBenchmark extends Component {
 			})
 			.catch(error => {
 				console.log(error);
+				Alert.alert('Error:', error.message);
 				this.setState({
 					isLoading: false,
 				});

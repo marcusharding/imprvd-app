@@ -1,6 +1,6 @@
 // React
 import React from 'react';
-import {TouchableOpacity, Text} from 'react-native';
+import {TouchableOpacity, Text, Alert} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {CommonActions} from '@react-navigation/native';
 
@@ -23,7 +23,10 @@ const LogoutButton = ({navigation}) => {
 					}),
 				);
 			})
-			.catch(error => console.log('Error logging out => ', error));
+			.catch(error => {
+				console.log('Error logging out => ', error);
+				Alert.alert('Error:', error.message);
+			});
 	};
 
 	return (

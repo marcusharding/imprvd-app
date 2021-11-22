@@ -1,6 +1,6 @@
 // React
 import React, {Component} from 'react';
-import {Text, View, TouchableOpacity} from 'react-native';
+import {Text, View, TouchableOpacity, Alert} from 'react-native';
 import {CommonActions} from '@react-navigation/native';
 
 // Styles
@@ -36,6 +36,7 @@ class Welcome extends Component {
 			})
 			.catch(error => {
 				console.log(error);
+				Alert.alert('Error:', error.message);
 				this.setState({
 					isLoading: false,
 				});

@@ -1,6 +1,6 @@
 // React
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, Alert} from 'react-native';
 import {CommonActions} from '@react-navigation/native';
 
 // Styles
@@ -46,6 +46,7 @@ const BenchmarkSingle = ({route, navigation}) => {
 			})
 			.catch(error => {
 				console.log('Error deleting benchmark => ', error);
+				Alert.alert('Error:', error.message);
 			});
 	};
 
