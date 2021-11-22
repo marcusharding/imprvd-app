@@ -160,7 +160,13 @@ export default function App() {
 						name="BenchmarkSingleScreen"
 						component={BenchmarkSingle}
 					/>
+					<Stack.Screen name="WelcomeScreen" component={Welcome} />
+					<Stack.Screen name="SignupScreen" component={SignUp} />
 					<Stack.Screen name="LoginScreen" component={Login} />
+					<Stack.Screen
+						name="EmailVerificationScreen"
+						component={EmailVerification}
+					/>
 				</Stack.Navigator>
 			</NavigationContainer>
 		);
@@ -176,10 +182,25 @@ export default function App() {
 					name="EmailVerificationScreen"
 					component={EmailVerification}
 				/>
+				<Stack.Screen name="DashboardScreen">
+					{props => <TabStack profileImagePath={profileImagePath} {...props} />}
+				</Stack.Screen>
+				<Stack.Screen name="ProfileScreen">
+					{props => (
+						<Profile
+							profileImagePath={profileImagePath}
+							setProfileImagePath={setProfileImagePath}
+							{...props}
+						/>
+					)}
+				</Stack.Screen>
 				<Stack.Screen
-					name="DashboardScreen"
-					component={Dashboard}
-					options={{headerShown: false}}
+					name="AddNewBenchmarkScreen"
+					component={AddNewBenchmark}
+				/>
+				<Stack.Screen
+					name="BenchmarkSingleScreen"
+					component={BenchmarkSingle}
 				/>
 			</Stack.Navigator>
 		</NavigationContainer>
