@@ -5,7 +5,13 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import * as ImagePicker from 'react-native-image-picker';
 
 // Styles
-import {typography, baseStyles} from '../../styles/main';
+import {
+	colors,
+	typography,
+	baseStyles,
+	settings,
+	spacing,
+} from '../../styles/main';
 
 // Firebase
 import storage from '@react-native-firebase/storage';
@@ -118,6 +124,7 @@ class Profile extends Component {
 	render() {
 		const {imagePath, isLoading} = this.state;
 		const {navigation} = this.props;
+		const {email} = auth().currentUser;
 
 		if (isLoading) {
 			return <PreLoader />;
@@ -130,7 +137,7 @@ class Profile extends Component {
 					Profile
 				</Text>
 
-				<View style={baseStyles.flexContainerRow}>
+				<View style={[baseStyles.flexContainerRow, spacing.marginBottom20]}>
 					{!imagePath && (
 						<TouchableOpacity
 							activeOpacity={0.8}
@@ -172,6 +179,35 @@ class Profile extends Component {
 						onPress={() => console.log('Edit profile button clicked')}>
 						<Text>Edit Profile</Text>
 					</TouchableOpacity>
+				</View>
+
+				<View
+					style={[
+						settings.sectionBottomBorder,
+						spacing.marginBottom20,
+						spacing.paddingBottom20,
+					]}>
+					<Text style={spacing.marginBottom10}>Email</Text>
+					<Text style={colors.white}>{email}</Text>
+				</View>
+
+				{/* To do - Move the settings headings into a cms and loop over */}
+				<View
+					style={[
+						settings.sectionBottomBorder,
+						spacing.marginBottom20,
+						spacing.paddingBottom20,
+					]}>
+					<Text>Account</Text>
+				</View>
+
+				<View
+					style={[
+						settings.sectionBottomBorder,
+						spacing.marginBottom20,
+						spacing.paddingBottom20,
+					]}>
+					<Text>Help & Support</Text>
 				</View>
 
 				<LogoutButton navigation={navigation} />

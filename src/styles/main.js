@@ -10,13 +10,35 @@ const appTheme = {
 	},
 };
 
+const colors = StyleSheet.create({
+	white: {
+		color: '#ffffff',
+	},
+});
+
 const spacing = StyleSheet.create({
 	marginBottom20: {
 		marginBottom: 20,
 	},
 
+	marginBottom10: {
+		marginBottom: 10,
+	},
+
+	paddingBottom20: {
+		paddingBottom: 20,
+	},
+
+	paddingBottom10: {
+		paddingBottom: 10,
+	},
+
 	marginTop20: {
 		marginTop: 20,
+	},
+
+	marginRight5: {
+		marginRight: 5,
 	},
 
 	flex1: {
@@ -48,6 +70,14 @@ const form = StyleSheet.create({
 
 	inputTextSpan: {
 		color: '#34FFC8',
+	},
+});
+
+const settings = StyleSheet.create({
+	sectionBottomBorder: {
+		borderBottomColor: '#a9a9a9',
+		borderBottomWidth: 1,
+		marginBottom: 30,
 	},
 });
 
@@ -100,6 +130,12 @@ const baseStyles = StyleSheet.create({
 		flex: 1,
 		height: '100%',
 		justifyContent: 'center',
+		alignItems: 'center',
+	},
+
+	logoutButton: {
+		display: 'flex',
+		flexDirection: 'row',
 		alignItems: 'center',
 	},
 
@@ -188,4 +224,13 @@ const ImprvdCarousel = StyleSheet.create({
 	},
 });
 
-export {appTheme, typography, baseStyles, form, spacing, ImprvdCarousel};
+export {
+	appTheme,
+	typography,
+	baseStyles,
+	form,
+	spacing,
+	ImprvdCarousel,
+	settings,
+	colors,
+};

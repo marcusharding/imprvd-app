@@ -6,6 +6,7 @@ import {CommonActions} from '@react-navigation/native';
 
 // Firebase
 import auth from '@react-native-firebase/auth';
+import {spacing, baseStyles} from '../../styles/main';
 
 const LogoutButton = ({navigation}) => {
 	const logout = () => {
@@ -30,8 +31,12 @@ const LogoutButton = ({navigation}) => {
 	};
 
 	return (
-		<TouchableOpacity activeOpacity={0.8} onPress={() => logout()}>
+		<TouchableOpacity
+			style={baseStyles.logoutButton}
+			activeOpacity={0.8}
+			onPress={() => logout()}>
 			<MaterialCommunityIcons
+				style={spacing.marginRight5}
 				name={'logout-variant'}
 				size={35}
 				color={'#FF0000'}
