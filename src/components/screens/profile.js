@@ -9,6 +9,7 @@ import {typography, baseStyles} from '../../styles/main';
 
 // Firebase
 import storage from '@react-native-firebase/storage';
+import auth from '@react-native-firebase/auth';
 
 // Partials
 import PreLoader from '../partials/preLoader';
@@ -23,7 +24,7 @@ class Profile extends Component {
 			imagePath: props.profileImagePath,
 			isLoading: true,
 			status: '',
-			fileName: 'profile_image',
+			fileName: auth().currentUser.uid + '_' + 'profile_image',
 		};
 	}
 
@@ -110,8 +111,7 @@ class Profile extends Component {
 			})
 			.catch(error => {
 				console.log('Fetching download URL error => ', error);
-				Alert.alert('Error:', error.message);
-				this.setState({isLoading: false, status: 'Something went wrong'});
+				this.setState({isLoading: false});
 			});
 	}
 

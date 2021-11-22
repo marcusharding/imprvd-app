@@ -3,9 +3,10 @@ import {Alert} from 'react-native';
 
 // Firebase
 import storage from '@react-native-firebase/storage';
+import auth from '@react-native-firebase/auth';
 
 export const fetchImageDownloadUrl = async user => {
-	const fileName = 'profile_image';
+	const fileName = auth().currentUser.uid + '_' + 'profile_image';
 	const imageRef = storage().ref(fileName);
 
 	if (user) {
