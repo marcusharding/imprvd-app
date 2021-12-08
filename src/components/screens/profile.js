@@ -1,8 +1,7 @@
 // React
 import React, {Component} from 'react';
-import {View, Text, TouchableOpacity, Image, Alert} from 'react-native';
+import {View, Text, TouchableOpacity, Image} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import * as ImagePicker from 'react-native-image-picker';
 import {CommonActions} from '@react-navigation/native';
 
 // Styles
@@ -16,7 +15,6 @@ import {
 } from '../../styles/main';
 
 // Firebase
-import storage from '@react-native-firebase/storage';
 import auth from '@react-native-firebase/auth';
 
 // Partials
@@ -24,110 +22,25 @@ import PreLoader from '../partials/preLoader';
 import GoBackIcon from '../partials/goBackIcon';
 import LogoutButton from '../partials/logoutButton';
 
+// Scripts
+import {
+	chooseDisplayImage,
+	removeDisplayImage,
+} from '../../scripts/profileData';
+
 class Profile extends Component {
-	constructor(props) {
+	constructor() {
 		super();
 
 		this.state = {
-			imagePath: props.profileImagePath,
 			isLoading: false,
-			status: '',
-			fileName: auth().currentUser.uid + '_' + 'profile_image',
 		};
-	}
-
-	chooseFile() {
-		this.setState({status: ''});
-		const {fileName} = this.state;
-
-		const options = {
-			title: 'Select Image',
-			customButtons: [
-				{name: 'customOptionKey', title: 'Choose Photo from Custom Option'},
-			],
-			storageOptions: {
-				skipBackup: true,
-				path: 'images',
-			},
-		};
-
-		ImagePicker.launchImageLibrary(options, response => {
-			if (response.didCancel) {
-				console.log('User cancelled image picker', storage());
-			} else if (response.errorMessage) {
-				console.log('ImagePicker Error: ', response.errorMessage);
-			} else {
-				const path = response.assets[0].uri;
-				this.uploadImageToStorage(path, fileName);
-			}
-		});
-	}
-
-	uploadImageToStorage(path, name) {
-		this.setState({isLoading: true});
-
-		const reference = storage().ref(name);
-		const task = reference.putFile(path);
-
-		task
-			.then(() => {
-				console.log('image uploaded to firebase');
-				this.fetchImageDownloadUrl(name);
-				this.setState({
-					isLoading: false,
-					status: 'Image uploaded successfully',
-				});
-			})
-			.catch(error => {
-				console.log('Uploading image error => ', error);
-				Alert.alert('Error:', error.message);
-				this.setState({isLoading: false, status: 'Something went wrong'});
-			});
-	}
-
-	removeImage() {
-		const {fileName} = this.state;
-		const {setProfileImagePath} = this.props;
-		const reference = storage().ref(fileName);
-
-		reference
-			.delete()
-			.then(() => {
-				console.log('File deleted succesfully');
-				this.setState({imagePath: null});
-				setProfileImagePath(null);
-			})
-			.catch(error => {
-				console.log('There was an error deleting the file => ', error);
-				Alert.alert('Error:', error.message);
-			});
-	}
-
-	fetchImageDownloadUrl(fileName) {
-		const {setProfileImagePath} = this.props;
-		this.setState({isLoading: true});
-		storage()
-			.ref(fileName)
-			.getDownloadURL()
-			.then(response => {
-				this.setState({imagePath: response, isLoading: false});
-				setProfileImagePath(response);
-			})
-			.catch(error => {
-				console.log('Fetching download URL error => ', error);
-				this.setState({isLoading: false});
-			});
-	}
-
-	componentDidMount() {
-		const {fileName} = this.state;
-		this.fetchImageDownloadUrl(fileName);
 	}
 
 	render() {
-		const {imagePath, isLoading} = this.state;
+		const {isLoading} = this.state;
 		const {navigation} = this.props;
-		const {email, displayName} = auth().currentUser;
+		const {email, displayName, photoURL} = auth().currentUser;
 
 		if (isLoading) {
 			return <PreLoader />;
@@ -152,10 +65,10 @@ class Profile extends Component {
 				</View>
 
 				<View style={[baseStyles.flexContainerColumn, spacing.marginBottom20]}>
-					{!imagePath && (
+					{!photoURL && (
 						<TouchableOpacity
 							activeOpacity={0.8}
-							onPress={() => this.chooseFile()}>
+							onPress={() => chooseDisplayImage()}>
 							<MaterialCommunityIcons
 								name={'account-circle'}
 								color={'#808080'}
@@ -164,29 +77,26 @@ class Profile extends Component {
 						</TouchableOpacity>
 					)}
 
-					{!imagePath && (
+					{!photoURL && (
 						<TouchableOpacity
 							activeOpacity={0.8}
-							onPress={() => this.chooseFile()}>
+							onPress={() => chooseDisplayImage()}>
 							<Text style={colors.lightBlue}>Update Picture</Text>
 						</TouchableOpacity>
 					)}
 
-					{imagePath && (
+					{photoURL && (
 						<TouchableOpacity
 							activeOpacity={0.8}
-							onPress={() => this.removeImage()}>
-							<Image
-								style={baseStyles.profileImage}
-								source={{uri: imagePath}}
-							/>
+							onPress={() => removeDisplayImage()}>
+							<Image style={baseStyles.profileImage} source={{uri: photoURL}} />
 						</TouchableOpacity>
 					)}
 
-					{imagePath && (
+					{photoURL && (
 						<TouchableOpacity
 							activeOpacity={0.8}
-							onPress={() => this.removeImage()}>
+							onPress={() => removeDisplayImage()}>
 							<Text style={colors.red}>Remove Picture</Text>
 						</TouchableOpacity>
 					)}
