@@ -14,6 +14,18 @@ const colors = StyleSheet.create({
 	white: {
 		color: '#ffffff',
 	},
+
+	red: {
+		color: '#FF0000',
+	},
+
+	lightBlue: {
+		color: '#0E86D4',
+	},
+
+	blue: {
+		color: '#0000FF',
+	},
 });
 
 const spacing = StyleSheet.create({
@@ -33,8 +45,16 @@ const spacing = StyleSheet.create({
 		paddingBottom: 10,
 	},
 
+	marginTop10: {
+		marginTop: 10,
+	},
+
 	marginTop20: {
 		marginTop: 20,
+	},
+
+	marginTop50: {
+		marginTop: 50,
 	},
 
 	marginRight5: {
@@ -146,6 +166,12 @@ const baseStyles = StyleSheet.create({
 		alignItems: 'center',
 	},
 
+	flexContainerColumn: {
+		display: 'flex',
+		flexDirection: 'column',
+		alignItems: 'center',
+	},
+
 	safeAreaView: {
 		flex: 1,
 		position: 'relative',
@@ -224,6 +250,14 @@ const ImprvdCarousel = StyleSheet.create({
 	},
 });
 
+const profile = StyleSheet.create({
+	header: {
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+	},
+});
+
 export {
 	appTheme,
 	typography,
@@ -233,4 +267,5 @@ export {
 	ImprvdCarousel,
 	settings,
 	colors,
+	profile,
 };
