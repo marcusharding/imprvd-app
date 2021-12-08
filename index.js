@@ -3,9 +3,8 @@
  */
 // React
 import * as React from 'react';
-import {AppRegistry} from 'react-native';
+import {AppRegistry, SafeAreaView} from 'react-native';
 import {name as appName} from './app.json';
-import {SafeAreaView} from 'react-native';
 
 // Screens
 import App from './App';

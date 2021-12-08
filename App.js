@@ -31,6 +31,7 @@ import Workouts from './src/components/screens/workouts';
 import Profile from './src/components/screens/profile';
 import Social from './src/components/screens/social';
 import BenchmarkSingle from './src/components/modalScreens/benchmarkSingle';
+import EditProfile from './src/components/modalScreens/editProfile';
 
 // modalScreens
 import AddNewBenchmark from './src/components/modalScreens/addNewBenchmark';
@@ -126,7 +127,9 @@ export default function App() {
 		}
 		SplashScreen.hide();
 		const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-		fetchProfileImagePath();
+		if (user && auth().currentUser.emailVerified) {
+			fetchProfileImagePath();
+		}
 		return subscriber; // unsubscribe on unmount
 	});
 
@@ -160,6 +163,7 @@ export default function App() {
 						name="BenchmarkSingleScreen"
 						component={BenchmarkSingle}
 					/>
+					<Stack.Screen name="EditProfileScreen" component={EditProfile} />
 					<Stack.Screen name="WelcomeScreen" component={Welcome} />
 					<Stack.Screen name="SignupScreen" component={SignUp} />
 					<Stack.Screen name="LoginScreen" component={Login} />

@@ -1,6 +1,7 @@
 // React
 import React, {Component} from 'react';
 import {View, Text} from 'react-native';
+import {ScrollView} from 'react-native-gesture-handler';
 
 // Styles
 import {typography, baseStyles, spacing} from '../../styles/main';
@@ -10,9 +11,6 @@ import ProfileIcon from '../partials/profileIcon';
 import AddNewBenchmarkIcon from '../partials/addNewBenchmarkIcon';
 import PreLoader from '../partials/preLoader';
 import ImprvdCarousel from '../partials/imprvdCarousel';
-
-// Firebase
-import {ScrollView} from 'react-native-gesture-handler';
 
 class Benchmarks extends Component {
 	constructor() {

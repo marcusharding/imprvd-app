@@ -3,9 +3,17 @@ import React, {Component} from 'react';
 import {View, Text, TouchableOpacity, Image, Alert} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as ImagePicker from 'react-native-image-picker';
+import {CommonActions} from '@react-navigation/native';
 
 // Styles
-import {typography, baseStyles} from '../../styles/main';
+import {
+	colors,
+	typography,
+	baseStyles,
+	settings,
+	spacing,
+	profile,
+} from '../../styles/main';
 
 // Firebase
 import storage from '@react-native-firebase/storage';
@@ -22,15 +30,10 @@ class Profile extends Component {
 
 		this.state = {
 			imagePath: props.profileImagePath,
-			isLoading: true,
+			isLoading: false,
 			status: '',
 			fileName: auth().currentUser.uid + '_' + 'profile_image',
 		};
-	}
-
-	componentDidMount() {
-		const {fileName} = this.state;
-		this.fetchImageDownloadUrl(fileName);
 	}
 
 	chooseFile() {
@@ -102,6 +105,7 @@ class Profile extends Component {
 
 	fetchImageDownloadUrl(fileName) {
 		const {setProfileImagePath} = this.props;
+		this.setState({isLoading: true});
 		storage()
 			.ref(fileName)
 			.getDownloadURL()
@@ -115,9 +119,15 @@ class Profile extends Component {
 			});
 	}
 
+	componentDidMount() {
+		const {fileName} = this.state;
+		this.fetchImageDownloadUrl(fileName);
+	}
+
 	render() {
 		const {imagePath, isLoading} = this.state;
 		const {navigation} = this.props;
+		const {email, displayName} = auth().currentUser;
 
 		if (isLoading) {
 			return <PreLoader />;
@@ -125,20 +135,50 @@ class Profile extends Component {
 
 		return (
 			<View>
-				<GoBackIcon navigation={navigation} />
-				<Text style={[typography.pageHeading, baseStyles.screenHeading]}>
-					Profile
-				</Text>
+				<View style={profile.header}>
+					<GoBackIcon navigation={navigation} />
+					<TouchableOpacity
+						style={spacing.marginTop10}
+						activeOpacity={0.8}
+						onPress={() =>
+							navigation.dispatch(
+								CommonActions.navigate({
+									name: 'EditProfileScreen',
+								}),
+							)
+						}>
+						<Text style={typography.subHeading}>Edit Profile</Text>
+					</TouchableOpacity>
+				</View>
 
-				<View style={baseStyles.flexContainerRow}>
+				<View style={[baseStyles.flexContainerColumn, spacing.marginBottom20]}>
 					{!imagePath && (
 						<TouchableOpacity
 							activeOpacity={0.8}
 							onPress={() => this.chooseFile()}>
 							<MaterialCommunityIcons
-								name={'camera-plus'}
-								color={'#34FFC8'}
-								size={35}
+								name={'account-circle'}
+								color={'#808080'}
+								size={80}
+							/>
+						</TouchableOpacity>
+					)}
+
+					{!imagePath && (
+						<TouchableOpacity
+							activeOpacity={0.8}
+							onPress={() => this.chooseFile()}>
+							<Text style={colors.lightBlue}>Update Picture</Text>
+						</TouchableOpacity>
+					)}
+
+					{imagePath && (
+						<TouchableOpacity
+							activeOpacity={0.8}
+							onPress={() => this.removeImage()}>
+							<Image
+								style={baseStyles.profileImage}
+								source={{uri: imagePath}}
 							/>
 						</TouchableOpacity>
 					)}
@@ -147,31 +187,42 @@ class Profile extends Component {
 						<TouchableOpacity
 							activeOpacity={0.8}
 							onPress={() => this.removeImage()}>
-							<MaterialCommunityIcons
-								name={'camera-off'}
-								color={'#34FFC8'}
-								size={35}
-							/>
+							<Text style={colors.red}>Remove Picture</Text>
 						</TouchableOpacity>
 					)}
+				</View>
 
-					{!imagePath && (
-						<MaterialCommunityIcons
-							name={'account-circle'}
-							color={'#808080'}
-							size={80}
-						/>
-					)}
+				<View style={[baseStyles.flexContainerRow, spacing.marginBottom50]}>
+					<Text style={typography.pageHeading}>{displayName}</Text>
+				</View>
 
-					{imagePath && (
-						<Image style={baseStyles.profileImage} source={{uri: imagePath}} />
-					)}
+				<View
+					style={[
+						settings.sectionBottomBorder,
+						spacing.marginBottom20,
+						spacing.paddingBottom20,
+					]}>
+					<Text style={spacing.marginBottom10}>Email</Text>
+					<Text style={colors.white}>{email}</Text>
+				</View>
 
-					<TouchableOpacity
-						activeOpacity={0.8}
-						onPress={() => console.log('Edit profile button clicked')}>
-						<Text>Edit Profile</Text>
-					</TouchableOpacity>
+				{/* To do - Move the settings headings into a cms and loop over */}
+				<View
+					style={[
+						settings.sectionBottomBorder,
+						spacing.marginBottom20,
+						spacing.paddingBottom20,
+					]}>
+					<Text>Account</Text>
+				</View>
+
+				<View
+					style={[
+						settings.sectionBottomBorder,
+						spacing.marginBottom20,
+						spacing.paddingBottom20,
+					]}>
+					<Text>Help & Support</Text>
 				</View>
 
 				<LogoutButton navigation={navigation} />

@@ -10,13 +10,59 @@ const appTheme = {
 	},
 };
 
+const colors = StyleSheet.create({
+	white: {
+		color: '#ffffff',
+	},
+
+	red: {
+		color: '#FF0000',
+	},
+
+	lightBlue: {
+		color: '#0E86D4',
+	},
+
+	blue: {
+		color: '#0000FF',
+	},
+});
+
 const spacing = StyleSheet.create({
+	marginBottom50: {
+		marginBottom: 50,
+	},
+
 	marginBottom20: {
 		marginBottom: 20,
 	},
 
+	marginBottom10: {
+		marginBottom: 10,
+	},
+
+	paddingBottom20: {
+		paddingBottom: 20,
+	},
+
+	paddingBottom10: {
+		paddingBottom: 10,
+	},
+
+	marginTop10: {
+		marginTop: 10,
+	},
+
 	marginTop20: {
 		marginTop: 20,
+	},
+
+	marginTop50: {
+		marginTop: 50,
+	},
+
+	marginRight5: {
+		marginRight: 5,
 	},
 
 	flex1: {
@@ -48,6 +94,14 @@ const form = StyleSheet.create({
 
 	inputTextSpan: {
 		color: '#34FFC8',
+	},
+});
+
+const settings = StyleSheet.create({
+	sectionBottomBorder: {
+		borderBottomColor: '#a9a9a9',
+		borderBottomWidth: 1,
+		marginBottom: 30,
 	},
 });
 
@@ -103,10 +157,22 @@ const baseStyles = StyleSheet.create({
 		alignItems: 'center',
 	},
 
+	logoutButton: {
+		display: 'flex',
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
+
 	flexContainerRow: {
 		display: 'flex',
 		flexDirection: 'row',
 		justifyContent: 'space-around',
+		alignItems: 'center',
+	},
+
+	flexContainerColumn: {
+		display: 'flex',
+		flexDirection: 'column',
 		alignItems: 'center',
 	},
 
@@ -188,4 +254,22 @@ const ImprvdCarousel = StyleSheet.create({
 	},
 });
 
-export {appTheme, typography, baseStyles, form, spacing, ImprvdCarousel};
+const profile = StyleSheet.create({
+	header: {
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+	},
+});
+
+export {
+	appTheme,
+	typography,
+	baseStyles,
+	form,
+	spacing,
+	ImprvdCarousel,
+	settings,
+	colors,
+	profile,
+};
