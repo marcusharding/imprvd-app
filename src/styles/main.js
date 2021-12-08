@@ -29,6 +29,10 @@ const colors = StyleSheet.create({
 });
 
 const spacing = StyleSheet.create({
+	marginBottom50: {
+		marginBottom: 50,
+	},
+
 	marginBottom20: {
 		marginBottom: 20,
 	},

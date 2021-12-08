@@ -192,7 +192,7 @@ class Profile extends Component {
 					)}
 				</View>
 
-				<View style={baseStyles.flexContainerRow}>
+				<View style={[baseStyles.flexContainerRow, spacing.marginBottom50]}>
 					<Text style={typography.pageHeading}>{displayName}</Text>
 				</View>
 
