@@ -126,7 +126,9 @@ export default function App() {
 		}
 		SplashScreen.hide();
 		const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-		fetchProfileImagePath();
+		if (user && auth().currentUser.emailVerified) {
+			fetchProfileImagePath();
+		}
 		return subscriber; // unsubscribe on unmount
 	});
 
