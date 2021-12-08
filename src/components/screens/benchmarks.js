@@ -67,6 +67,10 @@ class Benchmarks extends Component {
 			);
 		});
 
+		if (isLoading) {
+			return <PreLoader />;
+		}
+
 		return (
 			<View style={spacing.flex1}>
 				<View style={spacing.flex1}>
@@ -75,8 +79,6 @@ class Benchmarks extends Component {
 					<Text style={[typography.pageHeading, baseStyles.screenHeading]}>
 						Benchmarks
 					</Text>
-
-					{isLoading && <PreLoader />}
 
 					<ScrollView
 						showsVerticalScrollIndicator={false}
