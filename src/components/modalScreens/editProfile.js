@@ -16,10 +16,10 @@ import auth from '@react-native-firebase/auth';
 const EditProfile = ({route, navigation}) => {
 	const {displayName} = auth().currentUser;
 	const [name, setName] = useState(displayName);
-	const [isLoading, setIsLoading] = useState(false);
+	const [isLoading, IsLoading] = useState(false);
 
 	const saveUpdates = async () => {
-		setIsLoading(true);
+		IsLoading(true);
 
 		const update = {
 			displayName: name,
@@ -29,7 +29,7 @@ const EditProfile = ({route, navigation}) => {
 			.currentUser.updateProfile(update)
 			.then(response => {
 				console.log('Profile data set');
-				setIsLoading(false);
+				IsLoading(false);
 				navigation.dispatch(
 					CommonActions.navigate({
 						name: 'ProfileScreen',
@@ -39,7 +39,7 @@ const EditProfile = ({route, navigation}) => {
 			.catch(error => {
 				console.log('Updating profile data failed error => ', error);
 				Alert.alert('Error:', error.message);
-				setIsLoading(false);
+				IsLoading(false);
 			});
 	};
 
