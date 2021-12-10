@@ -7,10 +7,14 @@ import {CommonActions} from '@react-navigation/native';
 // Styles
 import {baseStyles} from '../../styles/main';
 
+// Firebase
+import auth from '@react-native-firebase/auth';
+
 const ProfileIcon = ({navigation, imagePath}) => {
+	const {photoURL} = auth().currentUser;
 	return (
 		<View>
-			{!imagePath && (
+			{!photoURL && (
 				<TouchableOpacity
 					activeOpacity={0.8}
 					onPress={() =>
@@ -29,7 +33,7 @@ const ProfileIcon = ({navigation, imagePath}) => {
 				</TouchableOpacity>
 			)}
 
-			{imagePath && (
+			{photoURL && (
 				<TouchableOpacity
 					activeOpacity={0.8}
 					onPress={() =>
@@ -39,7 +43,7 @@ const ProfileIcon = ({navigation, imagePath}) => {
 							}),
 						)
 					}>
-					<Image style={baseStyles.profileIcon} source={{uri: imagePath}} />
+					<Image style={baseStyles.profileIcon} source={{uri: photoURL}} />
 				</TouchableOpacity>
 			)}
 		</View>
