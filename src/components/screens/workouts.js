@@ -1,5 +1,5 @@
 // React
-import React, {Component} from 'react';
+import React from 'react';
 import {View, Text} from 'react-native';
 
 // Styles
@@ -8,25 +8,16 @@ import {typography, baseStyles} from '../../styles/main';
 // Partials
 import ProfileIcon from '../partials/profileIcon';
 
-class Workouts extends Component {
-	constructor(props) {
-		super();
+const Workouts = ({navigation}) => {
+	return (
+		<View>
+			<ProfileIcon navigation={navigation} />
 
-		this.state = {};
-	}
-
-	render() {
-		const {navigation, profileImagePath} = this.props;
-		return (
-			<View>
-				<ProfileIcon navigation={navigation} imagePath={profileImagePath} />
-
-				<Text style={[typography.pageHeading, baseStyles.screenHeading]}>
-					Workouts
-				</Text>
-			</View>
-		);
-	}
-}
+			<Text style={[typography.pageHeading, baseStyles.screenHeading]}>
+				Workouts
+			</Text>
+		</View>
+	);
+};
 
 export default Workouts;

@@ -1,7 +1,7 @@
 // dashboard.js
 
 // React
-import React, {Component} from 'react';
+import React from 'react';
 import {View, Text} from 'react-native';
 
 // Partials
@@ -10,25 +10,16 @@ import ProfileIcon from '../partials/profileIcon';
 // Styles
 import {baseStyles, typography} from '../../styles/main';
 
-class Dashboard extends Component {
-	constructor() {
-		super();
+const Dashboard = ({navigation}) => {
+	return (
+		<View>
+			<ProfileIcon navigation={navigation} />
 
-		this.state = {};
-	}
-
-	render() {
-		const {navigation, profileImagePath} = this.props;
-		return (
-			<View>
-				<ProfileIcon navigation={navigation} imagePath={profileImagePath} />
-
-				<Text style={[typography.pageHeading, baseStyles.screenHeading]}>
-					Dashboard
-				</Text>
-			</View>
-		);
-	}
-}
+			<Text style={[typography.pageHeading, baseStyles.screenHeading]}>
+				Dashboard
+			</Text>
+		</View>
+	);
+};
 
 export default Dashboard;

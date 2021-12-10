@@ -52,7 +52,7 @@ class Benchmarks extends Component {
 	}
 
 	render() {
-		const {navigation, profileImagePath} = this.props;
+		const {navigation} = this.props;
 		const {isLoading, benchmarksList} = this.state;
 		let sections = null;
 
@@ -74,7 +74,7 @@ class Benchmarks extends Component {
 		return (
 			<View style={spacing.flex1}>
 				<View style={spacing.flex1}>
-					<ProfileIcon navigation={navigation} imagePath={profileImagePath} />
+					<ProfileIcon navigation={navigation} />
 
 					<Text style={[typography.pageHeading, baseStyles.screenHeading]}>
 						Benchmarks

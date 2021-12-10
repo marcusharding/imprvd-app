@@ -10,7 +10,7 @@ import {baseStyles} from '../../styles/main';
 // Firebase
 import auth from '@react-native-firebase/auth';
 
-const ProfileIcon = ({navigation, imagePath}) => {
+const ProfileIcon = ({navigation}) => {
 	const {photoURL} = auth().currentUser;
 	return (
 		<View>

@@ -38,7 +38,7 @@ const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 // Bottom tabs stack
-const TabStack = ({profileImagePath}) => {
+const TabStack = () => {
 	return (
 		<Tab.Navigator
 			initialRouteName="Dashboard"
@@ -53,7 +53,7 @@ const TabStack = ({profileImagePath}) => {
 						<MaterialCommunityIcons name="home" color={color} size={26} />
 					),
 				}}>
-				{props => <Dashboard {...props} profileImagePath={profileImagePath} />}
+				{props => <Dashboard {...props} />}
 			</Tab.Screen>
 
 			<Tab.Screen
@@ -64,7 +64,7 @@ const TabStack = ({profileImagePath}) => {
 						<MaterialCommunityIcons name="poll" color={color} size={26} />
 					),
 				}}>
-				{props => <Benchmarks {...props} profileImagePath={profileImagePath} />}
+				{props => <Benchmarks {...props} />}
 			</Tab.Screen>
 
 			<Tab.Screen
@@ -79,7 +79,7 @@ const TabStack = ({profileImagePath}) => {
 						/>
 					),
 				}}>
-				{props => <Workouts {...props} profileImagePath={profileImagePath} />}
+				{props => <Workouts {...props} />}
 			</Tab.Screen>
 
 			<Tab.Screen
@@ -94,7 +94,7 @@ const TabStack = ({profileImagePath}) => {
 						/>
 					),
 				}}>
-				{props => <Social {...props} profileImagePath={profileImagePath} />}
+				{props => <Social {...props} />}
 			</Tab.Screen>
 		</Tab.Navigator>
 	);
@@ -103,7 +103,6 @@ const TabStack = ({profileImagePath}) => {
 export default function App() {
 	const [initializing, setInitializing] = useState(true);
 	const [user, setUser] = useState();
-	const [profileImagePath, setProfileImagePath] = useState(null);
 
 	const onAuthStateChanged = user => {
 		setUser(user);
@@ -128,18 +127,10 @@ export default function App() {
 			<NavigationContainer options={{headerShown: false}} theme={appTheme}>
 				<Stack.Navigator screenOptions={{headerShown: false}}>
 					<Stack.Screen name="DashboardScreen">
-						{props => (
-							<TabStack profileImagePath={profileImagePath} {...props} />
-						)}
+						{props => <TabStack {...props} />}
 					</Stack.Screen>
 					<Stack.Screen name="ProfileScreen">
-						{props => (
-							<Profile
-								profileImagePath={profileImagePath}
-								setProfileImagePath={setProfileImagePath}
-								{...props}
-							/>
-						)}
+						{props => <Profile {...props} />}
 					</Stack.Screen>
 					<Stack.Screen
 						name="AddNewBenchmarkScreen"
@@ -173,16 +164,10 @@ export default function App() {
 					component={EmailVerification}
 				/>
 				<Stack.Screen name="DashboardScreen">
-					{props => <TabStack profileImagePath={profileImagePath} {...props} />}
+					{props => <TabStack {...props} />}
 				</Stack.Screen>
 				<Stack.Screen name="ProfileScreen">
-					{props => (
-						<Profile
-							profileImagePath={profileImagePath}
-							setProfileImagePath={setProfileImagePath}
-							{...props}
-						/>
-					)}
+					{props => <Profile {...props} />}
 				</Stack.Screen>
 				<Stack.Screen
 					name="AddNewBenchmarkScreen"
