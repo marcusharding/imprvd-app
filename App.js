@@ -17,9 +17,6 @@ import auth from '@react-native-firebase/auth';
 // Partials
 import PreLoader from './src/components/partials/preLoader';
 
-// Scripts
-import {fetchImageDownloadUrl} from './src/scripts/userData';
-
 // Screens
 import Welcome from './src/components/screens/welcome';
 import SignUp from './src/components/screens/signup';
@@ -113,23 +110,12 @@ export default function App() {
 		if (initializing) setInitializing(false);
 	};
 
-	// To do - Think of better way to begin handling all user data that needs to be pulled into the app
-	// Is also creating the Can't perform a React state update on an unmounted component. error
-	const fetchProfileImagePath = () => {
-		fetchImageDownloadUrl(user).then(response => {
-			setProfileImagePath(response);
-		});
-	};
-
 	useEffect(() => {
 		if (Platform.OS === 'android') {
 			BackgroundColor.setColor('#121212');
 		}
 		SplashScreen.hide();
 		const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-		if (user && auth().currentUser.emailVerified) {
-			fetchProfileImagePath();
-		}
 		return subscriber; // unsubscribe on unmount
 	});
 
