@@ -72,6 +72,11 @@ class Login extends Component {
 				.catch(error => {
 					console.log(error);
 					Alert.alert('Error:', error.message);
+					this.setState({
+						isLoading: false,
+						email: '',
+						password: '',
+					});
 				});
 		}
 	};
