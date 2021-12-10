@@ -1,5 +1,5 @@
 // React
-import React, {Component} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {View, Text} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 
@@ -12,19 +12,13 @@ import AddNewBenchmarkIcon from '../partials/addNewBenchmarkIcon';
 import PreLoader from '../partials/preLoader';
 import ImprvdCarousel from '../partials/imprvdCarousel';
 
-class Benchmarks extends Component {
-	constructor() {
-		super();
+const Benchmarks = ({navigation}) => {
+	const [isLoading, setLoading] = useState(false);
+	const [benchmarksList, setBenchmarksList] = useState([]);
+	let sections = null;
 
-		this.state = {
-			benchmarksList: [],
-			isLoading: true,
-			index: 1,
-		};
-	}
-
-	fetchBenchmarksList = async () => {
-		const {benchmarksList} = this.state;
+	const fetchBenchmarksList = useCallback(async () => {
+		setLoading(true);
 		let counter = 0;
 
 		const response = await fetch(
@@ -39,23 +33,17 @@ class Benchmarks extends Component {
 			});
 			counter = counter + 1;
 			if (counter === count) {
-				this.setState({
-					benchmarksList: benchmarksList,
-					isLoading: false,
-				});
+				setBenchmarksList(benchmarksList);
+				setLoading(false);
 			}
 		});
-	};
+	}, [benchmarksList]);
 
-	componentDidMount() {
-		this.fetchBenchmarksList();
-	}
+	useEffect(() => {
+		fetchBenchmarksList();
+	}, [fetchBenchmarksList]);
 
-	render() {
-		const {navigation} = this.props;
-		const {isLoading, benchmarksList} = this.state;
-		let sections = null;
-
+	if (benchmarksList.length > 0) {
 		sections = benchmarksList.map(item => {
 			return (
 				<ImprvdCarousel
@@ -66,31 +54,29 @@ class Benchmarks extends Component {
 				/>
 			);
 		});
-
-		if (isLoading) {
-			return <PreLoader />;
-		}
-
-		return (
-			<View style={spacing.flex1}>
-				<View style={spacing.flex1}>
-					<ProfileIcon navigation={navigation} />
-
-					<Text style={[typography.pageHeading, baseStyles.screenHeading]}>
-						Benchmarks
-					</Text>
-
-					<ScrollView
-						showsVerticalScrollIndicator={false}
-						style={spacing.flex1}>
-						{!isLoading && sections}
-					</ScrollView>
-
-					{!isLoading && <AddNewBenchmarkIcon navigation={navigation} />}
-				</View>
-			</View>
-		);
 	}
-}
+
+	if (isLoading) {
+		return <PreLoader />;
+	}
+
+	return (
+		<View style={spacing.flex1}>
+			<View style={spacing.flex1}>
+				<ProfileIcon navigation={navigation} />
+
+				<Text style={[typography.pageHeading, baseStyles.screenHeading]}>
+					Benchmarks
+				</Text>
+
+				<ScrollView showsVerticalScrollIndicator={false} style={spacing.flex1}>
+					{!isLoading && sections}
+				</ScrollView>
+
+				{!isLoading && <AddNewBenchmarkIcon navigation={navigation} />}
+			</View>
+		</View>
+	);
+};
 
 export default Benchmarks;
