@@ -1,5 +1,5 @@
 // React
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Text, View, TouchableOpacity, Alert} from 'react-native';
 import {CommonActions} from '@react-navigation/native';
 
@@ -9,18 +9,13 @@ import {baseStyles, typography, form, spacing} from '../../styles/main';
 // Partials
 import PreLoader from '../partials/preLoader';
 
-class Welcome extends Component {
-	constructor() {
-		super();
+const Welcome = ({navigation}) => {
+	const [isLoading, setLoading] = useState(false);
+	const [title, setTitle] = useState('');
+	const [subTitle, setSubTitle] = useState('');
 
-		this.state = {
-			title: '',
-			subTitle: '',
-			isLoading: true,
-		};
-	}
-
-	fetchData = () => {
+	const fetchData = () => {
+		setLoading(true);
 		fetch(
 			'https://contentmanagement.getimprvd.app/wp-json/wp/v2/app_screens?slug=welcome',
 		)
@@ -28,71 +23,62 @@ class Welcome extends Component {
 			.then(json => {
 				const data = json[0].acf;
 
-				this.setState({
-					title: data.screen_title,
-					subTitle: data.screen_subtitle,
-					isLoading: false,
-				});
+				setTitle(data.screen_title);
+				setSubTitle(data.screen_subtitle);
+				setLoading(false);
 			})
 			.catch(error => {
 				console.log(error);
 				Alert.alert('Error:', error.message);
-				this.setState({
-					isLoading: false,
-				});
+				setLoading(false);
 			});
 	};
 
-	componentDidMount() {
-		this.fetchData();
+	useEffect(() => {
+		fetchData();
+	}, []);
+
+	if (isLoading) {
+		return <PreLoader />;
 	}
 
-	render() {
-		const {isLoading, title, subTitle} = this.state;
-		const {navigation} = this.props;
+	return (
+		<View style={baseStyles.flexContainer}>
+			<Text style={[typography.pageHeading, spacing.marginBottom20]}>
+				{title}
+			</Text>
 
-		if (isLoading) {
-			return <PreLoader />;
-		}
+			<Text style={[typography.subHeading, spacing.marginBottom20]}>
+				{subTitle}
+			</Text>
 
-		return (
-			<View style={baseStyles.flexContainer}>
-				<Text style={[typography.pageHeading, spacing.marginBottom20]}>
-					{title}
-				</Text>
+			<TouchableOpacity
+				activeOpacity={0.8}
+				onPress={() =>
+					navigation.dispatch(
+						CommonActions.navigate({
+							name: 'SignupScreen',
+						}),
+					)
+				}
+				style={baseStyles.buttonContainer}>
+				<Text style={typography.buttonText}>Sign Up</Text>
+			</TouchableOpacity>
 
-				<Text style={[typography.subHeading, spacing.marginBottom20]}>
-					{subTitle}
-				</Text>
-
-				<TouchableOpacity
-					activeOpacity={0.8}
-					onPress={() =>
-						navigation.dispatch(
-							CommonActions.navigate({
-								name: 'SignupScreen',
-							}),
-						)
-					}
-					style={baseStyles.buttonContainer}>
-					<Text style={typography.buttonText}>Sign Up</Text>
-				</TouchableOpacity>
-
-				<Text
-					style={form.inputText}
-					onPress={() =>
-						navigation.dispatch(
-							CommonActions.navigate({
-								name: 'LoginScreen',
-							}),
-						)
-					}>
-					Already Registered?
-					<Text style={form.inputTextSpan}> Click here to login</Text>
-				</Text>
-			</View>
-		);
-	}
-}
+			<Text
+				style={form.inputText}
+				onPress={() =>
+					navigation.dispatch(
+						CommonActions.navigate({
+							name: 'LoginScreen',
+						}),
+					)
+				}>
+				Already Registered?
+				<Text style={form.inputTextSpan}> Click here to login</Text>
+			</Text>
+		</View>
+	);
+};
 
 export default Welcome;
