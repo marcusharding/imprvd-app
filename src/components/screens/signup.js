@@ -32,9 +32,9 @@ const SignUp = ({navigation}) => {
 					});
 					console.log('User registered successfully!');
 					setLoading(false);
-					setDisplayName(false);
-					setEmail(false);
-					setPassword(false);
+					setDisplayName('');
+					setEmail('');
+					setPassword('');
 
 					auth()
 						.currentUser.sendEmailVerification()
