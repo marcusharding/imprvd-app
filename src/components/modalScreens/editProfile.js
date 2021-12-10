@@ -13,7 +13,7 @@ import PreLoader from '../partials/preLoader';
 // Firebase
 import auth from '@react-native-firebase/auth';
 
-const EditProfile = ({route, navigation}) => {
+const EditProfile = ({navigation}) => {
 	const {displayName} = auth().currentUser;
 	const [name, setName] = useState(displayName);
 	const [isLoading, IsLoading] = useState(false);

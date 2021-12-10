@@ -72,6 +72,7 @@ const AddNewBenchmarkFields = ({
 		}
 	};
 
+	// Whats this gunna do chief
 	const deleteBenchmark = async () => {};
 
 	const fields = benchmarkFields.map(field => {
