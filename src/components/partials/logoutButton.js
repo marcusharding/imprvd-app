@@ -15,7 +15,7 @@ const LogoutButton = ({navigation}) => {
 			.then(() => {
 				console.log('User signed out');
 				CommonActions.reset({
-					index: 0,
+					index: 1,
 					routes: [{name: 'LoginScreen'}],
 				});
 				navigation.dispatch(

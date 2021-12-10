@@ -19,7 +19,7 @@ class Benchmarks extends Component {
 		this.state = {
 			benchmarksList: [],
 			isLoading: true,
-			index: 0,
+			index: 1,
 		};
 	}
 

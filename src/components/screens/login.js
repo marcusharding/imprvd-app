@@ -53,7 +53,7 @@ class Login extends Component {
 
 					if (isEmailVerified) {
 						CommonActions.reset({
-							index: 0,
+							index: 1,
 							routes: [{name: 'DashboardScreen'}],
 						});
 						navigation.dispatch(

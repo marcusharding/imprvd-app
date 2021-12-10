@@ -65,7 +65,7 @@ class AddNewBenchmarkFields extends Component {
 				.then(() => {
 					console.log('data set');
 					CommonActions.reset({
-						index: 0,
+						index: 1,
 						routes: [{name: 'Benchmarks'}],
 					});
 					navigation.dispatch(

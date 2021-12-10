@@ -35,7 +35,7 @@ const BenchmarkSingle = ({route, navigation}) => {
 				setLoading(true);
 				console.log('Benchmark Deleted');
 				CommonActions.reset({
-					index: 0,
+					index: 1,
 					routes: [{name: 'Benchmarks'}],
 				});
 				navigation.dispatch(
