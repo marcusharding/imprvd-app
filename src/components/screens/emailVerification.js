@@ -21,7 +21,7 @@ import PreLoader from '../partials/preLoader';
 import {baseStyles, typography, form, spacing} from '../../styles/main';
 
 const EmailVerification = ({navigation}) => {
-	const user = auth().currentUser;
+	let user = auth().currentUser;
 	const [appState, setAppstate] = useState(AppState.currentState);
 	const [isLoading, setLoading] = useState(false);
 	const [title, setTitle] = useState('');
@@ -49,27 +49,23 @@ const EmailVerification = ({navigation}) => {
 			});
 	};
 
-	const checkEmailVerified = useCallback(() => {
-		if (user) {
-			user.reload().then(() => {
-				console.log(user.emailVerified);
-
-				if (user.emailVerified) {
-					CommonActions.reset({
-						index: 1,
-						routes: [{name: 'DashboardScreen'}],
-					});
-					navigation.dispatch(
-						CommonActions.navigate({
-							name: 'DashboardScreen',
-						}),
-					);
-				} else {
-					console.log('Email hasnt been verified');
-				}
+	const checkEmailVerified = async () => {
+		await user.reload();
+		user = await auth().currentUser;
+		if (user.emailVerified === true) {
+			CommonActions.reset({
+				index: 1,
+				routes: [{name: 'DashboardScreen'}],
 			});
+			navigation.dispatch(
+				CommonActions.navigate({
+					name: 'DashboardScreen',
+				}),
+			);
+		} else {
+			console.log('Email hasnt been verified');
 		}
-	}, [navigation, user]);
+	};
 
 	const reSendVerificationEmail = () => {
 		auth()
@@ -84,15 +80,22 @@ const EmailVerification = ({navigation}) => {
 			});
 	};
 
+	const handleAppStateChange = state => {
+		setAppstate(state);
+	};
+
 	useEffect(() => {
-		fetchData();
+		const unsubscribe = AppState.addEventListener(
+			'change',
+			handleAppStateChange,
+		);
+		return () => unsubscribe;
 	}, []);
 
-	useFocusEffect(
-		useCallback(() => {
-			checkEmailVerified();
-		}, [checkEmailVerified]),
-	);
+	useEffect(() => {
+		fetchData();
+		checkEmailVerified();
+	});
 
 	if (isLoading) {
 		return <PreLoader />;
