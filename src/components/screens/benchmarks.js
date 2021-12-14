@@ -1,5 +1,5 @@
 // React
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 
@@ -12,36 +12,29 @@ import AddNewBenchmarkIcon from '../partials/addNewBenchmarkIcon';
 import PreLoader from '../partials/preLoader';
 import ImprvdCarousel from '../partials/imprvdCarousel';
 
+// Scripts
+import {fetchBenchmarksList} from '../../scripts/benchmarks';
+
 const Benchmarks = ({navigation}) => {
 	const [isLoading, setLoading] = useState(false);
 	const [benchmarksList, setBenchmarksList] = useState([]);
 	let sections = null;
 
-	const fetchBenchmarksList = useCallback(async () => {
+	const getBenchmarksList = async () => {
 		setLoading(true);
-		let counter = 0;
-
-		const response = await fetch(
+		const list = await fetchBenchmarksList(
 			'https://contentmanagement.getimprvd.app/wp-json/wp/v2/app_benchmarks',
 		);
-		const json = await response.json();
-		const count = json.length;
-		json.map(benchmark => {
-			benchmarksList.push({
-				slug: benchmark.slug,
-				label: benchmark.title.rendered,
-			});
-			counter = counter + 1;
-			if (counter === count) {
-				setBenchmarksList(benchmarksList);
-				setLoading(false);
-			}
-		});
-	}, [benchmarksList]);
+
+		if (list) {
+			setLoading(false);
+			setBenchmarksList(list);
+		}
+	};
 
 	useEffect(() => {
-		fetchBenchmarksList();
-	}, [fetchBenchmarksList]);
+		getBenchmarksList();
+	}, []);
 
 	if (benchmarksList.length > 0) {
 		sections = benchmarksList.map(item => {
