@@ -5,7 +5,7 @@ import {View, Text, ScrollView, SafeAreaView, Alert} from 'react-native';
 // Partials
 import PreLoader from '../partials/preLoader';
 import GoBackIcon from '../partials/goBackIcon';
-import DropDownSelector from '../partials/dropDownPicker';
+import DropDownSelector from '../partials/dropDownSelector';
 import AddNewBenchmarkFields from './addNewBenchmarkFields';
 
 // Styles
@@ -23,20 +23,21 @@ const AddNewBenchmark = ({navigation}) => {
 	const [isLoading, setLoading] = useState(false);
 	const [benchmarksList, setBenchmarksList] = useState([]);
 	const [benchmarkFields, setBenchmarkFields] = useState([]);
-	const [selectedBenchmark, setSelectedBenchmark] = useState('gymnastics');
+	const [selectedBenchmark, setSelectedBenchmark] = useState(null);
 
 	const getBenchmarkFields = async tagIds => {
 		setBenchmarkFields([]);
 		const fields = await fetchBenchmarkFields(tagIds);
 		if (fields) {
 			setBenchmarkFields(fields);
+			setLoading(false);
 		}
 	};
 
-	const getBenchmarkTags = async () => {
+	const getBenchmarkTags = async category => {
 		setLoading(true);
 		const tags = await fetchBenchmarkTags(
-			`https://contentmanagement.getimprvd.app/wp-json/wp/v2/app_benchmarks?slug=${selectedBenchmark}`,
+			`https://contentmanagement.getimprvd.app/wp-json/wp/v2/app_benchmarks?slug=${category}`,
 		);
 
 		if (tags) {
@@ -44,11 +45,10 @@ const AddNewBenchmark = ({navigation}) => {
 		}
 	};
 
-	// const _setSelectedBenchmark = callback => {
-	// 	// setSelectedBenchmark(callback(selectedBenchmark));
-	// 	// fetchBenchmarkTags(callback);
-	// 	console.log(callback(selectedBenchmark));
-	// };
+	const _setSelectedBenchmark = callback => {
+		setSelectedBenchmark(callback(selectedBenchmark));
+		getBenchmarkTags(callback(selectedBenchmark));
+	};
 
 	const getBenchmarksList = async () => {
 		const list = await fetchBenchmarksList(
@@ -70,7 +70,6 @@ const AddNewBenchmark = ({navigation}) => {
 				const data = json[0].acf;
 				setSubTitle(data.screen_subtitle);
 			})
-			.then(getBenchmarksList())
 			.catch(error => {
 				console.log(error);
 				Alert.alert('Error:', error.message);
@@ -80,7 +79,7 @@ const AddNewBenchmark = ({navigation}) => {
 	const fetchData = () => {
 		setLoading(true);
 		fetchScreenData();
-		getBenchmarkTags();
+		getBenchmarksList();
 	};
 
 	useEffect(() => {
@@ -103,11 +102,11 @@ const AddNewBenchmark = ({navigation}) => {
 				{subTitle}
 			</Text>
 			<View style={spacing.marginBottom20}>
-				{/* <DropDownSelector
-					list={benchmarksList}
-					setSelectedBenchmark={_setSelectedBenchmark}
+				<DropDownSelector
 					selectedBenchmark={selectedBenchmark}
-				/> */}
+					_setSelectedBenchmark={_setSelectedBenchmark}
+					benchmarksList={benchmarksList}
+				/>
 			</View>
 			<ScrollView>
 				<AddNewBenchmarkFields

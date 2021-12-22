@@ -6,8 +6,8 @@ export const fetchBenchmarksList = async url => {
 	if (json) {
 		json.map(benchmark => {
 			list.push({
-				slug: benchmark.slug,
 				label: benchmark.title.rendered,
+				value: benchmark.slug,
 			});
 		});
 		return list;
