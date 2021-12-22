@@ -1,5 +1,5 @@
 // React
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
 	Text,
 	View,
@@ -9,7 +9,7 @@ import {
 	Alert,
 } from 'react-native';
 import {openInbox} from 'react-native-email-link';
-import {CommonActions, useFocusEffect} from '@react-navigation/native';
+import {CommonActions} from '@react-navigation/native';
 
 // Firebase
 import auth from '@react-native-firebase/auth';

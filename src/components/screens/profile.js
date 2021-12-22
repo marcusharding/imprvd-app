@@ -1,5 +1,5 @@
 // React
-import React, {useState} from 'react';
+import React from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {CommonActions} from '@react-navigation/native';
@@ -18,7 +18,6 @@ import {
 import auth from '@react-native-firebase/auth';
 
 // Partials
-import PreLoader from '../partials/preLoader';
 import GoBackIcon from '../partials/goBackIcon';
 import LogoutButton from '../partials/logoutButton';
 

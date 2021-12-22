@@ -1,5 +1,6 @@
-import DropDownPicker from 'react-native-dropdown-picker';
+// React
 import React, {useState} from 'react';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 const DropDownSelector = ({
 	benchmarksList,
