@@ -1,5 +1,5 @@
 // React
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 
@@ -12,50 +12,31 @@ import AddNewBenchmarkIcon from '../partials/addNewBenchmarkIcon';
 import PreLoader from '../partials/preLoader';
 import ImprvdCarousel from '../partials/imprvdCarousel';
 
-class Benchmarks extends Component {
-	constructor() {
-		super();
+// Scripts
+import {fetchBenchmarksList} from '../../scripts/benchmarks';
 
-		this.state = {
-			benchmarksList: [],
-			isLoading: true,
-			index: 1,
-		};
-	}
+const Benchmarks = ({navigation}) => {
+	const [isLoading, setLoading] = useState(false);
+	const [benchmarksList, setBenchmarksList] = useState([]);
+	let sections = null;
 
-	fetchBenchmarksList = async () => {
-		const {benchmarksList} = this.state;
-		let counter = 0;
-
-		const response = await fetch(
+	const getBenchmarksList = async () => {
+		setLoading(true);
+		const list = await fetchBenchmarksList(
 			'https://contentmanagement.getimprvd.app/wp-json/wp/v2/app_benchmarks',
 		);
-		const json = await response.json();
-		const count = json.length;
-		json.map(benchmark => {
-			benchmarksList.push({
-				slug: benchmark.slug,
-				label: benchmark.title.rendered,
-			});
-			counter = counter + 1;
-			if (counter === count) {
-				this.setState({
-					benchmarksList: benchmarksList,
-					isLoading: false,
-				});
-			}
-		});
+
+		if (list) {
+			setLoading(false);
+			setBenchmarksList(list);
+		}
 	};
 
-	componentDidMount() {
-		this.fetchBenchmarksList();
-	}
+	useEffect(() => {
+		getBenchmarksList();
+	}, []);
 
-	render() {
-		const {navigation, profileImagePath} = this.props;
-		const {isLoading, benchmarksList} = this.state;
-		let sections = null;
-
+	if (benchmarksList.length > 0) {
 		sections = benchmarksList.map(item => {
 			return (
 				<ImprvdCarousel
@@ -66,31 +47,29 @@ class Benchmarks extends Component {
 				/>
 			);
 		});
-
-		if (isLoading) {
-			return <PreLoader />;
-		}
-
-		return (
-			<View style={spacing.flex1}>
-				<View style={spacing.flex1}>
-					<ProfileIcon navigation={navigation} imagePath={profileImagePath} />
-
-					<Text style={[typography.pageHeading, baseStyles.screenHeading]}>
-						Benchmarks
-					</Text>
-
-					<ScrollView
-						showsVerticalScrollIndicator={false}
-						style={spacing.flex1}>
-						{!isLoading && sections}
-					</ScrollView>
-
-					{!isLoading && <AddNewBenchmarkIcon navigation={navigation} />}
-				</View>
-			</View>
-		);
 	}
-}
+
+	if (isLoading) {
+		return <PreLoader />;
+	}
+
+	return (
+		<View style={spacing.flex1}>
+			<View style={spacing.flex1}>
+				<ProfileIcon navigation={navigation} />
+
+				<Text style={[typography.pageHeading, baseStyles.screenHeading]}>
+					Benchmarks
+				</Text>
+
+				<ScrollView showsVerticalScrollIndicator={false} style={spacing.flex1}>
+					{!isLoading && sections}
+				</ScrollView>
+
+				{!isLoading && <AddNewBenchmarkIcon navigation={navigation} />}
+			</View>
+		</View>
+	);
+};
 
 export default Benchmarks;

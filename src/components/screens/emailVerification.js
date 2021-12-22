@@ -1,5 +1,5 @@
 // React
-import React, {Component} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
 	Text,
 	View,
@@ -20,20 +20,16 @@ import PreLoader from '../partials/preLoader';
 // Styles
 import {baseStyles, typography, form, spacing} from '../../styles/main';
 
-class EmailVerification extends Component {
-	constructor() {
-		super();
+const EmailVerification = ({navigation}) => {
+	let user = auth().currentUser;
+	const [appState, setAppstate] = useState(AppState.currentState);
+	const [isLoading, setLoading] = useState(false);
+	const [title, setTitle] = useState('');
+	const [subTitle, setSubTitle] = useState('');
+	const [headerIcon, setHeaderIcon] = useState(null);
+	const [resendVerification, setResendVerification] = useState(false);
 
-		this.state = {
-			appState: AppState.currentState,
-			title: '',
-			subTitle: '',
-			headerIcon: null,
-			isLoading: true,
-		};
-	}
-
-	fetchData() {
+	const fetchData = () => {
 		fetch(
 			'https://contentmanagement.getimprvd.app/wp-json/wp/v2/app_screens?slug=email-verification',
 		)
@@ -41,131 +37,102 @@ class EmailVerification extends Component {
 			.then(json => {
 				const data = json[0].acf;
 
-				this.setState({
-					title: data.screen_title,
-					subTitle: data.screen_subtitle,
-					headerIcon: data.screen_header_icon,
-					isLoading: false,
-				});
+				setTitle(data.screen_title);
+				setSubTitle(data.screen_subtitle);
+				setHeaderIcon(data.screen_header_icon);
+				setLoading(false);
 			})
 			.catch(error => {
 				console.log(error);
 				Alert.alert('Error:', error.message);
-				this.setState({
-					isLoading: false,
-				});
+				setLoading(false);
 			});
-	}
+	};
 
-	checkAppState() {
-		this.appStateSubscription = AppState.addEventListener(
-			'change',
-			nextAppState => {
-				if (
-					this.state.appState.match(/inactive|background/) &&
-					nextAppState === 'active'
-				) {
-					console.log('App has come to the foreground!');
-					this.checkEmailVerified();
-				}
-				this.setState({appState: nextAppState});
-			},
-		);
-	}
-
-	componentWillUnmount() {
-		this.appStateSubscription.remove();
-	}
-
-	checkEmailVerified() {
-		const user = auth().currentUser;
-		const {navigation} = this.props;
-		let emailVerified = user.emailVerified;
-
-		if (user) {
-			user.reload().then(() => {
-				emailVerified = user.emailVerified;
-				console.log(user.emailVerified);
-
-				if (emailVerified) {
-					CommonActions.reset({
-						index: 1,
-						routes: [{name: 'DashboardScreen'}],
-					});
-					navigation.dispatch(
-						CommonActions.navigate({
-							name: 'DashboardScreen',
-						}),
-					);
-				} else {
-					console.log('Email hasnt been verified');
-				}
+	const checkEmailVerified = async () => {
+		await user.reload();
+		user = await auth().currentUser;
+		if (user.emailVerified === true) {
+			CommonActions.reset({
+				index: 1,
+				routes: [{name: 'DashboardScreen'}],
 			});
+			navigation.dispatch(
+				CommonActions.navigate({
+					name: 'DashboardScreen',
+				}),
+			);
+		} else {
+			console.log('Email hasnt been verified');
 		}
-	}
+	};
 
-	reSendVerificationEmail() {
+	const reSendVerificationEmail = () => {
 		auth()
 			.currentUser.sendEmailVerification()
 			.then(() => {
 				console.log('Verification email sent');
-				this.setState({reSendVerificationEmail: true});
+				setResendVerification(true);
 			})
 			.catch(error => {
 				console.log(error.message);
 				Alert.alert('Error:', error.message);
 			});
-	}
+	};
 
-	componentDidMount() {
-		this.checkAppState();
-		this.checkEmailVerified();
-		this.fetchData();
-	}
+	const handleAppStateChange = state => {
+		setAppstate(state);
+	};
 
-	render() {
-		const {title, subTitle, headerIcon, isLoading} = this.state;
-		const user = auth().currentUser;
-
-		if (isLoading) {
-			return <PreLoader />;
-		}
-
-		return (
-			<View style={baseStyles.flexContainer}>
-				<Text style={[typography.pageHeading, spacing.marginBottom20]}>
-					{title}
-				</Text>
-
-				<Image
-					source={{uri: headerIcon}}
-					style={[baseStyles.headerIcon, spacing.marginBottom20]}
-				/>
-
-				<Text style={[typography.subHeading, spacing.marginBottom20]}>
-					Hey {user.displayName}.
-				</Text>
-
-				<Text style={[typography.subHeading, spacing.marginBottom20]}>
-					{subTitle}
-				</Text>
-
-				<TouchableOpacity
-					activeOpacity={0.8}
-					onPress={() => openInbox()}
-					style={baseStyles.buttonContainer}>
-					<Text style={typography.buttonText}>Verify Email</Text>
-				</TouchableOpacity>
-
-				<Text
-					style={form.inputText}
-					onPress={() => this.reSendVerificationEmail()}>
-					Not received an email?
-					<Text style={form.inputTextSpan}> Click here to re-send</Text>
-				</Text>
-			</View>
+	useEffect(() => {
+		const unsubscribe = AppState.addEventListener(
+			'change',
+			handleAppStateChange,
 		);
+		return () => unsubscribe;
+	}, []);
+
+	useEffect(() => {
+		fetchData();
+		checkEmailVerified();
+	});
+
+	if (isLoading) {
+		return <PreLoader />;
 	}
-}
+
+	return (
+		<View style={baseStyles.flexContainer}>
+			<Text style={[typography.pageHeading, spacing.marginBottom20]}>
+				{title}
+			</Text>
+
+			<Image
+				source={{uri: headerIcon}}
+				style={[baseStyles.headerIcon, spacing.marginBottom20]}
+			/>
+
+			<Text style={[typography.subHeading, spacing.marginBottom20]}>
+				Hey {user.displayName}.
+			</Text>
+
+			<Text style={[typography.subHeading, spacing.marginBottom20]}>
+				{subTitle}
+			</Text>
+
+			<TouchableOpacity
+				activeOpacity={0.8}
+				onPress={() => openInbox()}
+				style={baseStyles.buttonContainer}>
+				<Text style={typography.buttonText}>Verify Email</Text>
+			</TouchableOpacity>
+
+			<Text style={form.inputText} onPress={() => reSendVerificationEmail()}>
+				Not received an email?
+				<Text style={form.inputTextSpan}> Click here to re-send</Text>
+			</Text>
+		</View>
+	);
+};
 
 export default EmailVerification;
