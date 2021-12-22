@@ -43,7 +43,7 @@ const Benchmarks = ({navigation}) => {
 					key={item.label}
 					label={item.label}
 					navigation={navigation}
-					category={item.slug}
+					category={item.value}
 				/>
 			);
 		});
