@@ -8,6 +8,9 @@ import firestore from '@react-native-firebase/firestore';
 // Script
 import {slugifyString} from './helpers';
 
+// Constants
+import {UID} from '../constants/constants';
+
 export const fetchBenchmarksList = async url => {
 	const response = await fetch(url);
 	const json = await response.json();
@@ -95,6 +98,29 @@ export const addNewBenchmark = async (fieldValues, selectedBenchmark) => {
 	} else {
 		Alert.alert('Please fill out at least benchmark name field');
 	}
+};
 
-	return null;
+export const deleteBenchmark = async (object, slug) => {
+	const {uid} = auth().currentUser;
+	const collection = `user-${uid}`;
+	const doc = `benchmarks-${object.category}`;
+
+	const response = await firestore()
+		.collection(collection)
+		.doc(doc)
+		.update({
+			[slug]: firestore.FieldValue.delete(),
+		})
+		.then(() => {
+			console.log('Benchmark Deleted');
+			return true;
+		})
+		.catch(error => {
+			console.log('Error deleting benchmark => ', error);
+			Alert.alert('Error:', error.message);
+		});
+
+	if (response) {
+		return true;
+	}
 };

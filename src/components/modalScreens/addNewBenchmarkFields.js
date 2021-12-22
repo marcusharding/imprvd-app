@@ -28,9 +28,9 @@ const AddNewBenchmarkFields = ({
 	};
 
 	const _addNewBenchmark = async () => {
-		const add = await addNewBenchmark(fieldValues, selectedBenchmark);
+		const response = await addNewBenchmark(fieldValues, selectedBenchmark);
 
-		if (add) {
+		if (response) {
 			CommonActions.reset({
 				index: 1,
 				routes: [{name: 'Benchmarks'}],
