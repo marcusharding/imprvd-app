@@ -179,6 +179,7 @@ export default function App() {
 					name="BenchmarkSingleScreen"
 					component={BenchmarkSingle}
 				/>
+				<Stack.Screen name="EditProfileScreen" component={EditProfile} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	);

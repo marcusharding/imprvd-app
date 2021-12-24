@@ -96,3 +96,24 @@ export const removeDisplayImage = async () => {
 			});
 	}
 };
+
+export const updateProfilData = async name => {
+	const update = {
+		displayName: name,
+	};
+
+	const promise = await auth()
+		.currentUser.updateProfile(update)
+		.then(response => {
+			console.log('Profile data set');
+			return true;
+		})
+		.catch(error => {
+			console.log('Updating profile data failed => ', error);
+			Alert.alert('Error:', error.message);
+		});
+
+	if (promise) {
+		return true;
+	}
+};

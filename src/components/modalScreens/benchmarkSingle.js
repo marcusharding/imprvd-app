@@ -1,5 +1,5 @@
 // React
-import React, {useState} from 'react';
+import React from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import {CommonActions} from '@react-navigation/native';
 
@@ -8,13 +8,11 @@ import {baseStyles, spacing, typography} from '../../styles/main';
 
 // Partials
 import GoBackIcon from '../partials/goBackIcon';
-import PreLoader from '../partials/preLoader';
 
 // Scripts
 import {deleteBenchmark} from '../../scripts/benchmarks';
 
 const BenchmarkSingle = ({route, navigation}) => {
-	const [isLoading, setLoading] = useState(false);
 	const data = route.params.data;
 	const object = route.params.object;
 	const slug = route.params.slug;
@@ -34,10 +32,6 @@ const BenchmarkSingle = ({route, navigation}) => {
 			);
 		}
 	};
-
-	if (isLoading) {
-		return <PreLoader />;
-	}
 
 	return (
 		<View>

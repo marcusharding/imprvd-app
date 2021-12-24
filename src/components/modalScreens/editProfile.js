@@ -1,6 +1,6 @@
 // React
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, Alert, TextInput} from 'react-native';
+import {View, Text, TouchableOpacity, TextInput} from 'react-native';
 import {CommonActions} from '@react-navigation/native';
 
 // Styles
@@ -13,34 +13,26 @@ import PreLoader from '../partials/preLoader';
 // Firebase
 import auth from '@react-native-firebase/auth';
 
+// Scripts
+import {updateProfilData} from '../../scripts/profileData';
+
 const EditProfile = ({navigation}) => {
 	const {displayName} = auth().currentUser;
 	const [name, setName] = useState(displayName);
-	const [isLoading, IsLoading] = useState(false);
+	const [isLoading, setLoading] = useState(false);
 
-	const saveUpdates = async () => {
-		IsLoading(true);
+	const _updateProfilData = async () => {
+		setLoading(true);
+		const response = await updateProfilData(name);
 
-		const update = {
-			displayName: name,
-		};
-
-		const promise = await auth()
-			.currentUser.updateProfile(update)
-			.then(response => {
-				console.log('Profile data set');
-				IsLoading(false);
-				navigation.dispatch(
-					CommonActions.navigate({
-						name: 'ProfileScreen',
-					}),
-				);
-			})
-			.catch(error => {
-				console.log('Updating profile data failed error => ', error);
-				Alert.alert('Error:', error.message);
-				IsLoading(false);
-			});
+		if (response) {
+			setLoading(false);
+			navigation.dispatch(
+				CommonActions.navigate({
+					name: 'ProfileScreen',
+				}),
+			);
+		}
 	};
 
 	if (isLoading) {
@@ -51,7 +43,9 @@ const EditProfile = ({navigation}) => {
 		<View>
 			<View style={profile.header}>
 				<GoBackIcon navigation={navigation} />
-				<TouchableOpacity activeOpacity={0.8} onPress={() => saveUpdates()}>
+				<TouchableOpacity
+					activeOpacity={0.8}
+					onPress={() => _updateProfilData()}>
 					<Text style={[typography.subHeading, colors.lightBlue]}>
 						Save updates
 					</Text>
