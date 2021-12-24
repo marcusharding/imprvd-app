@@ -6,13 +6,15 @@ import {Alert} from 'react-native';
 import storage from '@react-native-firebase/storage';
 import auth from '@react-native-firebase/auth';
 
-// Global variables
-const fileName = auth().currentUser.uid + '_' + 'profile_image';
-const reference = storage().ref(fileName);
+// Constants
+import {
+	PROFILE_IMAGE_FILENAME,
+	PROFILE_IMAGE_REFERENCE,
+} from '../constants/constants';
 
 const fetchImageDownloadUrl = async () => {
 	const update = await storage()
-		.ref(fileName)
+		.ref(PROFILE_IMAGE_FILENAME)
 		.getDownloadURL()
 		.then(response => {
 			return {photoURL: response};
@@ -35,7 +37,7 @@ const fetchImageDownloadUrl = async () => {
 };
 
 const uploadImageToStorage = path => {
-	const task = reference.putFile(path);
+	const task = PROFILE_IMAGE_REFERENCE.putFile(path);
 
 	task
 		.then(() => {
@@ -67,14 +69,13 @@ export const chooseDisplayImage = () => {
 			console.log('ImagePicker Error: ', response.errorMessage);
 		} else {
 			const path = response.assets[0].uri;
-			uploadImageToStorage(path, fileName);
+			uploadImageToStorage(path, PROFILE_IMAGE_FILENAME);
 		}
 	});
 };
 
 export const removeDisplayImage = async () => {
-	const update = await reference
-		.delete()
+	const update = await PROFILE_IMAGE_REFERENCE.delete()
 		.then(() => {
 			console.log('File deleted succesfully');
 			return {photoURL: null};

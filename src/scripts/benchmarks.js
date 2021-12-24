@@ -2,18 +2,16 @@
 import {Alert} from 'react-native';
 
 // Firebase
-import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
 // Script
-import {slugifyString} from './helpers';
+import {slugifyString, fetchUrlToJson} from './helpers';
 
 // Constants
-import {UID} from '../constants/constants';
+import {COLLECTION} from '../constants/constants';
 
 export const fetchBenchmarksList = async url => {
-	const response = await fetch(url);
-	const json = await response.json();
+	const json = await fetchUrlToJson(url);
 	const list = [];
 
 	if (json) {
@@ -29,8 +27,7 @@ export const fetchBenchmarksList = async url => {
 
 // These need poper handling of catching errors
 export const fetchBenchmarkTags = async url => {
-	const response = await fetch(url);
-	const json = await response.json();
+	const json = await fetchUrlToJson(url);
 
 	if (json) {
 		return json[0].tags;
@@ -58,7 +55,7 @@ export const fetchBenchmarkFields = async tagIds => {
 	}
 };
 
-const setBenchmark = async (value, collection, doc, fieldValues) => {
+const setBenchmark = async (value, doc, fieldValues) => {
 	const data = {
 		[value]: {
 			...fieldValues,
@@ -66,7 +63,7 @@ const setBenchmark = async (value, collection, doc, fieldValues) => {
 	};
 
 	const response = await firestore()
-		.collection(collection)
+		.collection(COLLECTION)
 		.doc(doc)
 		.set(data, {merge: true})
 		.then(() => {
@@ -84,13 +81,11 @@ const setBenchmark = async (value, collection, doc, fieldValues) => {
 };
 
 export const addNewBenchmark = async (fieldValues, selectedBenchmark) => {
-	const {uid} = auth().currentUser;
-	const collection = `user-${uid}`;
 	const doc = `benchmarks-${selectedBenchmark}`;
 
 	if (fieldValues.name) {
 		const value = slugifyString(fieldValues.name);
-		const response = await setBenchmark(value, collection, doc, fieldValues);
+		const response = await setBenchmark(value, doc, fieldValues);
 
 		if (response) {
 			return true;
@@ -101,12 +96,10 @@ export const addNewBenchmark = async (fieldValues, selectedBenchmark) => {
 };
 
 export const deleteBenchmark = async (object, slug) => {
-	const {uid} = auth().currentUser;
-	const collection = `user-${uid}`;
 	const doc = `benchmarks-${object.category}`;
 
 	const response = await firestore()
-		.collection(collection)
+		.collection(COLLECTION)
 		.doc(doc)
 		.update({
 			[slug]: firestore.FieldValue.delete(),
