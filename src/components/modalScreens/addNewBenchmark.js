@@ -25,7 +25,7 @@ const AddNewBenchmark = ({navigation}) => {
 	const [benchmarkFields, setBenchmarkFields] = useState([]);
 	const [selectedBenchmark, setSelectedBenchmark] = useState(null);
 
-	const getBenchmarkFields = async tagIds => {
+	const _getBenchmarkFields = async tagIds => {
 		setBenchmarkFields([]);
 		const fields = await fetchBenchmarkFields(tagIds);
 		if (fields) {
@@ -34,23 +34,23 @@ const AddNewBenchmark = ({navigation}) => {
 		}
 	};
 
-	const getBenchmarkTags = async category => {
+	const _getBenchmarkTags = async category => {
 		setLoading(true);
 		const tags = await fetchBenchmarkTags(
 			`https://contentmanagement.getimprvd.app/wp-json/wp/v2/app_benchmarks?slug=${category}`,
 		);
 
 		if (tags) {
-			getBenchmarkFields(tags);
+			_getBenchmarkFields(tags);
 		}
 	};
 
 	const _setSelectedBenchmark = callback => {
 		setSelectedBenchmark(callback(selectedBenchmark));
-		getBenchmarkTags(callback(selectedBenchmark));
+		_getBenchmarkTags(callback(selectedBenchmark));
 	};
 
-	const getBenchmarksList = async () => {
+	const _getBenchmarksList = async () => {
 		const list = await fetchBenchmarksList(
 			'https://contentmanagement.getimprvd.app/wp-json/wp/v2/app_benchmarks',
 		);
@@ -79,7 +79,7 @@ const AddNewBenchmark = ({navigation}) => {
 	const fetchData = () => {
 		setLoading(true);
 		fetchScreenData();
-		getBenchmarksList();
+		_getBenchmarksList();
 	};
 
 	useEffect(() => {

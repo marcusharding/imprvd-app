@@ -20,7 +20,7 @@ const Benchmarks = ({navigation}) => {
 	const [benchmarksList, setBenchmarksList] = useState([]);
 	let sections = null;
 
-	const getBenchmarksList = async () => {
+	const _getBenchmarksList = async () => {
 		setLoading(true);
 		const list = await fetchBenchmarksList(
 			'https://contentmanagement.getimprvd.app/wp-json/wp/v2/app_benchmarks',
@@ -33,7 +33,7 @@ const Benchmarks = ({navigation}) => {
 	};
 
 	useEffect(() => {
-		getBenchmarksList();
+		_getBenchmarksList();
 	}, []);
 
 	if (benchmarksList.length > 0) {
@@ -43,7 +43,7 @@ const Benchmarks = ({navigation}) => {
 					key={item.label}
 					label={item.label}
 					navigation={navigation}
-					category={item.slug}
+					category={item.value}
 				/>
 			);
 		});

@@ -104,9 +104,11 @@ export default function App() {
 	const [initializing, setInitializing] = useState(true);
 	const [user, setUser] = useState();
 
-	const onAuthStateChanged = user => {
+	const onAuthStateChanged = () => {
 		setUser(user);
-		if (initializing) setInitializing(false);
+		if (initializing) {
+			setInitializing(false);
+		}
 	};
 
 	useEffect(() => {
@@ -177,6 +179,7 @@ export default function App() {
 					name="BenchmarkSingleScreen"
 					component={BenchmarkSingle}
 				/>
+				<Stack.Screen name="EditProfileScreen" component={EditProfile} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	);

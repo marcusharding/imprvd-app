@@ -1,16 +1,16 @@
 // React
 import React, {useState} from 'react';
-import {Text, View, TextInput, TouchableOpacity, Alert} from 'react-native';
+import {Text, View, TextInput, TouchableOpacity} from 'react-native';
 import {CommonActions} from '@react-navigation/native';
 
 // Styles
 import {baseStyles, typography, form, spacing} from '../../styles/main';
 
-// Firebase
-import auth from '@react-native-firebase/auth';
-
 // Partials
 import PreLoader from '../partials/preLoader';
+
+// Scripts
+import {registerNewUser} from '../../scripts/account';
 
 const SignUp = ({navigation}) => {
 	const [isLoading, setLoading] = useState(false);
@@ -18,40 +18,27 @@ const SignUp = ({navigation}) => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
-	const registerNewUser = () => {
-		if (email === '' && password === '') {
-			Alert.alert('Please enter an email and password');
+	const _registerNewUser = async () => {
+		setLoading(true);
+		const response = await registerNewUser(email, password, displayName);
+
+		if (response) {
+			console.log('Hey big poo');
+			setLoading(false);
+			setDisplayName('');
+			setEmail('');
+			setPassword('');
+			CommonActions.reset({
+				index: 1,
+				routes: [{name: 'EmailVerificationScreen'}],
+			});
+			navigation.dispatch(
+				CommonActions.navigate({
+					name: 'EmailVerificationScreen',
+				}),
+			);
 		} else {
-			setLoading(true);
-
-			auth()
-				.createUserWithEmailAndPassword(email, password)
-				.then(response => {
-					response.user.updateProfile({
-						displayName: displayName,
-					});
-					console.log('User registered successfully!');
-					setLoading(false);
-					setDisplayName('');
-					setEmail('');
-					setPassword('');
-
-					auth()
-						.currentUser.sendEmailVerification()
-						.then(() => {
-							console.log('Verification email sent');
-							navigation.dispatch(
-								CommonActions.navigate({
-									name: 'EmailVerificationScreen',
-								}),
-							);
-						});
-				})
-				.catch(error => {
-					console.log(error);
-					Alert.alert('Error:', error.message);
-					setLoading(false);
-				});
+			setLoading(false);
 		}
 	};
 
@@ -95,7 +82,7 @@ const SignUp = ({navigation}) => {
 
 			<TouchableOpacity
 				activeOpacity={0.8}
-				onPress={() => registerNewUser()}
+				onPress={() => _registerNewUser()}
 				style={baseStyles.buttonContainer}>
 				<Text style={typography.buttonText}>Continue</Text>
 			</TouchableOpacity>

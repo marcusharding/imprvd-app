@@ -1,10 +1,7 @@
 // React
 import React, {useState} from 'react';
-import {Text, View, TextInput, Alert, TouchableOpacity} from 'react-native';
+import {Text, View, TextInput, TouchableOpacity} from 'react-native';
 import {CommonActions} from '@react-navigation/native';
-
-// Firebase
-import auth from '@react-native-firebase/auth';
 
 // Styles
 import {typography, baseStyles, form, spacing} from '../../styles/main';
@@ -12,51 +9,41 @@ import {typography, baseStyles, form, spacing} from '../../styles/main';
 // Partials
 import PreLoader from '../partials/preLoader';
 
+// Scripts
+import {userLogin} from '../../scripts/account';
+
 const Login = ({navigation}) => {
 	const [isLoading, setLoading] = useState(false);
 	const [password, setPassword] = useState('');
 	const [email, setEmail] = useState('');
 
-	const userLogin = () => {
-		if (email === '' && password === '') {
-			Alert.alert('Please enter both email and password');
-		} else {
-			setLoading(true);
+	const _userLogin = async () => {
+		setLoading(true);
+		const response = await userLogin(email, password);
 
-			auth()
-				.signInWithEmailAndPassword(email, password)
-				.then(() => {
-					console.log('User logged in successfully');
-					setLoading(false);
-					setEmail('');
-					setPassword('');
-					const isEmailVerified = auth().currentUser.emailVerified;
-
-					if (isEmailVerified) {
-						CommonActions.reset({
-							index: 1,
-							routes: [{name: 'DashboardScreen'}],
-						});
-						navigation.dispatch(
-							CommonActions.navigate({
-								name: 'DashboardScreen',
-							}),
-						);
-					} else {
-						navigation.dispatch(
-							CommonActions.navigate({
-								name: 'EmailVerificationScreen',
-							}),
-						);
-					}
-				})
-				.catch(error => {
-					console.log(error);
-					Alert.alert('Error:', error.message);
-					setLoading(false);
-					setEmail('');
-					setPassword('');
+		if (response) {
+			setLoading(false);
+			setEmail('');
+			setPassword('');
+			if (response === 'verified') {
+				CommonActions.reset({
+					index: 1,
+					routes: [{name: 'DashboardScreen'}],
 				});
+				navigation.dispatch(
+					CommonActions.navigate({
+						name: 'DashboardScreen',
+					}),
+				);
+			} else {
+				navigation.dispatch(
+					CommonActions.navigate({
+						name: 'EmailVerificationScreen',
+					}),
+				);
+			}
+		} else {
+			setLoading(false);
 		}
 	};
 
@@ -92,7 +79,7 @@ const Login = ({navigation}) => {
 
 			<TouchableOpacity
 				activeOpacity={0.8}
-				onPress={() => userLogin()}
+				onPress={() => _userLogin()}
 				style={baseStyles.buttonContainer}>
 				<Text style={typography.buttonText}>Log In</Text>
 			</TouchableOpacity>
