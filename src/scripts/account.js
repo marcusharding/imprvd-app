@@ -170,3 +170,30 @@ export const userLogin = async (email, password) => {
 		return response;
 	}
 };
+
+export const registerNewUser = async (email, password, displayName) => {
+	if (email === '' && password === '') {
+		Alert.alert('Please enter an email and password');
+		return null;
+	}
+
+	const response = await auth()
+		.createUserWithEmailAndPassword(email, password)
+		.then(res => {
+			res.user.updateProfile({
+				displayName: displayName,
+			});
+			auth().currentUser.sendEmailVerification();
+			console.log('User registered successfully!');
+			console.log('Verification email sent');
+			return true;
+		})
+		.catch(error => {
+			console.log(error);
+			Alert.alert('Error registering new user:', error.message);
+		});
+
+	if (response) {
+		return true;
+	}
+};
