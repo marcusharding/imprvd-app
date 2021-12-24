@@ -22,10 +22,7 @@ import GoBackIcon from '../partials/goBackIcon';
 import LogoutButton from '../partials/logoutButton';
 
 // Scripts
-import {
-	chooseDisplayImage,
-	removeDisplayImage,
-} from '../../scripts/profileData';
+import {chooseDisplayImage, removeDisplayImage} from '../../scripts/account';
 
 const Profile = ({navigation}) => {
 	const {email, displayName, photoURL} = auth().currentUser;

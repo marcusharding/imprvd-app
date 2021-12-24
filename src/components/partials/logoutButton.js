@@ -8,7 +8,7 @@ import {CommonActions} from '@react-navigation/native';
 import {spacing, baseStyles} from '../../styles/main';
 
 // Scripts
-import {logoutUser} from '../../scripts/profileData';
+import {logoutUser} from '../../scripts/account';
 
 const LogoutButton = ({navigation}) => {
 	const _logoutUser = async () => {

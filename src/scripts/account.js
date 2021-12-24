@@ -10,6 +10,7 @@ import auth from '@react-native-firebase/auth';
 import {
 	PROFILE_IMAGE_FILENAME,
 	PROFILE_IMAGE_REFERENCE,
+	EMAIL_VERIFICATION,
 } from '../constants/constants';
 
 const fetchImageDownloadUrl = async () => {
@@ -133,5 +134,39 @@ export const logoutUser = async () => {
 
 	if (promise) {
 		return true;
+	}
+};
+
+export const isEmailVerified = async () => {
+	if (EMAIL_VERIFICATION) {
+		return true;
+	}
+
+	return false;
+};
+
+export const userLogin = async (email, password) => {
+	if (email === '' && password === '') {
+		Alert.alert('Please enter both email and password');
+		return null;
+	}
+
+	const response = await auth()
+		.signInWithEmailAndPassword(email, password)
+		.then(() => {
+			console.log('User logged in successfully');
+			if (isEmailVerified()) {
+				return 'verified';
+			} else {
+				return 'unverified';
+			}
+		})
+		.catch(error => {
+			console.log(error);
+			Alert.alert('Error logging in:', error.message);
+		});
+
+	if (response) {
+		return response;
 	}
 };

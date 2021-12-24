@@ -29,7 +29,7 @@ const EmailVerification = ({navigation}) => {
 	const [headerIcon, setHeaderIcon] = useState(null);
 	const [resendVerification, setResendVerification] = useState(false);
 
-	const fetchData = () => {
+	const fetchScreenData = () => {
 		fetch(
 			'https://contentmanagement.getimprvd.app/wp-json/wp/v2/app_screens?slug=email-verification',
 		)
@@ -93,7 +93,7 @@ const EmailVerification = ({navigation}) => {
 	}, []);
 
 	useEffect(() => {
-		fetchData();
+		fetchScreenData();
 		checkEmailVerified();
 	});
 

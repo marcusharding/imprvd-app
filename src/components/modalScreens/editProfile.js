@@ -14,7 +14,7 @@ import PreLoader from '../partials/preLoader';
 import auth from '@react-native-firebase/auth';
 
 // Scripts
-import {updateProfilData} from '../../scripts/profileData';
+import {updateProfilData} from '../../scripts/account';
 
 const EditProfile = ({navigation}) => {
 	const {displayName} = auth().currentUser;
