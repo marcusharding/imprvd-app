@@ -118,3 +118,20 @@ export const updateProfilData = async name => {
 		return true;
 	}
 };
+
+export const logoutUser = async () => {
+	const promise = await auth()
+		.signOut()
+		.then(() => {
+			console.log('User signed out');
+			return true;
+		})
+		.catch(error => {
+			console.log('Error logging out => ', error);
+			Alert.alert('Error:', error.message);
+		});
+
+	if (promise) {
+		return true;
+	}
+};
