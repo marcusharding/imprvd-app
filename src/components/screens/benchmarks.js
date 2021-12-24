@@ -34,7 +34,14 @@ const Benchmarks = ({navigation}) => {
 
 	useEffect(() => {
 		_getBenchmarksList();
-	}, []);
+		navigation.addListener('focus', () => {
+			_getBenchmarksList();
+		});
+		return () =>
+			navigation.removeListener('focus', () => {
+				_getBenchmarksList();
+			});
+	}, [navigation]);
 
 	if (benchmarksList.length > 0) {
 		sections = benchmarksList.map(item => {
