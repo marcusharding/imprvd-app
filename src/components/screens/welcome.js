@@ -14,7 +14,7 @@ const Welcome = ({navigation}) => {
 	const [title, setTitle] = useState('');
 	const [subTitle, setSubTitle] = useState('');
 
-	const fetchData = () => {
+	const fetchScreenData = () => {
 		setLoading(true);
 		fetch(
 			'https://contentmanagement.getimprvd.app/wp-json/wp/v2/app_screens?slug=welcome',
@@ -35,7 +35,7 @@ const Welcome = ({navigation}) => {
 	};
 
 	useEffect(() => {
-		fetchData();
+		fetchScreenData();
 	}, []);
 
 	if (isLoading) {
