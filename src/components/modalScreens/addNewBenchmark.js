@@ -18,7 +18,7 @@ import {
 	fetchBenchmarkFields,
 } from '../../scripts/benchmarks';
 
-const AddNewBenchmark = ({navigation}) => {
+const AddNewBenchmark = () => {
 	const [subTitle, setSubTitle] = useState('');
 	const [isLoading, setLoading] = useState(false);
 	const [benchmarksList, setBenchmarksList] = useState([]);
@@ -92,7 +92,7 @@ const AddNewBenchmark = ({navigation}) => {
 
 	return (
 		<SafeAreaView style={spacing.flex1}>
-			<GoBackIcon navigation={navigation} />
+			<GoBackIcon />
 			<Text
 				style={[
 					typography.subHeading,
@@ -112,7 +112,6 @@ const AddNewBenchmark = ({navigation}) => {
 				<AddNewBenchmarkFields
 					benchmarkFields={benchmarkFields}
 					selectedBenchmark={selectedBenchmark}
-					navigation={navigation}
 				/>
 			</ScrollView>
 		</SafeAreaView>

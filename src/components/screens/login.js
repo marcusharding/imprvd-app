@@ -1,7 +1,7 @@
 // React
 import React, {useState} from 'react';
 import {Text, View, TextInput, TouchableOpacity} from 'react-native';
-import {CommonActions} from '@react-navigation/native';
+import {CommonActions, useNavigation} from '@react-navigation/native';
 
 // Styles
 import {typography, baseStyles, form, spacing} from '../../styles/main';
@@ -12,10 +12,11 @@ import PreLoader from '../partials/preLoader';
 // Scripts
 import {userLogin} from '../../scripts/account';
 
-const Login = ({navigation}) => {
+const Login = () => {
 	const [isLoading, setLoading] = useState(false);
 	const [password, setPassword] = useState('');
 	const [email, setEmail] = useState('');
+	const navigation = useNavigation();
 
 	const _userLogin = async () => {
 		setLoading(true);

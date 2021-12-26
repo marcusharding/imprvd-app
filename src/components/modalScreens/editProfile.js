@@ -1,7 +1,7 @@
 // React
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, TextInput} from 'react-native';
-import {CommonActions} from '@react-navigation/native';
+import {CommonActions, useNavigation} from '@react-navigation/native';
 
 // Styles
 import {spacing, typography, form, profile, colors} from '../../styles/main';
@@ -16,10 +16,11 @@ import auth from '@react-native-firebase/auth';
 // Scripts
 import {updateProfilData} from '../../scripts/account';
 
-const EditProfile = ({navigation}) => {
+const EditProfile = () => {
 	const {displayName} = auth().currentUser;
 	const [name, setName] = useState(displayName);
 	const [isLoading, setLoading] = useState(false);
+	const navigation = useNavigation();
 
 	const _updateProfilData = async () => {
 		setLoading(true);
@@ -42,7 +43,7 @@ const EditProfile = ({navigation}) => {
 	return (
 		<View>
 			<View style={profile.header}>
-				<GoBackIcon navigation={navigation} />
+				<GoBackIcon />
 				<TouchableOpacity
 					activeOpacity={0.8}
 					onPress={() => _updateProfilData()}>

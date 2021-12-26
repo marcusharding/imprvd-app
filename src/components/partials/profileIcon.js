@@ -2,7 +2,7 @@
 import React from 'react';
 import {View, Image, TouchableOpacity} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {CommonActions} from '@react-navigation/native';
+import {CommonActions, useNavigation} from '@react-navigation/native';
 
 // Styles
 import {baseStyles} from '../../styles/main';
@@ -10,8 +10,9 @@ import {baseStyles} from '../../styles/main';
 // Firebase
 import auth from '@react-native-firebase/auth';
 
-const ProfileIcon = ({navigation}) => {
+const ProfileIcon = () => {
 	const {photoURL} = auth().currentUser;
+	const navigation = useNavigation();
 
 	if (photoURL) {
 		return (

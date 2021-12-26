@@ -1,7 +1,7 @@
 // React
 import React, {useState, useEffect} from 'react';
 import {Text, View, TouchableOpacity, Alert} from 'react-native';
-import {CommonActions} from '@react-navigation/native';
+import {CommonActions, useNavigation} from '@react-navigation/native';
 
 // Styles
 import {baseStyles, typography, form, spacing} from '../../styles/main';
@@ -9,10 +9,11 @@ import {baseStyles, typography, form, spacing} from '../../styles/main';
 // Partials
 import PreLoader from '../partials/preLoader';
 
-const Welcome = ({navigation}) => {
+const Welcome = () => {
 	const [isLoading, setLoading] = useState(false);
 	const [title, setTitle] = useState('');
 	const [subTitle, setSubTitle] = useState('');
+	const navigation = useNavigation();
 
 	const fetchScreenData = () => {
 		setLoading(true);

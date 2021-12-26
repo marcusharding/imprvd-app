@@ -1,7 +1,7 @@
 // React
 import React, {useState} from 'react';
 import {Text, View, TextInput, TouchableOpacity} from 'react-native';
-import {CommonActions} from '@react-navigation/native';
+import {CommonActions, useNavigation} from '@react-navigation/native';
 
 // Styles
 import {baseStyles, typography, form, spacing} from '../../styles/main';
@@ -12,11 +12,12 @@ import PreLoader from '../partials/preLoader';
 // Scripts
 import {registerNewUser} from '../../scripts/account';
 
-const SignUp = ({navigation}) => {
+const SignUp = () => {
 	const [isLoading, setLoading] = useState(false);
 	const [displayName, setDisplayName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const navigation = useNavigation();
 
 	const _registerNewUser = async () => {
 		setLoading(true);

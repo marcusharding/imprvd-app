@@ -8,10 +8,10 @@ import {typography, baseStyles} from '../../styles/main';
 // Partials
 import ProfileIcon from '../partials/profileIcon';
 
-const Workouts = ({navigation}) => {
+const Workouts = () => {
 	return (
 		<View>
-			<ProfileIcon navigation={navigation} />
+			<ProfileIcon />
 
 			<Text style={[typography.pageHeading, baseStyles.screenHeading]}>
 				Workouts
