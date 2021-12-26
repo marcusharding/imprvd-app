@@ -5,7 +5,12 @@ import {Alert} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 
 // Script
-import {slugifyString, fetchUrlToJson} from './helpers';
+import {
+	slugifyString,
+	fetchUrlToJson,
+	getCurrentDate,
+	getCurrentTime,
+} from './helpers';
 
 // Constants
 import {COLLECTION} from '../constants/constants';
@@ -55,10 +60,18 @@ export const fetchBenchmarkFields = async tagIds => {
 	}
 };
 
-const setBenchmark = async (value, doc, fieldValues) => {
+const setBenchmark = async (
+	value,
+	doc,
+	fieldValues,
+	dateAdded,
+	dateModified,
+) => {
 	const data = {
 		[value]: {
 			...fieldValues,
+			dateAdded: dateAdded,
+			dateModified: dateModified,
 		},
 	};
 
@@ -85,7 +98,15 @@ export const addNewBenchmark = async (fieldValues, selectedBenchmark) => {
 
 	if (fieldValues.name) {
 		const value = slugifyString(fieldValues.name);
-		const response = await setBenchmark(value, doc, fieldValues);
+		const dateAdded = getDateAdded();
+		const dateModified = getDateAdded();
+		const response = await setBenchmark(
+			value,
+			doc,
+			fieldValues,
+			dateAdded,
+			dateModified,
+		);
 
 		if (response) {
 			return true;
@@ -116,4 +137,10 @@ export const deleteBenchmark = async (object, slug) => {
 	if (response) {
 		return true;
 	}
+};
+
+const getDateAdded = () => {
+	const dateAdded = [{date: getCurrentDate()}, {time: getCurrentTime()}];
+
+	return dateAdded;
 };
