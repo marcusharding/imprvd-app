@@ -15,9 +15,10 @@ import ImprvdCarousel from '../partials/imprvdCarousel';
 // Scripts
 import {fetchBenchmarksList} from '../../scripts/benchmarks';
 
-const Benchmarks = ({navigation}) => {
+const Benchmarks = ({navigation, route}) => {
 	const [isLoading, setLoading] = useState(false);
 	const [benchmarksList, setBenchmarksList] = useState([]);
+	const {params} = route;
 	let sections = null;
 
 	const _getBenchmarksList = async () => {
@@ -34,7 +35,19 @@ const Benchmarks = ({navigation}) => {
 
 	useEffect(() => {
 		_getBenchmarksList();
-	}, []);
+		navigation.addListener('focus', () => {
+			if (params && params.refreshBencharks) {
+				_getBenchmarksList();
+				navigation.setParams({
+					refreshBencharks: false,
+				});
+			}
+		});
+		return () =>
+			navigation.removeListener('focus', () => {
+				_getBenchmarksList();
+			});
+	}, [navigation, params]);
 
 	if (benchmarksList.length > 0) {
 		sections = benchmarksList.map(item => {

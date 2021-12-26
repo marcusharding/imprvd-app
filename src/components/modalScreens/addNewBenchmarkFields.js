@@ -38,6 +38,9 @@ const AddNewBenchmarkFields = ({
 			navigation.dispatch(
 				CommonActions.navigate({
 					name: 'Benchmarks',
+					params: {
+						refreshBencharks: true,
+					},
 				}),
 			);
 		}

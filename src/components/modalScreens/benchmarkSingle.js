@@ -28,6 +28,9 @@ const BenchmarkSingle = ({route, navigation}) => {
 			navigation.dispatch(
 				CommonActions.navigate({
 					name: 'Benchmarks',
+					params: {
+						refreshBencharks: true,
+					},
 				}),
 			);
 		}
