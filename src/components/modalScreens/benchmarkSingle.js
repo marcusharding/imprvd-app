@@ -1,7 +1,7 @@
 // React
 import React from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
-import {CommonActions} from '@react-navigation/native';
+import {CommonActions, useNavigation} from '@react-navigation/native';
 
 // Styles
 import {baseStyles, spacing, typography} from '../../styles/main';
@@ -12,10 +12,11 @@ import GoBackIcon from '../partials/goBackIcon';
 // Scripts
 import {deleteBenchmark} from '../../scripts/benchmarks';
 
-const BenchmarkSingle = ({route, navigation}) => {
+const BenchmarkSingle = ({route}) => {
 	const data = route.params.data;
 	const object = route.params.object;
 	const slug = route.params.slug;
+	const navigation = useNavigation();
 
 	const _deleteBenchmark = async () => {
 		const response = await deleteBenchmark(object, slug);
@@ -38,7 +39,7 @@ const BenchmarkSingle = ({route, navigation}) => {
 
 	return (
 		<View>
-			<GoBackIcon navigation={navigation} />
+			<GoBackIcon />
 			<View style={baseStyles.heightFull}>
 				{data.map(benchmark => {
 					if (benchmark[0] === 'name') {

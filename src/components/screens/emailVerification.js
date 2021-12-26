@@ -9,7 +9,7 @@ import {
 	Alert,
 } from 'react-native';
 import {openInbox} from 'react-native-email-link';
-import {CommonActions} from '@react-navigation/native';
+import {CommonActions, useNavigation} from '@react-navigation/native';
 
 // Firebase
 import auth from '@react-native-firebase/auth';
@@ -20,7 +20,7 @@ import PreLoader from '../partials/preLoader';
 // Styles
 import {baseStyles, typography, form, spacing} from '../../styles/main';
 
-const EmailVerification = ({navigation}) => {
+const EmailVerification = () => {
 	let user = auth().currentUser;
 	const [appState, setAppstate] = useState(AppState.currentState);
 	const [isLoading, setLoading] = useState(false);
@@ -28,6 +28,7 @@ const EmailVerification = ({navigation}) => {
 	const [subTitle, setSubTitle] = useState('');
 	const [headerIcon, setHeaderIcon] = useState(null);
 	const [resendVerification, setResendVerification] = useState(false);
+	const navigation = useNavigation();
 
 	const fetchScreenData = () => {
 		fetch(

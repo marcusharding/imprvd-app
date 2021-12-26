@@ -2,7 +2,7 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {CommonActions} from '@react-navigation/native';
+import {CommonActions, useNavigation} from '@react-navigation/native';
 
 // Styles
 import {
@@ -24,13 +24,14 @@ import LogoutButton from '../partials/logoutButton';
 // Scripts
 import {chooseDisplayImage, removeDisplayImage} from '../../scripts/account';
 
-const Profile = ({navigation}) => {
+const Profile = () => {
 	const {email, displayName, photoURL} = auth().currentUser;
+	const navigation = useNavigation();
 
 	return (
 		<View>
 			<View style={profile.header}>
-				<GoBackIcon navigation={navigation} />
+				<GoBackIcon />
 				<TouchableOpacity
 					style={spacing.marginTop10}
 					activeOpacity={0.8}
@@ -116,7 +117,7 @@ const Profile = ({navigation}) => {
 				<Text>Help & Support</Text>
 			</View>
 
-			<LogoutButton navigation={navigation} />
+			<LogoutButton />
 		</View>
 	);
 };

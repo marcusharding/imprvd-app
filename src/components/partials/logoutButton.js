@@ -2,7 +2,7 @@
 import React from 'react';
 import {TouchableOpacity, Text} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {CommonActions} from '@react-navigation/native';
+import {CommonActions, useNavigation} from '@react-navigation/native';
 
 // Firebase
 import {spacing, baseStyles} from '../../styles/main';
@@ -10,7 +10,8 @@ import {spacing, baseStyles} from '../../styles/main';
 // Scripts
 import {logoutUser} from '../../scripts/account';
 
-const LogoutButton = ({navigation}) => {
+const LogoutButton = () => {
+	const navigation = useNavigation();
 	const _logoutUser = async () => {
 		const response = await logoutUser();
 

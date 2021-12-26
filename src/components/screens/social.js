@@ -8,10 +8,10 @@ import ProfileIcon from '../partials/profileIcon';
 // Styles
 import {baseStyles, typography} from '../../styles/main';
 
-const Social = ({navigation}) => {
+const Social = () => {
 	return (
 		<View>
-			<ProfileIcon navigation={navigation} />
+			<ProfileIcon />
 
 			<Text style={[typography.pageHeading, baseStyles.screenHeading]}>
 				Social

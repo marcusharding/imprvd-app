@@ -2,12 +2,13 @@
 import React from 'react';
 import {TouchableOpacity} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {CommonActions} from '@react-navigation/native';
+import {CommonActions, useNavigation} from '@react-navigation/native';
 
 // Styles
 import {baseStyles} from '../../styles/main';
 
-const AddNewBenchmarkIcon = ({navigation}) => {
+const AddNewBenchmarkIcon = () => {
+	const navigation = useNavigation();
 	return (
 		<TouchableOpacity
 			style={baseStyles.addNewBenchmarkIcon}

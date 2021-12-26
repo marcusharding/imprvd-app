@@ -1,7 +1,7 @@
 // React
 import React, {useState} from 'react';
 import {TextInput, View, Text, TouchableOpacity} from 'react-native';
-import {CommonActions} from '@react-navigation/native';
+import {CommonActions, useNavigation} from '@react-navigation/native';
 
 // Styles
 import {form, baseStyles, typography, spacing} from '../../styles/main';
@@ -12,12 +12,9 @@ import PreLoader from '../partials/preLoader';
 // Scripts
 import {addNewBenchmark} from '../../scripts/benchmarks';
 
-const AddNewBenchmarkFields = ({
-	selectedBenchmark,
-	benchmarkFields,
-	navigation,
-}) => {
+const AddNewBenchmarkFields = ({selectedBenchmark, benchmarkFields}) => {
 	const [fieldValues, setFieldValues] = useState({});
+	const navigation = useNavigation();
 
 	const updateInputValue = (value, fieldSlug, benchmark) => {
 		setFieldValues({

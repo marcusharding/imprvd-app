@@ -2,6 +2,7 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
+import {useNavigation} from '@react-navigation/native';
 
 // Styles
 import {typography, baseStyles, spacing} from '../../styles/main';
@@ -15,10 +16,11 @@ import ImprvdCarousel from '../partials/imprvdCarousel';
 // Scripts
 import {fetchBenchmarksList} from '../../scripts/benchmarks';
 
-const Benchmarks = ({navigation, route}) => {
+const Benchmarks = ({route}) => {
 	const [isLoading, setLoading] = useState(false);
 	const [benchmarksList, setBenchmarksList] = useState([]);
 	const {params} = route;
+	const navigation = useNavigation();
 	let sections = null;
 
 	const _getBenchmarksList = async () => {
@@ -55,7 +57,6 @@ const Benchmarks = ({navigation, route}) => {
 				<ImprvdCarousel
 					key={item.label}
 					label={item.label}
-					navigation={navigation}
 					category={item.value}
 				/>
 			);
@@ -69,7 +70,7 @@ const Benchmarks = ({navigation, route}) => {
 	return (
 		<View style={spacing.flex1}>
 			<View style={spacing.flex1}>
-				<ProfileIcon navigation={navigation} />
+				<ProfileIcon />
 
 				<Text style={[typography.pageHeading, baseStyles.screenHeading]}>
 					Benchmarks
@@ -79,7 +80,7 @@ const Benchmarks = ({navigation, route}) => {
 					{!isLoading && sections}
 				</ScrollView>
 
-				{!isLoading && <AddNewBenchmarkIcon navigation={navigation} />}
+				{!isLoading && <AddNewBenchmarkIcon />}
 			</View>
 		</View>
 	);
