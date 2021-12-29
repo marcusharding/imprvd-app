@@ -14,18 +14,23 @@ import {addNewBenchmark} from '../../scripts/benchmarks';
 
 const AddNewBenchmarkFields = ({selectedBenchmark, benchmarkFields}) => {
 	const [fieldValues, setFieldValues] = useState({});
+	const [category, setCategory] = useState(null);
 	const navigation = useNavigation();
 
 	const updateInputValue = (value, fieldSlug, benchmark) => {
 		setFieldValues({
 			...fieldValues,
 			[fieldSlug]: value,
-			category: benchmark,
 		});
+		setCategory(benchmark);
 	};
 
 	const _addNewBenchmark = async () => {
-		const response = await addNewBenchmark(fieldValues, selectedBenchmark);
+		const response = await addNewBenchmark(
+			fieldValues,
+			selectedBenchmark,
+			category,
+		);
 
 		if (response) {
 			CommonActions.reset({

@@ -13,6 +13,9 @@ import firestore from '@react-native-firebase/firestore';
 // Styles
 import {typography} from '../../styles/main';
 
+// Scripts
+import {fetchBenchmarksData} from '../../scripts/benchmarks';
+
 const {width: screenWidth} = Dimensions.get('window');
 
 class ImprvdCarousel extends Component {
@@ -24,12 +27,13 @@ class ImprvdCarousel extends Component {
 		};
 	}
 
-	componentDidMount() {
-		this.fetchBenchmarksDataListener();
-	}
+	_fetchBenchmarksData = async () => {
+		const {category} = this.props;
+		console.log(fetchBenchmarksData(category));
+	};
 
-	componentWillUnmount() {
-		this.unsubscribe();
+	componentDidMount() {
+		this._fetchBenchmarksData();
 	}
 
 	_renderItem = ({item}) => {
@@ -40,54 +44,6 @@ class ImprvdCarousel extends Component {
 			/>
 		);
 	};
-
-	fetchBenchmarksData() {
-		const {category} = this.props;
-		const {data} = this.state;
-		const {uid} = auth().currentUser;
-		const collection = `user-${uid}`;
-		const doc = `benchmarks-${category}`;
-
-		this.setState({
-			data: [],
-		});
-
-		firestore()
-			.collection(collection)
-			.doc(doc)
-			.onSnapshot(documentSnapshot => {
-				if (documentSnapshot.exists) {
-					data.push(...Object.entries(documentSnapshot.data()));
-					this.setState({
-						data: data,
-					});
-				}
-			});
-	}
-
-	fetchBenchmarksDataListener() {
-		const {category} = this.props;
-		const {data} = this.state;
-		const {uid} = auth().currentUser;
-		const collection = `user-${uid}`;
-		const doc = `benchmarks-${category}`;
-
-		this.setState({
-			data: [],
-		});
-
-		this.unsubscribe = firestore()
-			.collection(collection)
-			.doc(doc)
-			.onSnapshot(documentSnapshot => {
-				if (documentSnapshot.exists) {
-					data.push(...Object.entries(documentSnapshot.data()));
-					this.setState({
-						data: data,
-					});
-				}
-			});
-	}
 
 	render() {
 		const {data} = this.state;

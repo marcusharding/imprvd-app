@@ -13,7 +13,7 @@ import {
 } from './helpers';
 
 // Constants
-import {COLLECTION} from '../constants/constants';
+import {COLLECTION, UID} from '../constants/constants';
 
 export const fetchBenchmarksList = async url => {
 	const json = await fetchUrlToJson(url);
@@ -60,18 +60,35 @@ export const fetchBenchmarkFields = async tagIds => {
 	}
 };
 
+export const fetchBenchmarksData = category => {
+	const data = [];
+	const doc = `benchmarks-${category}`;
+	firestore()
+		.collection(COLLECTION)
+		.doc(doc)
+		.onSnapshot(documentSnapshot => {
+			if (documentSnapshot.exists) {
+				data.push(documentSnapshot.data());
+				console.log(data[0]);
+				// data.push(...Object.entries(documentSnapshot.data()));
+			}
+		});
+};
+
 const setBenchmark = async (
-	value,
+	name,
+	category,
 	doc,
-	fieldValues,
 	dateAdded,
 	dateModified,
+	values,
 ) => {
 	const data = {
-		[value]: {
-			...fieldValues,
-			dateAdded: dateAdded,
-			dateModified: dateModified,
+		[name]: {
+			category: category,
+			...dateAdded,
+			...dateModified,
+			values,
 		},
 	};
 
@@ -93,19 +110,25 @@ const setBenchmark = async (
 	}
 };
 
-export const addNewBenchmark = async (fieldValues, selectedBenchmark) => {
-	const doc = `benchmarks-${selectedBenchmark}`;
-
+export const addNewBenchmark = async (
+	fieldValues,
+	selectedBenchmark,
+	category,
+) => {
 	if (fieldValues.name) {
-		const value = slugifyString(fieldValues.name);
+		const doc = `benchmarks-${selectedBenchmark}`;
+		const name = slugifyString(fieldValues.name);
 		const dateAdded = getDateAdded();
 		const dateModified = getDateAdded();
+		const values = [];
+		values.push({...fieldValues});
 		const response = await setBenchmark(
-			value,
+			name,
+			category,
 			doc,
-			fieldValues,
 			dateAdded,
 			dateModified,
+			values,
 		);
 
 		if (response) {
@@ -140,7 +163,9 @@ export const deleteBenchmark = async (object, slug) => {
 };
 
 const getDateAdded = () => {
-	const dateAdded = [{date: getCurrentDate()}, {time: getCurrentTime()}];
+	const dateAdded = {
+		dateAdded: {date: getCurrentDate(), time: getCurrentTime()},
+	};
 
 	return dateAdded;
 };
