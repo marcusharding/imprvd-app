@@ -60,20 +60,19 @@ export const fetchBenchmarkFields = async tagIds => {
 	}
 };
 
-export const fetchBenchmarksData = category => {
-	const data = [];
-	const doc = `benchmarks-${category}`;
-	firestore()
-		.collection(COLLECTION)
-		.doc(doc)
-		.onSnapshot(documentSnapshot => {
-			if (documentSnapshot.exists) {
-				data.push(documentSnapshot.data());
-				console.log(data[0]);
-				// data.push(...Object.entries(documentSnapshot.data()));
-			}
-		});
-};
+// export const fetchBenchmarksData = category => {
+// 	const data = [];
+// 	const doc = `benchmarks-${category}`;
+// 	firestore()
+// 		.collection(COLLECTION)
+// 		.doc(doc)
+// 		.onSnapshot(documentSnapshot => {
+// 			if (documentSnapshot.exists) {
+// 				data.push(documentSnapshot.data());
+// 				return data;
+// 			}
+// 		});
+// };
 
 const setBenchmark = async (
 	name,
@@ -115,6 +114,7 @@ export const addNewBenchmark = async (
 	selectedBenchmark,
 	category,
 ) => {
+	console.log(fieldValues);
 	if (fieldValues.name) {
 		const doc = `benchmarks-${selectedBenchmark}`;
 		const name = slugifyString(fieldValues.name);

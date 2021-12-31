@@ -16,6 +16,9 @@ import {typography} from '../../styles/main';
 // Scripts
 import {fetchBenchmarksData} from '../../scripts/benchmarks';
 
+// Constants
+import {COLLECTION} from '../../constants/constants';
+
 const {width: screenWidth} = Dimensions.get('window');
 
 class ImprvdCarousel extends Component {
@@ -29,7 +32,24 @@ class ImprvdCarousel extends Component {
 
 	_fetchBenchmarksData = async () => {
 		const {category} = this.props;
-		console.log(fetchBenchmarksData(category));
+		const {data} = this.state;
+		const doc = `benchmarks-${category}`;
+
+		this.setState({
+			data: [],
+		});
+
+		firestore()
+			.collection(COLLECTION)
+			.doc(doc)
+			.onSnapshot(documentSnapshot => {
+				if (documentSnapshot.exists) {
+					data.push(documentSnapshot.data());
+					this.setState({
+						data: data,
+					});
+				}
+			});
 	};
 
 	componentDidMount() {
@@ -37,12 +57,7 @@ class ImprvdCarousel extends Component {
 	}
 
 	_renderItem = ({item}) => {
-		return (
-			<BenchmarkItem
-				fetchBenchmarksData={this.fetchBenchmarksData}
-				item={item}
-			/>
-		);
+		return <BenchmarkItem item={item} />;
 	};
 
 	render() {
