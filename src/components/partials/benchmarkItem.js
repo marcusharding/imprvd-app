@@ -18,6 +18,7 @@ const BenchmarkItem = ({item}) => {
 			CommonActions.navigate({
 				name: 'BenchmarkSingleScreen',
 				params: {
+					category: formattedItem.category,
 					object: formattedItem.object,
 					data: formattedItem.data,
 					slug: formattedItem.slug,

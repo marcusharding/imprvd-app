@@ -23,6 +23,7 @@ const AddNewBenchmark = () => {
 	const [isLoading, setLoading] = useState(false);
 	const [benchmarksList, setBenchmarksList] = useState([]);
 	const [benchmarkFields, setBenchmarkFields] = useState([]);
+	// Should be selected category
 	const [selectedBenchmark, setSelectedBenchmark] = useState(null);
 
 	const _getBenchmarkFields = async tagIds => {

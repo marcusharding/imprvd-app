@@ -64,8 +64,6 @@ class ImprvdCarousel extends Component {
 		const {data} = this.state;
 		const {label} = this.props;
 
-		console.log(data.length);
-
 		if (data.length > 0) {
 			return (
 				<View>

@@ -63,12 +63,14 @@ export const fetchBenchmarkFields = async tagIds => {
 export const getFormattedBenchmarkItem = item => {
 	const slug = item[0];
 	const object = item[1];
+	const {category} = object;
 	const mostRecentValue = object.values[object.values.length - 1];
 	let data = Object.entries(mostRecentValue);
 	const nameIndex = data.findIndex(benchmark => benchmark[0] === 'name');
 	data.splice(0, 0, data.splice(nameIndex, 1)[0]);
 
 	return {
+		category: category,
 		object: object,
 		slug: slug,
 		data: data,

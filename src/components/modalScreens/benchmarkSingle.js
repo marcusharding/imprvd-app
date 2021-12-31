@@ -4,7 +4,7 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 
 // Styles
-import {baseStyles, spacing, typography} from '../../styles/main';
+import {baseStyles, profile, typography, spacing} from '../../styles/main';
 
 // Partials
 import GoBackIcon from '../partials/goBackIcon';
@@ -13,9 +13,7 @@ import GoBackIcon from '../partials/goBackIcon';
 import {deleteBenchmark} from '../../scripts/benchmarks';
 
 const BenchmarkSingle = ({route}) => {
-	const data = route.params.data;
-	const object = route.params.object;
-	const slug = route.params.slug;
+	const {object, data, category, slug} = route.params;
 	const navigation = useNavigation();
 
 	const _deleteBenchmark = async () => {
@@ -39,8 +37,28 @@ const BenchmarkSingle = ({route}) => {
 
 	return (
 		<View>
-			<GoBackIcon />
-			<View style={baseStyles.heightFull}>
+			<View style={profile.header}>
+				<GoBackIcon />
+				<TouchableOpacity
+					style={spacing.marginTop10}
+					activeOpacity={0.8}
+					onPress={() =>
+						navigation.dispatch(
+							CommonActions.navigate({
+								name: 'UpdateBenchmarkSingleScreen',
+								params: {
+									category: category,
+									object: object,
+									data: data,
+									slug: slug,
+								},
+							}),
+						)
+					}>
+					<Text style={typography.subHeading}>Update Benchmark</Text>
+				</TouchableOpacity>
+			</View>
+			<View style={[baseStyles.heightFull, spacing.marginTop50]}>
 				{data.map(benchmark => {
 					if (benchmark[0] === 'name') {
 						return (
@@ -61,10 +79,12 @@ const BenchmarkSingle = ({route}) => {
 				})}
 
 				<TouchableOpacity
+					style={baseStyles.flexContainer}
 					activeOpacity={0.8}
-					onPress={() => _deleteBenchmark()}
-					style={[baseStyles.buttonContainer, spacing.marginTop20]}>
-					<Text style={typography.buttonText}>Delete Benchmark</Text>
+					onPress={() => _deleteBenchmark()}>
+					<Text style={{color: '#FF0000', fontSize: 20}}>
+						Delete this benchmark
+					</Text>
 				</TouchableOpacity>
 			</View>
 		</View>

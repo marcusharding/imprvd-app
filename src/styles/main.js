@@ -163,6 +163,11 @@ const baseStyles = StyleSheet.create({
 		alignItems: 'center',
 	},
 
+	deleteBenchmarkButton: {
+		display: 'flex',
+		justifyContent: 'center',
+	},
+
 	flexContainerRow: {
 		display: 'flex',
 		flexDirection: 'row',
