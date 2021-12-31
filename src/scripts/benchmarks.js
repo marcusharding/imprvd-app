@@ -60,19 +60,20 @@ export const fetchBenchmarkFields = async tagIds => {
 	}
 };
 
-// export const fetchBenchmarksData = category => {
-// 	const data = [];
-// 	const doc = `benchmarks-${category}`;
-// 	firestore()
-// 		.collection(COLLECTION)
-// 		.doc(doc)
-// 		.onSnapshot(documentSnapshot => {
-// 			if (documentSnapshot.exists) {
-// 				data.push(documentSnapshot.data());
-// 				return data;
-// 			}
-// 		});
-// };
+export const getFormattedBenchmarkItem = item => {
+	const slug = item[0];
+	const object = item[1];
+	const mostRecentValue = object.values[object.values.length - 1];
+	let data = Object.entries(mostRecentValue);
+	const nameIndex = data.findIndex(benchmark => benchmark[0] === 'name');
+	data.splice(0, 0, data.splice(nameIndex, 1)[0]);
+
+	return {
+		object: object,
+		slug: slug,
+		data: data,
+	};
+};
 
 const setBenchmark = async (
 	name,
