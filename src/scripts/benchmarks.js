@@ -13,7 +13,7 @@ import {
 } from './helpers';
 
 // Constants
-import {COLLECTION, UID} from '../constants/constants';
+import {COLLECTION} from '../constants/constants';
 
 export const fetchBenchmarksList = async url => {
 	const json = await fetchUrlToJson(url);

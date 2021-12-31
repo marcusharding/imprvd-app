@@ -44,7 +44,7 @@ class ImprvdCarousel extends Component {
 			.doc(doc)
 			.onSnapshot(documentSnapshot => {
 				if (documentSnapshot.exists) {
-					data.push(documentSnapshot.data());
+					data.push(...Object.entries(documentSnapshot.data()));
 					this.setState({
 						data: data,
 					});
@@ -63,6 +63,8 @@ class ImprvdCarousel extends Component {
 	render() {
 		const {data} = this.state;
 		const {label} = this.props;
+
+		console.log(data.length);
 
 		if (data.length > 0) {
 			return (

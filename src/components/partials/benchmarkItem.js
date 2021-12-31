@@ -7,10 +7,10 @@ import {CommonActions, useNavigation} from '@react-navigation/native';
 import {ImprvdCarousel} from '../../styles/main';
 
 const BenchmarkItem = ({item}) => {
-	const slug = Object.keys(item)[0];
-	const object = item[slug];
-	const value = object.values[object.values.length - 1];
-	let data = Object.entries(value);
+	const slug = item[0];
+	const object = item[1];
+	const mostRecentValue = object.values[object.values.length - 1];
+	let data = Object.entries(mostRecentValue);
 	const nameIndex = data.findIndex(benchmark => benchmark[0] === 'name');
 	const navigation = useNavigation();
 
