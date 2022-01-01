@@ -19,3 +19,19 @@ export const fetchUrlToJson = async url => {
 		return json;
 	}
 };
+
+export const getCurrentDate = () => {
+	const today = new Date();
+	const date =
+		today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+
+	return date;
+};
+
+export const getCurrentTime = () => {
+	const today = new Date();
+	const time =
+		today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
+
+	return time;
+};

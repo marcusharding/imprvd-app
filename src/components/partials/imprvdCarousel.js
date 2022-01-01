@@ -6,12 +6,11 @@ import {Dimensions, View, Text} from 'react-native';
 // Partials
 import BenchmarkItem from './benchmarkItem';
 
-// Firebase
-import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
-
 // Styles
 import {typography} from '../../styles/main';
+
+// Scripts
+import {fetchBenchmarksData} from '../../scripts/benchmarks';
 
 const {width: screenWidth} = Dimensions.get('window');
 
@@ -24,70 +23,25 @@ class ImprvdCarousel extends Component {
 		};
 	}
 
-	componentDidMount() {
-		this.fetchBenchmarksDataListener();
-	}
+	_fetchBenchmarksData = async () => {
+		const {category} = this.props;
 
-	componentWillUnmount() {
-		this.unsubscribe();
+		const response = await fetchBenchmarksData(category);
+
+		if (response) {
+			this.setState({
+				data: response,
+			});
+		}
+	};
+
+	componentDidMount() {
+		this._fetchBenchmarksData();
 	}
 
 	_renderItem = ({item}) => {
-		return (
-			<BenchmarkItem
-				fetchBenchmarksData={this.fetchBenchmarksData}
-				item={item}
-			/>
-		);
+		return <BenchmarkItem item={item} />;
 	};
-
-	fetchBenchmarksData() {
-		const {category} = this.props;
-		const {data} = this.state;
-		const {uid} = auth().currentUser;
-		const collection = `user-${uid}`;
-		const doc = `benchmarks-${category}`;
-
-		this.setState({
-			data: [],
-		});
-
-		firestore()
-			.collection(collection)
-			.doc(doc)
-			.onSnapshot(documentSnapshot => {
-				if (documentSnapshot.exists) {
-					data.push(...Object.entries(documentSnapshot.data()));
-					this.setState({
-						data: data,
-					});
-				}
-			});
-	}
-
-	fetchBenchmarksDataListener() {
-		const {category} = this.props;
-		const {data} = this.state;
-		const {uid} = auth().currentUser;
-		const collection = `user-${uid}`;
-		const doc = `benchmarks-${category}`;
-
-		this.setState({
-			data: [],
-		});
-
-		this.unsubscribe = firestore()
-			.collection(collection)
-			.doc(doc)
-			.onSnapshot(documentSnapshot => {
-				if (documentSnapshot.exists) {
-					data.push(...Object.entries(documentSnapshot.data()));
-					this.setState({
-						data: data,
-					});
-				}
-			});
-	}
 
 	render() {
 		const {data} = this.state;

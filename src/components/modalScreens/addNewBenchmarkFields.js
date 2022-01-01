@@ -12,20 +12,19 @@ import PreLoader from '../partials/preLoader';
 // Scripts
 import {addNewBenchmark} from '../../scripts/benchmarks';
 
-const AddNewBenchmarkFields = ({selectedBenchmark, benchmarkFields}) => {
+const AddNewBenchmarkFields = ({selectedCategory, benchmarkFields}) => {
 	const [fieldValues, setFieldValues] = useState({});
 	const navigation = useNavigation();
 
-	const updateInputValue = (value, fieldSlug, benchmark) => {
+	const updateInputValue = (value, fieldSlug) => {
 		setFieldValues({
 			...fieldValues,
 			[fieldSlug]: value,
-			category: benchmark,
 		});
 	};
 
 	const _addNewBenchmark = async () => {
-		const response = await addNewBenchmark(fieldValues, selectedBenchmark);
+		const response = await addNewBenchmark(fieldValues, selectedCategory);
 
 		if (response) {
 			CommonActions.reset({
@@ -51,18 +50,18 @@ const AddNewBenchmarkFields = ({selectedBenchmark, benchmarkFields}) => {
 				placeholder={field.name}
 				value={fieldValues[field.slug]}
 				onChangeText={value => {
-					updateInputValue(value, field.slug, selectedBenchmark);
+					updateInputValue(value, field.slug);
 				}}
 				placeholderTextColor="#EFEFEF"
 			/>
 		);
 	});
 
-	if (!selectedBenchmark) {
+	if (!selectedCategory) {
 		return null;
 	}
 
-	if (selectedBenchmark && !benchmarkFields) {
+	if (selectedCategory && !benchmarkFields) {
 		return (
 			<View style={baseStyles.flexCenter}>
 				<PreLoader />

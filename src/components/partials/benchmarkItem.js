@@ -6,23 +6,22 @@ import {CommonActions, useNavigation} from '@react-navigation/native';
 // Styles
 import {ImprvdCarousel} from '../../styles/main';
 
-const BenchmarkItem = ({item}) => {
-	const slug = item[0];
-	const object = item[1];
-	let data = Object.entries(object);
-	const nameIndex = data.findIndex(benchmark => benchmark[0] === 'name');
-	const navigation = useNavigation();
+// Scripts
+import {getFormattedBenchmarkItem} from '../../scripts/benchmarks';
 
-	data.splice(0, 0, data.splice(nameIndex, 1)[0]);
+const BenchmarkItem = ({item}) => {
+	const formattedItem = getFormattedBenchmarkItem(item);
+	const navigation = useNavigation();
 
 	const onPressItem = () => {
 		navigation.dispatch(
 			CommonActions.navigate({
 				name: 'BenchmarkSingleScreen',
 				params: {
-					object: object,
-					data: data,
-					slug: slug,
+					category: formattedItem.category,
+					object: formattedItem.object,
+					data: formattedItem.data,
+					slug: formattedItem.slug,
 				},
 			}),
 		);
@@ -31,7 +30,7 @@ const BenchmarkItem = ({item}) => {
 	return (
 		<TouchableOpacity onPress={() => onPressItem()}>
 			<View style={ImprvdCarousel.benchmarkItem}>
-				{data.map(benchmark => {
+				{formattedItem.data.map(benchmark => {
 					if (benchmark[0] === 'name') {
 						return (
 							<Text style={ImprvdCarousel.benchmarkTextName} key={benchmark[1]}>

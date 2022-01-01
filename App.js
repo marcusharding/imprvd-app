@@ -29,6 +29,7 @@ import Profile from './src/components/screens/profile';
 import Social from './src/components/screens/social';
 import BenchmarkSingle from './src/components/modalScreens/benchmarkSingle';
 import EditProfile from './src/components/modalScreens/editProfile';
+import UpdateBenchmarkSingle from './src/components/modalScreens/updateBenchmarkSingle';
 
 // modalScreens
 import AddNewBenchmark from './src/components/modalScreens/addNewBenchmark';
@@ -144,6 +145,10 @@ export default function App() {
 						component={BenchmarkSingle}
 					/>
 					<Stack.Screen name="EditProfileScreen" component={EditProfile} />
+					<Stack.Screen
+						name="UpdateBenchmarkSingleScreen"
+						component={UpdateBenchmarkSingle}
+					/>
 					<Stack.Screen name="WelcomeScreen" component={Welcome} />
 					<Stack.Screen name="SignupScreen" component={SignUp} />
 					<Stack.Screen name="LoginScreen" component={Login} />
@@ -181,6 +186,10 @@ export default function App() {
 					component={BenchmarkSingle}
 				/>
 				<Stack.Screen name="EditProfileScreen" component={EditProfile} />
+				<Stack.Screen
+					name="UpdateBenchmarkSingleScreen"
+					component={UpdateBenchmarkSingle}
+				/>
 			</Stack.Navigator>
 		</NavigationContainer>
 	);
