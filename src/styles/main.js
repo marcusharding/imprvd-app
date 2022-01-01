@@ -29,6 +29,10 @@ const colors = StyleSheet.create({
 });
 
 const spacing = StyleSheet.create({
+	marginBottom100: {
+		marginBottom: 100,
+	},
+
 	marginBottom50: {
 		marginBottom: 50,
 	},
@@ -161,6 +165,11 @@ const baseStyles = StyleSheet.create({
 		display: 'flex',
 		flexDirection: 'row',
 		alignItems: 'center',
+	},
+
+	deleteBenchmarkButton: {
+		display: 'flex',
+		justifyContent: 'center',
 	},
 
 	flexContainerRow: {

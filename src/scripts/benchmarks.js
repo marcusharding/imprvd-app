@@ -60,77 +60,63 @@ export const fetchBenchmarkFields = async tagIds => {
 	}
 };
 
+export const fetchBenchmarksData = async category => {
+	const doc = `benchmarks-${category}`;
+	const data = [];
+	const response = await firestore()
+		.collection(COLLECTION)
+		.doc(doc)
+		.get()
+		.then(documentSnapshot => {
+			if (documentSnapshot.exists) {
+				data.push(...Object.entries(documentSnapshot.data()));
+				return true;
+			}
+		});
+
+	if (response) {
+		return data;
+	}
+};
+
 export const getFormattedBenchmarkItem = item => {
 	const slug = item[0];
 	const object = item[1];
+	const {category} = object;
 	const mostRecentValue = object.values[object.values.length - 1];
 	let data = Object.entries(mostRecentValue);
 	const nameIndex = data.findIndex(benchmark => benchmark[0] === 'name');
 	data.splice(0, 0, data.splice(nameIndex, 1)[0]);
 
 	return {
+		category: category,
 		object: object,
 		slug: slug,
 		data: data,
 	};
 };
 
-const setBenchmark = async (
-	name,
-	category,
-	doc,
-	dateAdded,
-	dateModified,
-	values,
-) => {
-	const data = {
-		[name]: {
-			category: category,
-			...dateAdded,
-			...dateModified,
-			values,
-		},
-	};
-
-	const response = await firestore()
-		.collection(COLLECTION)
-		.doc(doc)
-		.set(data, {merge: true})
-		.then(() => {
-			console.log('data set');
-			return true;
-		})
-		.catch(error => {
-			console.log('Error setting data => ', error);
-			Alert.alert('Error:', error.message);
-		});
-
-	if (response) {
-		return true;
-	}
-};
-
 export const addNewBenchmark = async (
 	fieldValues,
-	selectedBenchmark,
 	category,
+	slug = null,
+	updatingBenchmark = false,
 ) => {
-	console.log(fieldValues);
 	if (fieldValues.name) {
-		const doc = `benchmarks-${selectedBenchmark}`;
+		const doc = `benchmarks-${category}`;
 		const name = slugifyString(fieldValues.name);
-		const dateAdded = getDateAdded();
-		const dateModified = getDateAdded();
-		const values = [];
-		values.push({...fieldValues});
-		const response = await setBenchmark(
-			name,
-			category,
-			doc,
-			dateAdded,
-			dateModified,
-			values,
-		);
+		let response = null;
+
+		if (updatingBenchmark) {
+			const dateModified = getDateModified();
+			const values = await mergeValues({...fieldValues}, doc, slug);
+			response = await updateBenchmark(name, doc, dateModified, values);
+		} else {
+			const dateAdded = getDateAdded();
+			const values = [];
+			values.push({...fieldValues});
+			response = await setBenchmark(name, category, doc, dateAdded, values);
+		}
 
 		if (response) {
 			return true;
@@ -163,10 +149,100 @@ export const deleteBenchmark = async (object, slug) => {
 	}
 };
 
+export const getFieldValuesFromArray = data => {
+	const fieldValues = {};
+
+	data.map(field => {
+		fieldValues[field[0]] = field[1];
+	});
+
+	return fieldValues;
+};
+
 const getDateAdded = () => {
 	const dateAdded = {
 		dateAdded: {date: getCurrentDate(), time: getCurrentTime()},
 	};
 
 	return dateAdded;
+};
+
+const getDateModified = () => {
+	const dateModified = {
+		dateModified: {date: getCurrentDate(), time: getCurrentTime()},
+	};
+
+	return dateModified;
+};
+
+const mergeValues = async (fieldValues, doc, slug) => {
+	const values = [];
+	const response = await firestore()
+		.collection(COLLECTION)
+		.doc(doc)
+		.get()
+		.then(documentSnapshot => {
+			if (documentSnapshot.exists) {
+				values.push(...documentSnapshot.data()[slug].values, fieldValues);
+				return true;
+			}
+		});
+
+	if (response) {
+		return values;
+	}
+};
+
+const setBenchmark = async (name, category, doc, dateAdded, values) => {
+	const data = {
+		[name]: {
+			category: category,
+			...dateAdded,
+			values,
+		},
+	};
+
+	const response = await firestore()
+		.collection(COLLECTION)
+		.doc(doc)
+		.set(data)
+		.then(() => {
+			console.log('data set');
+			return true;
+		})
+		.catch(error => {
+			console.log('Error setting data => ', error);
+			Alert.alert('Error:', error.message);
+		});
+
+	if (response) {
+		return true;
+	}
+};
+
+// This can be merged into setBenchmark, just need to get data object to be dynamic
+const updateBenchmark = async (name, doc, dateModified, values) => {
+	const data = {
+		[name]: {
+			dateModified: dateModified.dateModified,
+			values: values,
+		},
+	};
+
+	const response = await firestore()
+		.collection(COLLECTION)
+		.doc(doc)
+		.set(data, {merge: true})
+		.then(() => {
+			console.log('data set');
+			return true;
+		})
+		.catch(error => {
+			console.log('Error setting data => ', error);
+			Alert.alert('Error:', error.message);
+		});
+
+	if (response) {
+		return true;
+	}
 };

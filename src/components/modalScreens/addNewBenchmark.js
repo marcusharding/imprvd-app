@@ -23,7 +23,8 @@ const AddNewBenchmark = () => {
 	const [isLoading, setLoading] = useState(false);
 	const [benchmarksList, setBenchmarksList] = useState([]);
 	const [benchmarkFields, setBenchmarkFields] = useState([]);
-	const [selectedBenchmark, setSelectedBenchmark] = useState(null);
+	// Should be selected category
+	const [selectedCategory, setSelectedCategory] = useState(null);
 
 	const _getBenchmarkFields = async tagIds => {
 		setBenchmarkFields([]);
@@ -45,9 +46,9 @@ const AddNewBenchmark = () => {
 		}
 	};
 
-	const _setSelectedBenchmark = callback => {
-		setSelectedBenchmark(callback(selectedBenchmark));
-		_getBenchmarkTags(callback(selectedBenchmark));
+	const _setSelectedCategory = callback => {
+		setSelectedCategory(callback(selectedCategory));
+		_getBenchmarkTags(callback(selectedCategory));
 	};
 
 	const _getBenchmarksList = async () => {
@@ -103,15 +104,15 @@ const AddNewBenchmark = () => {
 			</Text>
 			<View style={spacing.marginBottom20}>
 				<DropDownSelector
-					selectedBenchmark={selectedBenchmark}
-					_setSelectedBenchmark={_setSelectedBenchmark}
+					selectedCategory={selectedCategory}
+					_setSelectedCategory={_setSelectedCategory}
 					benchmarksList={benchmarksList}
 				/>
 			</View>
 			<ScrollView>
 				<AddNewBenchmarkFields
 					benchmarkFields={benchmarkFields}
-					selectedBenchmark={selectedBenchmark}
+					selectedCategory={selectedCategory}
 				/>
 			</ScrollView>
 		</SafeAreaView>
