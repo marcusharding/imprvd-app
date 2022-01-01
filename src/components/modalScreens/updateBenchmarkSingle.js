@@ -1,17 +1,16 @@
 // React
 import React, {useState, Fragment} from 'react';
-import {TextInput, View, Text, TouchableOpacity} from 'react-native';
+import {
+	TextInput,
+	View,
+	Text,
+	TouchableOpacity,
+	ScrollView,
+} from 'react-native';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 
 // Styles
-import {
-	form,
-	baseStyles,
-	typography,
-	spacing,
-	profile,
-	colors,
-} from '../../styles/main';
+import {form, typography, spacing, profile, colors} from '../../styles/main';
 
 // Scripts
 import {
@@ -82,7 +81,7 @@ const UpdateBenchmarkSingle = ({route}) => {
 					</Text>
 				</TouchableOpacity>
 			</View>
-			{fields}
+			<ScrollView style={spacing.marginBottom100}>{fields}</ScrollView>
 		</View>
 	);
 };
