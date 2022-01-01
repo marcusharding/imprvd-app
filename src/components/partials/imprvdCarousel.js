@@ -6,18 +6,11 @@ import {Dimensions, View, Text} from 'react-native';
 // Partials
 import BenchmarkItem from './benchmarkItem';
 
-// Firebase
-import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
-
 // Styles
 import {typography} from '../../styles/main';
 
 // Scripts
 import {fetchBenchmarksData} from '../../scripts/benchmarks';
-
-// Constants
-import {COLLECTION} from '../../constants/constants';
 
 const {width: screenWidth} = Dimensions.get('window');
 
@@ -32,24 +25,14 @@ class ImprvdCarousel extends Component {
 
 	_fetchBenchmarksData = async () => {
 		const {category} = this.props;
-		const {data} = this.state;
-		const doc = `benchmarks-${category}`;
 
-		this.setState({
-			data: [],
-		});
+		const response = await fetchBenchmarksData(category);
 
-		firestore()
-			.collection(COLLECTION)
-			.doc(doc)
-			.onSnapshot(documentSnapshot => {
-				if (documentSnapshot.exists) {
-					data.push(...Object.entries(documentSnapshot.data()));
-					this.setState({
-						data: data,
-					});
-				}
+		if (response) {
+			this.setState({
+				data: response,
 			});
+		}
 	};
 
 	componentDidMount() {

@@ -60,6 +60,25 @@ export const fetchBenchmarkFields = async tagIds => {
 	}
 };
 
+export const fetchBenchmarksData = async category => {
+	const doc = `benchmarks-${category}`;
+	const data = [];
+	const response = await firestore()
+		.collection(COLLECTION)
+		.doc(doc)
+		.get()
+		.then(documentSnapshot => {
+			if (documentSnapshot.exists) {
+				data.push(...Object.entries(documentSnapshot.data()));
+				return true;
+			}
+		});
+
+	if (response) {
+		return data;
+	}
+};
+
 export const getFormattedBenchmarkItem = item => {
 	const slug = item[0];
 	const object = item[1];
@@ -152,7 +171,7 @@ const getDateModified = () => {
 	const dateModified = {
 		dateModified: {date: getCurrentDate(), time: getCurrentTime()},
 	};
-	
+
 	return dateModified;
 };
 
@@ -201,6 +220,7 @@ const setBenchmark = async (name, category, doc, dateAdded, values) => {
 	}
 };
 
+// This can be merged into setBenchmark, just need to get data object to be dynamic
 const updateBenchmark = async (name, doc, dateModified, values) => {
 	const data = {
 		[name]: {
