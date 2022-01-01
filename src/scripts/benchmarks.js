@@ -77,62 +77,27 @@ export const getFormattedBenchmarkItem = item => {
 	};
 };
 
-const setBenchmark = async (
-	name,
-	category,
-	doc,
-	dateAdded,
-	dateModified,
-	values,
-) => {
-	const data = {
-		[name]: {
-			category: category,
-			...dateAdded,
-			...dateModified,
-			values,
-		},
-	};
-
-	const response = await firestore()
-		.collection(COLLECTION)
-		.doc(doc)
-		.set(data, {merge: true})
-		.then(() => {
-			console.log('data set');
-			return true;
-		})
-		.catch(error => {
-			console.log('Error setting data => ', error);
-			Alert.alert('Error:', error.message);
-		});
-
-	if (response) {
-		return true;
-	}
-};
-
 export const addNewBenchmark = async (
 	fieldValues,
-	selectedBenchmark,
 	category,
+	slug = null,
+	updatingBenchmark = false,
 ) => {
-	console.log(fieldValues);
 	if (fieldValues.name) {
-		const doc = `benchmarks-${selectedBenchmark}`;
+		const doc = `benchmarks-${category}`;
 		const name = slugifyString(fieldValues.name);
-		const dateAdded = getDateAdded();
-		const dateModified = getDateAdded();
-		const values = [];
-		values.push({...fieldValues});
-		const response = await setBenchmark(
-			name,
-			category,
-			doc,
-			dateAdded,
-			dateModified,
-			values,
-		);
+		let response = null;
+
+		if (updatingBenchmark) {
+			const dateModified = getDateModified();
+			const values = await mergeValues({...fieldValues}, doc, slug);
+			response = await updateBenchmark(name, doc, dateModified, values);
+		} else {
+			const dateAdded = getDateAdded();
+			const values = [];
+			values.push({...fieldValues});
+			response = await setBenchmark(name, category, doc, dateAdded, values);
+		}
 
 		if (response) {
 			return true;
@@ -165,10 +130,99 @@ export const deleteBenchmark = async (object, slug) => {
 	}
 };
 
+export const getFieldValuesFromArray = data => {
+	const fieldValues = {};
+
+	data.map(field => {
+		fieldValues[field[0]] = field[1];
+	});
+
+	return fieldValues;
+};
+
 const getDateAdded = () => {
 	const dateAdded = {
 		dateAdded: {date: getCurrentDate(), time: getCurrentTime()},
 	};
 
 	return dateAdded;
+};
+
+const getDateModified = () => {
+	const dateModified = {
+		dateModified: {date: getCurrentDate(), time: getCurrentTime()},
+	};
+	
+	return dateModified;
+};
+
+const mergeValues = async (fieldValues, doc, slug) => {
+	const values = [];
+	const response = await firestore()
+		.collection(COLLECTION)
+		.doc(doc)
+		.get()
+		.then(documentSnapshot => {
+			if (documentSnapshot.exists) {
+				values.push(...documentSnapshot.data()[slug].values, fieldValues);
+				return true;
+			}
+		});
+
+	if (response) {
+		return values;
+	}
+};
+
+const setBenchmark = async (name, category, doc, dateAdded, values) => {
+	const data = {
+		[name]: {
+			category: category,
+			...dateAdded,
+			values,
+		},
+	};
+
+	const response = await firestore()
+		.collection(COLLECTION)
+		.doc(doc)
+		.set(data)
+		.then(() => {
+			console.log('data set');
+			return true;
+		})
+		.catch(error => {
+			console.log('Error setting data => ', error);
+			Alert.alert('Error:', error.message);
+		});
+
+	if (response) {
+		return true;
+	}
+};
+
+const updateBenchmark = async (name, doc, dateModified, values) => {
+	const data = {
+		[name]: {
+			dateModified: dateModified.dateModified,
+			values: values,
+		},
+	};
+
+	const response = await firestore()
+		.collection(COLLECTION)
+		.doc(doc)
+		.set(data, {merge: true})
+		.then(() => {
+			console.log('data set');
+			return true;
+		})
+		.catch(error => {
+			console.log('Error setting data => ', error);
+			Alert.alert('Error:', error.message);
+		});
+
+	if (response) {
+		return true;
+	}
 };

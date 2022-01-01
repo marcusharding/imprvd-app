@@ -47,9 +47,9 @@ const BenchmarkSingle = ({route}) => {
 							CommonActions.navigate({
 								name: 'UpdateBenchmarkSingleScreen',
 								params: {
-									category: category,
 									object: object,
 									data: data,
+									category: category,
 									slug: slug,
 								},
 							}),

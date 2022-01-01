@@ -1,23 +1,90 @@
 // React
-import React, {useState} from 'react';
+import React, {useState, Fragment} from 'react';
 import {TextInput, View, Text, TouchableOpacity} from 'react-native';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 
 // Styles
-import {form, baseStyles, typography, spacing} from '../../styles/main';
-
-// Partials
-import PreLoader from '../partials/preLoader';
+import {
+	form,
+	baseStyles,
+	typography,
+	spacing,
+	profile,
+	colors,
+} from '../../styles/main';
 
 // Scripts
-import {addNewBenchmark} from '../../scripts/benchmarks';
+import {
+	addNewBenchmark,
+	getFieldValuesFromArray,
+} from '../../scripts/benchmarks';
+
+// Partials
+import GoBackIcon from '../partials/goBackIcon';
 
 const UpdateBenchmarkSingle = ({route}) => {
-	const [fieldValues, setFieldValues] = useState({});
-	const [category, setCategory] = useState(null);
+	const {data, category, slug} = route.params;
+	const [fieldValues, setFieldValues] = useState(getFieldValuesFromArray(data));
 	const navigation = useNavigation();
 
-	return nulls;
+	const updateInputValue = (value, fieldSlug) => {
+		setFieldValues({
+			...fieldValues,
+			[fieldSlug]: value,
+		});
+	};
+
+	const _updateBenchmark = async () => {
+		const response = await addNewBenchmark(fieldValues, category, slug, true);
+
+		if (response) {
+			CommonActions.reset({
+				index: 1,
+				routes: [{name: 'Benchmarks'}],
+			});
+			navigation.dispatch(
+				CommonActions.navigate({
+					name: 'Benchmarks',
+					params: {
+						refreshBencharks: true,
+					},
+				}),
+			);
+		}
+	};
+
+	const fields = data.map(field => {
+		return (
+			<Fragment key={field[0]}>
+				<Text style={spacing.marginBottom10}>{field[0]}</Text>
+				<TextInput
+					style={form.input}
+					placeholder={field[1]}
+					value={fieldValues[field.slug]}
+					onChangeText={value => {
+						updateInputValue(value, field[0]);
+					}}
+					placeholderTextColor="#EFEFEF"
+				/>
+			</Fragment>
+		);
+	});
+
+	return (
+		<View>
+			<View style={[profile.header, spacing.marginBottom20]}>
+				<GoBackIcon />
+				<TouchableOpacity
+					activeOpacity={0.8}
+					onPress={() => _updateBenchmark()}>
+					<Text style={[typography.subHeading, colors.lightBlue]}>
+						Save updates
+					</Text>
+				</TouchableOpacity>
+			</View>
+			{fields}
+		</View>
+	);
 };
 
 export default UpdateBenchmarkSingle;
