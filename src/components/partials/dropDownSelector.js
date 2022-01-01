@@ -4,8 +4,8 @@ import DropDownPicker from 'react-native-dropdown-picker';
 
 const DropDownSelector = ({
 	benchmarksList,
-	selectedBenchmark,
-	_setSelectedBenchmark,
+	selectedCategory,
+	_setSelectedCategory,
 }) => {
 	const [open, setOpen] = useState(false);
 	const [items, setItems] = useState(benchmarksList);
@@ -13,10 +13,10 @@ const DropDownSelector = ({
 	return (
 		<DropDownPicker
 			open={open}
-			value={selectedBenchmark}
+			value={selectedCategory}
 			items={items}
 			setOpen={setOpen}
-			setValue={_setSelectedBenchmark}
+			setValue={_setSelectedCategory}
 			setItems={setItems}
 		/>
 	);
