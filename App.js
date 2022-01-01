@@ -102,16 +102,17 @@ const TabStack = () => {
 
 export default function App() {
 	const [initializing, setInitializing] = useState(true);
-	const [user, setUser] = useState();
+	const [currentUser, setCurrentUser] = useState();
 
-	const onAuthStateChanged = () => {
-		setUser(user);
+	const onAuthStateChanged = user => {
+		setCurrentUser(user);
 		if (initializing) {
 			setInitializing(false);
 		}
 	};
 
 	useEffect(() => {
+		console.log(currentUser);
 		if (Platform.OS === 'android') {
 			BackgroundColor.setColor('#121212');
 		}
@@ -124,7 +125,7 @@ export default function App() {
 		return <PreLoader />;
 	}
 
-	if (user && auth().currentUser.emailVerified) {
+	if (currentUser && auth().currentUser.emailVerified) {
 		return (
 			<NavigationContainer options={{headerShown: false}} theme={appTheme}>
 				<Stack.Navigator screenOptions={{headerShown: false}}>
