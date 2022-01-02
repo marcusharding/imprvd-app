@@ -208,15 +208,33 @@ const mergeValues = async (fieldValues, doc, slug) => {
 
 const getOrderedBenchmarksData = data => {
 	const objectValues = Object.values(data);
+	const hasBeenModified = [];
+	const hasNotBeenModified = [];
+	const sortedValues = [];
 
-	const sortedDateAdded = objectValues.sort(
-		(a, b) => b.dateAdded - a.dateAdded,
-	);
-	const sortedDateModified = sortedDateAdded.sort(
-		(a, b) => b.dateModified - a.dateModified,
-	);
+	objectValues.map(value => {
+		if (value.dateModified) {
+			hasBeenModified.push(value);
+		} else {
+			hasNotBeenModified.push(value);
+		}
+	});
 
-	return sortedDateModified;
+	if (hasBeenModified.length > 0) {
+		const sortedDateModified = hasBeenModified.sort(
+			(a, b) => b.dateModified - a.dateModified,
+		);
+		sortedValues.push(...sortedDateModified);
+	}
+
+	if (hasNotBeenModified.length > 0) {
+		const sortedDateAdded = hasNotBeenModified.sort(
+			(a, b) => b.dateAdded - a.dateAdded,
+		);
+		sortedValues.push(...sortedDateAdded);
+	}
+
+	return sortedValues;
 };
 
 const setBenchmark = async (name, category, doc, dateAdded, values, slug) => {
