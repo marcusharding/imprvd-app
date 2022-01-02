@@ -9,43 +9,15 @@ import BenchmarkItem from './benchmarkItem';
 // Styles
 import {typography} from '../../styles/main';
 
-// Scripts
-import {fetchBenchmarksData} from '../../scripts/benchmarks';
-
 const {width: screenWidth} = Dimensions.get('window');
 
 class ImprvdCarousel extends Component {
-	constructor() {
-		super();
-
-		this.state = {
-			data: [],
-		};
-	}
-
-	_fetchBenchmarksData = async () => {
-		const {category} = this.props;
-
-		const response = await fetchBenchmarksData(category);
-
-		if (response) {
-			this.setState({
-				data: response,
-			});
-		}
-	};
-
-	componentDidMount() {
-		this._fetchBenchmarksData();
-	}
-
 	_renderItem = ({item}) => {
 		return <BenchmarkItem item={item} />;
 	};
 
 	render() {
-		const {data} = this.state;
-		const {label} = this.props;
+		const {label, data} = this.props;
 
 		if (data.length > 0) {
 			return (

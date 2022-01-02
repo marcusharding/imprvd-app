@@ -83,6 +83,38 @@ export const fetchBenchmarksData = async category => {
 	}
 };
 
+export const fetchAllBenchmarksData = async () => {
+	const list = await fetchBenchmarksList(
+		'https://contentmanagement.getimprvd.app/wp-json/wp/v2/app_benchmarks',
+	);
+	const data = [];
+
+	if (list) {
+		const count = list.length;
+		let counter = 0;
+		for (const item of list) {
+			const response = await fetchBenchmarksData(item.value);
+			if (response) {
+				data.push(response);
+			}
+			counter = counter + 1;
+			if (counter === count) {
+				return data;
+			}
+		}
+	}
+};
+
+export const getMostRecentBenchmarks = async amount => {
+	const response = await fetchAllBenchmarksData();
+
+	if (response) {
+		const orderedData = getOrderedBenchmarksData(...response);
+		const slicedData = getSlicedData(orderedData, amount);
+		return slicedData;
+	}
+};
+
 export const getFormattedBenchmarkItem = item => {
 	const {category, values, slug} = item;
 	const mostRecentValue = values[values.length - 1];
@@ -235,6 +267,10 @@ const getOrderedBenchmarksData = data => {
 	}
 
 	return sortedValues;
+};
+
+const getSlicedData = (data, amount) => {
+	return data.slice(0, amount);
 };
 
 const setBenchmark = async (name, category, doc, dateAdded, values, slug) => {

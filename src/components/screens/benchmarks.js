@@ -14,11 +14,15 @@ import PreLoader from '../partials/preLoader';
 import ImprvdCarousel from '../partials/imprvdCarousel';
 
 // Scripts
-import {fetchBenchmarksList} from '../../scripts/benchmarks';
+import {
+	fetchBenchmarksList,
+	fetchBenchmarksData,
+} from '../../scripts/benchmarks';
 
 const Benchmarks = ({route}) => {
 	const [isLoading, setLoading] = useState(false);
 	const [benchmarksList, setBenchmarksList] = useState([]);
+	const [data, setData] = useState([]);
 	const {params} = route;
 	const navigation = useNavigation();
 	let sections = null;
@@ -32,6 +36,23 @@ const Benchmarks = ({route}) => {
 		if (list) {
 			setLoading(false);
 			setBenchmarksList(list);
+		}
+	};
+
+	const getAndSetData = async () => {
+		const count = benchmarksList.length;
+		let counter = 0;
+		const currentData = [];
+
+		for (const item of benchmarksList) {
+			const response = await fetchBenchmarksData(item.value);
+			if (response) {
+				currentData.push(response);
+			}
+			counter = counter + 1;
+			if (counter === count) {
+				setData(currentData);
+			}
 		}
 	};
 
@@ -52,12 +73,18 @@ const Benchmarks = ({route}) => {
 	}, [navigation, params]);
 
 	if (benchmarksList.length > 0) {
-		sections = benchmarksList.map(item => {
+		getAndSetData();
+	}
+
+	if (data.length > 0) {
+		sections = data.map((item, index) => {
+			const benchmark = benchmarksList[index];
 			return (
 				<ImprvdCarousel
-					key={item.label}
-					label={item.label}
-					category={item.value}
+					key={benchmark.label}
+					label={benchmark.label}
+					category={benchmark.value}
+					data={item}
 				/>
 			);
 		});
