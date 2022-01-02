@@ -11,6 +11,7 @@ import {getFormattedBenchmarkItem} from '../../scripts/benchmarks';
 
 const BenchmarkItem = ({item}) => {
 	const formattedItem = getFormattedBenchmarkItem(item);
+	const {category, object, data, slug} = formattedItem;
 	const navigation = useNavigation();
 
 	const onPressItem = () => {
@@ -18,10 +19,10 @@ const BenchmarkItem = ({item}) => {
 			CommonActions.navigate({
 				name: 'BenchmarkSingleScreen',
 				params: {
-					category: formattedItem.category,
-					object: formattedItem.object,
-					data: formattedItem.data,
-					slug: formattedItem.slug,
+					category: category,
+					object: object,
+					data: data,
+					slug: slug,
 				},
 			}),
 		);

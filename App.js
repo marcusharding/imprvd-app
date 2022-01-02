@@ -113,7 +113,6 @@ export default function App() {
 	};
 
 	useEffect(() => {
-		console.log(currentUser);
 		if (Platform.OS === 'android') {
 			BackgroundColor.setColor('#121212');
 		}

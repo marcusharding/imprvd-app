@@ -16,8 +16,10 @@ const BenchmarkSingle = ({route}) => {
 	const {object, data, category, slug} = route.params;
 	const navigation = useNavigation();
 
+	console.log(category);
+
 	const _deleteBenchmark = async () => {
-		const response = await deleteBenchmark(object, slug);
+		const response = await deleteBenchmark(category, slug);
 
 		if (response) {
 			CommonActions.reset({

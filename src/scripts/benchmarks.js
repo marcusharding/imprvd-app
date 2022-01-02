@@ -62,16 +62,20 @@ export const fetchBenchmarkFields = async tagIds => {
 
 export const fetchBenchmarksData = async category => {
 	const doc = `benchmarks-${category}`;
-	const data = [];
+	let data = [];
 	const response = await firestore()
 		.collection(COLLECTION)
 		.doc(doc)
 		.get()
 		.then(documentSnapshot => {
 			if (documentSnapshot.exists) {
-				data.push(...Object.entries(documentSnapshot.data()));
-				return true;
+				data = getOrderedBenchmarksData(documentSnapshot.data());
+				return data;
 			}
+		})
+		.catch(error => {
+			console.log('Error fetching benchmarks => ', error);
+			Alert.alert('Error:', error.message);
 		});
 
 	if (response) {
@@ -80,17 +84,15 @@ export const fetchBenchmarksData = async category => {
 };
 
 export const getFormattedBenchmarkItem = item => {
-	const slug = item[0];
-	const object = item[1];
-	const {category} = object;
-	const mostRecentValue = object.values[object.values.length - 1];
+	const {category, values, slug} = item;
+	const mostRecentValue = values[values.length - 1];
 	let data = Object.entries(mostRecentValue);
 	const nameIndex = data.findIndex(benchmark => benchmark[0] === 'name');
 	data.splice(0, 0, data.splice(nameIndex, 1)[0]);
 
 	return {
 		category: category,
-		object: object,
+		object: item,
 		slug: slug,
 		data: data,
 	};
@@ -115,7 +117,14 @@ export const addNewBenchmark = async (
 			const dateAdded = getDateAdded();
 			const values = [];
 			values.push({...fieldValues});
-			response = await setBenchmark(name, category, doc, dateAdded, values);
+			response = await setBenchmark(
+				name,
+				category,
+				doc,
+				dateAdded,
+				values,
+				slug,
+			);
 		}
 
 		if (response) {
@@ -126,8 +135,8 @@ export const addNewBenchmark = async (
 	}
 };
 
-export const deleteBenchmark = async (object, slug) => {
-	const doc = `benchmarks-${object.category}`;
+export const deleteBenchmark = async (category, slug) => {
+	const doc = `benchmarks-${category}`;
 
 	const response = await firestore()
 		.collection(COLLECTION)
@@ -161,7 +170,7 @@ export const getFieldValuesFromArray = data => {
 
 const getDateAdded = () => {
 	const dateAdded = {
-		dateAdded: {date: getCurrentDate(), time: getCurrentTime()},
+		dateAdded: new Date(),
 	};
 
 	return dateAdded;
@@ -169,7 +178,7 @@ const getDateAdded = () => {
 
 const getDateModified = () => {
 	const dateModified = {
-		dateModified: {date: getCurrentDate(), time: getCurrentTime()},
+		dateModified: new Date(),
 	};
 
 	return dateModified;
@@ -186,6 +195,10 @@ const mergeValues = async (fieldValues, doc, slug) => {
 				values.push(...documentSnapshot.data()[slug].values, fieldValues);
 				return true;
 			}
+		})
+		.catch(error => {
+			console.log('Error getting benchmarks for values merge => ', error);
+			Alert.alert('Error:', error.message);
 		});
 
 	if (response) {
@@ -193,10 +206,24 @@ const mergeValues = async (fieldValues, doc, slug) => {
 	}
 };
 
-const setBenchmark = async (name, category, doc, dateAdded, values) => {
+const getOrderedBenchmarksData = data => {
+	const objectValues = Object.values(data);
+
+	const sortedDateAdded = objectValues.sort(
+		(a, b) => b.dateAdded - a.dateAdded,
+	);
+	const sortedDateModified = sortedDateAdded.sort(
+		(a, b) => b.dateModified - a.dateModified,
+	);
+
+	return sortedDateModified;
+};
+
+const setBenchmark = async (name, category, doc, dateAdded, values, slug) => {
 	const data = {
 		[name]: {
 			category: category,
+			slug: slug,
 			...dateAdded,
 			values,
 		},
@@ -205,7 +232,7 @@ const setBenchmark = async (name, category, doc, dateAdded, values) => {
 	const response = await firestore()
 		.collection(COLLECTION)
 		.doc(doc)
-		.set(data)
+		.set(data, {merge: true})
 		.then(() => {
 			console.log('data set');
 			return true;
