@@ -11,6 +11,7 @@ import PreLoader from '../partials/preLoader';
 
 // Scripts
 import {addNewBenchmark} from '../../scripts/benchmarks';
+import {slugifyString} from '../../scripts/helpers';
 
 const AddNewBenchmarkFields = ({selectedCategory, benchmarkFields}) => {
 	const [fieldValues, setFieldValues] = useState({});
@@ -24,7 +25,8 @@ const AddNewBenchmarkFields = ({selectedCategory, benchmarkFields}) => {
 	};
 
 	const _addNewBenchmark = async () => {
-		const response = await addNewBenchmark(fieldValues, selectedCategory);
+		const slug = slugifyString(fieldValues.name);
+		const response = await addNewBenchmark(fieldValues, selectedCategory, slug);
 
 		if (response) {
 			CommonActions.reset({
