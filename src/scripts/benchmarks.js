@@ -5,12 +5,7 @@ import {Alert} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 
 // Script
-import {
-	slugifyString,
-	fetchUrlToJson,
-	getCurrentDate,
-	getCurrentTime,
-} from './helpers';
+import {slugifyString, fetchUrlToJson} from './helpers';
 
 // Constants
 import {COLLECTION} from '../constants/constants';
@@ -87,10 +82,10 @@ export const fetchAllBenchmarksData = async () => {
 	const list = await fetchBenchmarksList(
 		'https://contentmanagement.getimprvd.app/wp-json/wp/v2/app_benchmarks',
 	);
-	const data = [];
 
 	if (list) {
 		const count = list.length;
+		const data = [];
 		let counter = 0;
 		for (const item of list) {
 			const response = await fetchBenchmarksData(item.value);

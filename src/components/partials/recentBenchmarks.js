@@ -18,7 +18,7 @@ const RecentBenchmarks = () => {
 
 	const _getMostRecentBenchmarks = async () => {
 		setLoading(true);
-		const response = await getMostRecentBenchmarks();
+		const response = await getMostRecentBenchmarks(5);
 
 		if (response) {
 			setData(response);
