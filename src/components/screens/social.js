@@ -6,16 +6,22 @@ import {View, Text} from 'react-native';
 import ProfileIcon from '../partials/profileIcon';
 
 // Styles
-import {baseStyles, typography} from '../../styles/main';
+import {baseStyles, typography, spacing} from '../../styles/main';
 
 const Social = () => {
 	return (
-		<View>
+		<View style={spacing.flex1}>
 			<ProfileIcon />
 
 			<Text style={[typography.pageHeading, baseStyles.screenHeading]}>
 				Social
 			</Text>
+
+			<View style={baseStyles.flexCenter}>
+				<Text style={[typography.pageHeading, baseStyles.screenHeading]}>
+					Coming soon
+				</Text>
+			</View>
 		</View>
 	);
 };
