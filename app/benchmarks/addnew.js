@@ -5,7 +5,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { router } from 'expo-router';
 
 // Firebase
-import { auth, updateDoc, arrayUnion, setDoc } from '../../services/firebase';
+import { auth, setDoc } from '../../services/firebase';
 
 // Data
 import { categories } from '../../assets/json/benchmarks.json';

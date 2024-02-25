@@ -85,7 +85,7 @@ const createCategories = async () => {
 
         let categories = await fetchCategories();
 
-        if ( !categories ) categories = [];
+        if ( categories === null ) categories = [];
     
         return categories;
 
@@ -125,6 +125,21 @@ export const addBenchmark = async (selectedCategory, selectedBenchmark, value) =
             }
         );
     }
+
+    return categories;
+}
+
+/**
+ * Remove a benchmark from the array then replace the database
+ * @return { Array }
+*/
+export const deleteBenchmark = async (category, benchmark, uid) => {
+
+    const categories = await fetchCategories(uid);
+    const index = categories.findIndex(object => object.category === category);
+    const benchmarkIndex = categories[index].benchmarks.findIndex(object => object.benchmark === benchmark);
+
+    categories[index].benchmarks.splice(benchmarkIndex, 1);
 
     return categories;
 }

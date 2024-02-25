@@ -72,7 +72,7 @@ const Home = () => {
 
                                     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
 
-                                        { benchmarks.map(({benchmark, value}) => <Teaser key={benchmark} benchmark={benchmark} value={value} /> )}
+                                        { benchmarks.map(({benchmark, value}) => <Teaser key={benchmark} category={category} benchmark={benchmark} value={value} /> )}
 
                                     </ScrollView>
                                 </>
