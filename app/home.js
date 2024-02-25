@@ -11,7 +11,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { userExists, fetchCategories } from '../assets/js/user-database';
 
 // Components
-import Teaser from '../app/benchmarks/teaser';
+import Teaser from './benchmarks/teaser';
 import Loading from './ui/loading';
 
 const Home = () => {
