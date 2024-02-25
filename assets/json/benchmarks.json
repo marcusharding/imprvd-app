@@ -1,0 +1,92 @@
+{
+    "categories": [
+        {
+            "category": "strongman",
+            "benchmarks": [
+                {
+                    "benchmark": "deadlift",
+                    "type": "lift"
+                },
+                {
+                    "benchmark": "stones",
+                    "type": "lift"
+                },
+                {
+                    "benchmark": "log",
+                    "type": "press"
+                },
+                {
+                    "benchmark": "axel",
+                    "type": "press"
+                },
+                {
+                    "benchmark": "circus dumbell",
+                    "type": "press"
+                },
+                {
+                    "benchmark": "squat",
+                    "type": "lift"
+                },
+                {
+                    "benchmark": "bag toss",
+                    "type": "throw"
+                },
+                {
+                    "benchmark": "yoke",
+                    "type": "moving"
+                },
+                {
+                    "benchmark": "farmers",
+                    "type": "moving"
+                }
+
+            ]
+        },
+        {
+            "category": "crossfit",
+            "benchmarks": [
+                {
+                    "benchmark": "pullups",
+                    "type": "calisthenics"
+                },
+                {
+                    "benchmark": "pushups",
+                    "type": "calisthenics"
+                }
+            ]
+        },
+        {
+            "category": "athletics",
+            "benchmarks": [
+                {
+                    "benchmark": "5K"
+                },
+                {
+                    "benchmark": "10k"
+                }
+            ]
+        },
+        {
+            "category": "weightlifting",
+            "benchmarks": [
+                {
+                    "benchmark": "bench press"
+                },
+                {
+                    "benchmark": "overhead press"
+                }
+            ]
+        },
+        {
+            "category": "swimming",
+            "benchmarks": [
+                {
+                    "benchmark": "100m"
+                },
+                {
+                    "benchmark": "200m"
+                }
+            ]
+        }
+    ]
+}
