@@ -79,11 +79,11 @@ export const fetchCategories = async uid => {
  * Get the current categories array if it exists, else return an empty array ready to populate.
  * @return { Array }
 */
-const createCategories = async () => {
+const createCategories = async uid => {
 
     try {
 
-        let categories = await fetchCategories();
+        let categories = await fetchCategories(uid);
 
         if ( categories === null ) categories = [];
     
@@ -96,9 +96,9 @@ const createCategories = async () => {
  * Push a new benchmark to either a new categories array or the existing array pulled from the users database.
  * @return { Array }
 */
-export const addBenchmark = async (selectedCategory, selectedBenchmark, value) => {
+export const addBenchmark = async (selectedCategory, selectedBenchmark, value, uid) => {
 
-    const categories = await createCategories();
+    const categories = await createCategories(uid);
     const index = categories.findIndex(object => object.category === selectedCategory);
 
     if ( categories.length === 0 || index === -1 ) {

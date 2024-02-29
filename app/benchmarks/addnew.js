@@ -54,7 +54,7 @@ const AddNew = () => {
 
         if ( userRef ) {
 
-            const categories = await addBenchmark(selectedCategory, selectedBenchmark, value);
+            const categories = await addBenchmark(selectedCategory, selectedBenchmark, value, auth.currentUser.uid);
             
             await setDoc(userRef, { categories: categories }, { merge: true });
 
