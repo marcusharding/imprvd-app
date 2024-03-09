@@ -141,5 +141,7 @@ export const deleteBenchmark = async (category, benchmark, uid) => {
 
     categories[index].benchmarks.splice(benchmarkIndex, 1);
 
+    if ( categories[index].benchmarks.length === 0 ) categories.splice(index, 1);
+
     return categories;
 }
