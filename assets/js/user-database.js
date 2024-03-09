@@ -130,6 +130,21 @@ export const addBenchmark = async (selectedCategory, selectedBenchmark, value, u
 }
 
 /**
+ * Modify a benchmark that already exists value
+ * @return { Array }
+*/
+export const updateBenchmark = async (category, benchmark, uid, newValue) => {
+
+    const categories = await fetchCategories(uid);
+    const index = categories.findIndex(object => object.category === category);
+    const benchmarkIndex = categories[index].benchmarks.findIndex(object => object.benchmark === benchmark);
+
+    categories[index].benchmarks[benchmarkIndex].value = newValue;
+
+    return categories;
+}
+
+/**
  * Remove a benchmark from the array then replace the database
  * @return { Array }
 */
@@ -144,4 +159,19 @@ export const deleteBenchmark = async (category, benchmark, uid) => {
     if ( categories[index].benchmarks.length === 0 ) categories.splice(index, 1);
 
     return categories;
+}
+
+export const benchmarkExists = async (category, benchmark, uid) => {
+
+    let exists = false;
+
+    const categories = await fetchCategories(uid);
+    const index = categories.findIndex(object => object.category === category);
+
+    if ( categories[index] ) {
+
+        categories[index].benchmarks.map(currentBenchmark => {  if ( currentBenchmark.benchmark === benchmark ) exists = true; });
+    }
+
+    return exists;
 }

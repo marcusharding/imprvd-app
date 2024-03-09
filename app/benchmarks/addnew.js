@@ -12,9 +12,10 @@ import { categories } from '../../assets/json/benchmarks.json';
 
 // Components
 import BackButton from '../ui/backButton';
+import Loading from '../ui/loading';
 
 // Utils
-import { fetchUserDoc, addBenchmark } from '../../assets/js/user-database';
+import { fetchUserDoc, addBenchmark, benchmarkExists } from '../../assets/js/user-database';
 
 const AddNew = () => {
 
@@ -24,7 +25,9 @@ const AddNew = () => {
     const [benchmarkOpen, setBenchmarkOpen] = useState(false);
     const [selectedBenchmark, setSelectedBenchmark] = useState('');
     const [benchmarksList, setBenchmarksList] = useState([]);
+    const [displayBenchmarksList, setDisplayBenchmarksList] = useState(false);
     const [value, setValue] = useState('');
+    const [loaded, setLoaded] = useState(null);
 
     const createCategories = () => {
 
@@ -35,7 +38,7 @@ const AddNew = () => {
         setCategoriesList(array);
     };
 
-    const createBenchmarks = () => {
+    const createBenchmarks = async () => {
 
         const array = [];
         setBenchmarksList(array);
@@ -43,8 +46,23 @@ const AddNew = () => {
         
         if ( category.length > 0 ) {
 
-            category[0].benchmarks.map(({benchmark}) => {array.push({ label: benchmark, value: benchmark }); });
-            setBenchmarksList(array);
+            const benchmarks = category[0].benchmarks;
+
+            setLoaded(false);
+
+            for ( let i = 0; i < benchmarks.length; i++ ) {
+
+                const exists = await benchmarkExists(category[0].category, benchmarks[i].benchmark, auth.currentUser.uid);
+                
+                if ( !exists ) array.push({ label: benchmarks[i].benchmark, value: benchmarks[i].benchmark });
+
+                if ( i + 1 === benchmarks.length ) {
+
+                    setBenchmarksList(array);
+                    setDisplayBenchmarksList(true);
+                    setLoaded(true);
+                }
+            }
         }
     }
 
@@ -64,6 +82,7 @@ const AddNew = () => {
 
     useEffect(() => { if ( categoriesList.length === 0 ) createCategories(); }, []);
     useEffect(() => { createBenchmarks(); }, [selectedCategory]);
+    useEffect(() => { console.log(benchmarksList) }, [benchmarksList]);
 
     return (
 
@@ -87,7 +106,7 @@ const AddNew = () => {
                     setItems={setCategoriesList}
                 />
 
-                {benchmarksList.length > 0 ?
+                {displayBenchmarksList && loaded === true  ?
                     <>
                         <Text style={styles.heading}>Select a benchmark</Text>
 
@@ -127,6 +146,14 @@ const AddNew = () => {
                         <Text style={styles.submitText}>Submit</Text>
                     </Pressable>
                 : null }
+
+                {loaded === false ? 
+                
+                    <View style={styles.spinner}> 
+                        <Loading spinner={true} style={styles.spinner} />
+                    </View> 
+                    
+                : null}
 
             </View>
         </View>
@@ -190,4 +217,7 @@ const styles = StyleSheet.create({
         textTransform: 'uppercase',
         fontSize: 20,
     },
+    spinner: {
+        paddingTop: 130
+    }
 });
