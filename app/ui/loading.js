@@ -1,5 +1,4 @@
-
-// Modules
+// MODULES
 import { StyleSheet, View, Image } from 'react-native';
 
 const loading = ({ spinner }) => {

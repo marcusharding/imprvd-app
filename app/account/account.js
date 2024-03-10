@@ -1,14 +1,14 @@
-// Firebase
+// FIREBASE
 import { auth } from '../../services/firebase';
 import { EvilIcons } from '@expo/vector-icons'; 
 
-// Modules
+// MODULES
 import React from 'react';
 import { StyleSheet, Text, View, Pressable } from 'react-native';
 import { router } from 'expo-router';
 import { Link } from 'expo-router';
 
-// Components
+// COMPONENTS
 import DisplayImage from './displayImage';
 
 const Account = () => {
@@ -40,7 +40,6 @@ const Account = () => {
 
                 <Text style={styles.subHeadingText}>Email</Text>
                 <Text style={styles.subText}>{ auth.currentUser.email }</Text>
-
                 <View style={{ borderBottomColor: '#D3D3D3', borderBottomWidth: 1, marginTop: 30}}/>
 
             </View>
@@ -69,7 +68,6 @@ const Account = () => {
                 </Pressable>
 
             </View>
-            
         </View>
     )
 }

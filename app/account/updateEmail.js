@@ -1,11 +1,11 @@
-// Modules
+// MODULES
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Pressable } from 'react-native';
 
-// Firebase
+// FIREBASE
 import { auth, verifyBeforeUpdateEmail } from '../../services/firebase';
 
-// Components
+// COMPONENTS
 import BackButton from '../ui/backButton';
 
 const UpdateEmail = () => {

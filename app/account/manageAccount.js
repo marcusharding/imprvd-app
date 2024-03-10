@@ -1,18 +1,17 @@
-// Modules
+// MODULES
 import React, { useState } from 'react';
 import { Text, View, StyleSheet, Pressable } from 'react-native';
 import { Link, router } from 'expo-router';
 
-// Firebase
+// FIREBASE
 import { auth, deleteUser } from '../../services/firebase';
 
-// Components
+// COMPONENTS
 import BackButton from '../ui/backButton';
 
 const ManageAccount = () => {
 
     const updateProfile = [
-
         {
             label: 'Display Name',
             route: '/account/updateName'

@@ -19,7 +19,6 @@ const BenchmarkSingle = () => {
 
     const { benchmarkSingle } = useGlobalContext();
     const { category, benchmark, value } = benchmarkSingle;
-
     const [newValue, setNewValue] = useState(null);
 
     const _delete = async () => {
@@ -58,7 +57,6 @@ const BenchmarkSingle = () => {
 
             <Text style={styles.heading}>{ benchmark }</Text>
             <Text style={styles.text}>{ value }</Text>
-
             <Text style={styles.heading}>Update benchmark</Text>
 
             {/* // TO DO - Field validation for being a number */}

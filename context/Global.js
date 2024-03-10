@@ -1,12 +1,11 @@
-// Modules
+// MODULES
 import { createContext, useContext, useState } from 'react';
 
-// Context
+// CONTEXT
 const Context = createContext();
 
 export function GlobalProvider({ children }) {
 
-    // Benchmarks
     const [benchmarkSingle, setBenchmarkSingle] = useState({});
 
     return (

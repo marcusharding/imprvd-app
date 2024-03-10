@@ -1,4 +1,4 @@
-// Modules
+// MODULES
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Link, router } from 'expo-router';
@@ -12,7 +12,7 @@ import {
     ScrollView
 } from 'react-native';
 
-// Firebase
+// FIREBASE
 import { 
     createUserWithEmailAndPassword,
     auth, 
@@ -23,7 +23,7 @@ import {
     sendEmailVerification
 } from '../services/firebase';
 
-// Assets 
+// ASSETS 
 import GoogleIcon from '../assets/images/svg/GoogleIcon.js';
 
 // Utils

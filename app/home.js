@@ -1,16 +1,16 @@
-// Firebase
+// FIREBASE
 import { auth } from '../services/firebase';
 
-// Modules
+// MODULES
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { Link } from 'expo-router';
 import { FontAwesome5 } from '@expo/vector-icons'; 
 
-// user database
+// DATABASE
 import { userExists, fetchCategories } from '../assets/js/user-database';
 
-// Components
+// COMPONENTS
 import Teaser from './benchmarks/teaser';
 import Loading from './ui/loading';
 
@@ -67,16 +67,12 @@ const Home = () => {
                             <Text style={styles.category}>{ category }</Text>
 
                             {benchmarks.length > 0 ?
-
                                 <>
 
                                     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-
                                         { benchmarks.map(({benchmark, value}) => <Teaser key={benchmark} category={category} benchmark={benchmark} value={value} /> )}
-
                                     </ScrollView>
                                 </>
-
                             : null}
                         </View>
                     )

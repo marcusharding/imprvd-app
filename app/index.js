@@ -1,10 +1,10 @@
-// Firebase
+// FIREBASE
 import { onAuthStateChanged, auth, user } from '../services/firebase';
 
-// Modules
+// MODULES
 import React from 'react';
 
-// Components
+// COMPONENTS
 import Home from './home';
 import Signup from './signup';
 import VerifyEmail from './verifyEmail';

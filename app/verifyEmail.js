@@ -1,11 +1,10 @@
-// Firebase
+// FIREBASE
 import { auth, sendEmailVerification } from '../services/firebase';
 
-// Modules
+// MODULES
 import React, { useState, useRef, useEffect } from 'react';
 import { router } from 'expo-router';
 import { StyleSheet, Text, View, TextInput, Pressable, AppState } from 'react-native';
-
 
 const verifyEmail = () => {
 
@@ -50,7 +49,6 @@ const verifyEmail = () => {
                 </Pressable>
 
             </View>
-
         </View>
     )
 }

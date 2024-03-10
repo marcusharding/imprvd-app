@@ -1,4 +1,4 @@
-// Modules
+// MODULES
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { router } from 'expo-router';
@@ -12,7 +12,7 @@ import {
     ScrollView
 } from 'react-native';
 
-// Firebase
+// FIREBASE
 import { signInWithEmailAndPassword, auth } from '../services/firebase';
 
 const Login = () => {

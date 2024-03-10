@@ -19,10 +19,8 @@ const Teaser = ( benchmark ) => {
     return (
 
         <Pressable style={styles.teaser} onPress={onPress}>
-
             <Text style={styles.text}>{ benchmark.benchmark }</Text>
             <Text style={styles.text}>{ benchmark.value }</Text>
-            
         </Pressable>
     )
 };

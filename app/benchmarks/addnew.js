@@ -1,23 +1,31 @@
-// Modules
+// MODULES
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Pressable } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { router } from 'expo-router';
 
-// Firebase
+// FIREBASE
 import { auth, setDoc } from '../../services/firebase';
 
-// Data
+// DATA
 import { categories } from '../../assets/json/benchmarks.json';
 
-// Components
+// COMPONENTS
 import BackButton from '../ui/backButton';
 import Loading from '../ui/loading';
 
-// Utils
+// UTILS
 import { fetchUserDoc, addBenchmark, benchmarkExists } from '../../assets/js/user-database';
 
 const AddNew = () => {
+
+    // STATIC DATA
+
+    const STATES = {
+        SELECT_CATEGORY: 0,
+        SELECT_BENCHMARK: 1,
+        ENTER_BENCHMARK: 2
+    };
 
     const [categoryOpen, setCategoryOpen] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState('');
@@ -25,9 +33,9 @@ const AddNew = () => {
     const [benchmarkOpen, setBenchmarkOpen] = useState(false);
     const [selectedBenchmark, setSelectedBenchmark] = useState('');
     const [benchmarksList, setBenchmarksList] = useState([]);
-    const [displayBenchmarksList, setDisplayBenchmarksList] = useState(false);
     const [value, setValue] = useState('');
     const [loaded, setLoaded] = useState(null);
+    const [state, setState] = useState(STATES.SELECT_CATEGORY);
 
     const createCategories = () => {
 
@@ -59,7 +67,7 @@ const AddNew = () => {
                 if ( i + 1 === benchmarks.length ) {
 
                     setBenchmarksList(array);
-                    setDisplayBenchmarksList(true);
+                    setState(STATES.SELECT_BENCHMARK);
                     setLoaded(true);
                 }
             }
@@ -80,9 +88,35 @@ const AddNew = () => {
         }
     }
 
+    const previous = () => {
+
+        switch( state ) {
+
+            case 1:
+                setState(STATES.SELECT_CATEGORY);
+                setSelectedCategory('');
+                setSelectedBenchmark('');
+                break;
+
+            case 2:
+                setState(STATES.SELECT_BENCHMARK);
+                setSelectedBenchmark('');
+                break;
+        }
+    };
+
+    const next = () => {
+        
+        switch( state ) {
+
+            case 1:
+                setState(STATES.ENTER_BENCHMARK);
+                break;
+        }
+    };
+
     useEffect(() => { if ( categoriesList.length === 0 ) createCategories(); }, []);
     useEffect(() => { createBenchmarks(); }, [selectedCategory]);
-    useEffect(() => { console.log(benchmarksList) }, [benchmarksList]);
 
     return (
 
@@ -94,19 +128,23 @@ const AddNew = () => {
 
             <View style={styles.content}>
 
-                <Text style={styles.heading}>Select a category</Text>
+                {state === 0 && loaded !== false  ?
+                    <>
+                        <Text style={styles.heading}>Select a category</Text>
 
-                <DropDownPicker
-                    style={styles.picker}
-                    open={categoryOpen}
-                    value={selectedCategory}
-                    items={categoriesList}
-                    setOpen={setCategoryOpen}
-                    setValue={setSelectedCategory}
-                    setItems={setCategoriesList}
-                />
+                        <DropDownPicker
+                            style={styles.picker}
+                            open={categoryOpen}
+                            value={selectedCategory}
+                            items={categoriesList}
+                            setOpen={setCategoryOpen}
+                            setValue={setSelectedCategory}
+                            setItems={setCategoriesList}
+                        />
+                    </>
+                : null }
 
-                {displayBenchmarksList && loaded === true  ?
+                {state === 1 && loaded !== false  ?
                     <>
                         <Text style={styles.heading}>Select a benchmark</Text>
 
@@ -122,7 +160,7 @@ const AddNew = () => {
                     </>
                 : null }
 
-                {selectedBenchmark.length > 0 ?
+                {state === 2 && loaded !== false ?
                     <>
                         <Text style={styles.heading}>Enter rep max</Text>
 
@@ -148,14 +186,31 @@ const AddNew = () => {
                 : null }
 
                 {loaded === false ? 
-                
-                    <View style={styles.spinner}> 
-                        <Loading spinner={true} style={styles.spinner} />
-                    </View> 
-                    
+                    <View style={styles.spinner}><Loading spinner={true} style={styles.spinner} /></View> 
                 : null}
 
             </View>
+
+            {state !== 0 ? 
+                <View style={styles.navigation}>
+                    <Pressable
+                        onPress={previous}
+                        style={styles.previous}
+                    >
+                        <Text style={styles.submitText}>Previous</Text>
+                    </Pressable>
+                    
+                    {state !== 2 ? 
+                        <Pressable
+                            onPress={next}
+                            style={styles.next}
+                        >
+                            <Text style={[styles.submitText, selectedBenchmark ? null : styles.inActive]}>Next</Text>
+                        </Pressable>
+                    : null}
+
+                </View>
+            : null}
         </View>
     );
 }
@@ -179,7 +234,8 @@ const styles = StyleSheet.create({
     content: {
         width: '90%',
         marginLeft: 'auto',
-        marginRight: 'auto'
+        marginRight: 'auto',
+        paddingTop: '50%'
     },
     input: {
         height: 50,
@@ -217,7 +273,15 @@ const styles = StyleSheet.create({
         textTransform: 'uppercase',
         fontSize: 20,
     },
-    spinner: {
-        paddingTop: 130
+    navigation: {
+        width: '90%',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        position: 'absolute',
+        bottom: 50
+    },
+    inActive: {
+        opacity: 0.2
     }
 });

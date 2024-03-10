@@ -1,11 +1,11 @@
 
-// Firebase
+// FIREBASE
 import { auth } from '../../services/firebase';
 
-// Modules
+// MODULES
 import { View, StyleSheet, Text } from 'react-native';
 
-// Utils
+// UTILS
 import { getUserInitials } from '../../assets/js/utils';
 
 const DisplayImage = () => {
@@ -13,9 +13,7 @@ const DisplayImage = () => {
     return (
 
         <View style={styles.container}>
-
             <Text style={styles.initials}>{ getUserInitials(auth.currentUser.displayName) }</Text>
-
         </View> 
     );
 }

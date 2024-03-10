@@ -1,8 +1,8 @@
-// Modules
+// MODULES
 import { Slot } from 'expo-router';
 import { ThemeProvider, DarkTheme } from "@react-navigation/native";
 
-// Context
+// CONTEXT
 import { GlobalProvider } from '../context/Global';
 
 export default function Layout() {

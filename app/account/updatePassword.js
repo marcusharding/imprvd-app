@@ -1,12 +1,12 @@
-// Modules
+// MODULES
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Pressable } from 'react-native';
 import { router } from 'expo-router';
 
-// Firebase
+// FIREBASE
 import { auth, updatePassword } from '../../services/firebase';
 
-// Components
+// COMPONENTS
 import BackButton from '../ui/backButton';
 
 const UpdatePassword = () => {
@@ -58,7 +58,6 @@ const UpdatePassword = () => {
                 {error && <Text style={styles.error}>{ error }</Text> }
 
             </View>
-
         </View>
     )
 }
