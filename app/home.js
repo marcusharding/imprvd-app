@@ -88,10 +88,12 @@ const Home = () => {
 export default Home;
 
 const styles = StyleSheet.create({
+
+    // TO DO - Probably dont need all these background colours set on all the different views.
   
     container: {
         flex: 1,
-        backgroundColor: '#000',
+        backgroundColor: '#212553',
         paddingLeft: 20,
         paddingRight: 20
     },

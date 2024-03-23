@@ -9,7 +9,7 @@
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#000000"
+      "backgroundColor": "#212553"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -20,7 +20,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#000000"
+        "backgroundColor": "#212553"
       }
     },
     "web": {
@@ -30,6 +30,6 @@
       "expo-router"
     ],
     "scheme": "your-app-scheme",
-    "backgroundcolor": "#000000"
+    "backgroundcolor": "#212553"
   }
 }

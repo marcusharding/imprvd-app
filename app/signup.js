@@ -175,13 +175,13 @@ const styles = StyleSheet.create({
 
     avoidingView: {
         height: '100%',
-        backgroundColor: '#000'
+        backgroundColor: '#212553'
     },
     container: {
         flex: 1,
         height: '100%',
         alignItems: 'center',
-        backgroundColor: '#000'
+        backgroundColor: '#212553'
     },
     text: {
         color: '#fff',

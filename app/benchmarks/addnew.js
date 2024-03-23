@@ -221,11 +221,11 @@ const styles = StyleSheet.create({
   
     avoidingView: {
         height: '100%',
-        backgroundColor: '#000'
+        backgroundColor: '#212553'
     },
     container: {
         flex: 1,
-        backgroundColor: '#000',
+        backgroundColor: '#212553',
         alignItems: 'center',
     },
     picker: {

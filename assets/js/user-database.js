@@ -13,7 +13,8 @@ const createUserEntry = async ({ displayName, email, uid }) => {
         await setDoc(doc(db, "users", uid), {
             uid: uid,
             name: displayName,
-            email: email
+            email: email,
+            intro_played: false
         });
       
         console.log("User entry created with uid: ", uid);
@@ -23,6 +24,7 @@ const createUserEntry = async ({ displayName, email, uid }) => {
 
 /**
  * Fetch a querySnapshot of the users database, if database or user in question doesnt exist then create new entry.
+ * @param { Object } currentUser
 */
 export const userExists = async currentUser => {
 
@@ -42,6 +44,27 @@ export const userExists = async currentUser => {
         if ( !databaseExists ) createUserEntry(currentUser);
 
     } catch (error) { console.error("Error checking if user exists: ", error); }
+}
+
+/**
+ * Fetch a user snapshot if it exists.
+ * @param { String } uid
+ * @return { Object }
+*/
+export const fetchSnapshot = async uid => {
+
+    try {
+
+        let snap = null;
+
+        const userRef = doc(db, "users", uid);
+        const snapshot = await getDoc(userRef);
+    
+        if ( snapshot.exists() ) snap = snapshot;
+         
+        return snap;
+
+    } catch (error) { console.error("Error fetching user snapshot: ", error); }
 }
 
 /**
@@ -65,10 +88,9 @@ export const fetchCategories = async uid => {
 
         let categories = null;
 
-        const userRef = await fetchUserDoc(uid);
-        const snap = await getDoc(userRef);
+        const snapshot = await fetchSnapshot(uid);
     
-        if ( snap.exists() ) categories = snap.data().categories;
+        if ( snapshot.exists() ) categories = snapshot.data().categories;
     
         return categories;
 
@@ -85,7 +107,7 @@ const createCategories = async uid => {
 
         let categories = await fetchCategories(uid);
 
-        if ( categories === null ) categories = [];
+        if ( !categories ) categories = [];
     
         return categories;
 
@@ -99,9 +121,18 @@ const createCategories = async uid => {
 export const addBenchmark = async (selectedCategory, selectedBenchmark, value, uid) => {
 
     const categories = await createCategories(uid);
-    const index = categories.findIndex(object => object.category === selectedCategory);
 
-    if ( categories.length === 0 || index === -1 ) {
+    if ( categories && categories.length > 0 ) {
+
+        categories[index].benchmarks.push(
+            {
+                benchmark: selectedBenchmark,
+                value: value
+            }
+        );
+    }
+
+    if ( categories.length === 0 ) {
 
         categories.push(
             {
@@ -116,16 +147,6 @@ export const addBenchmark = async (selectedCategory, selectedBenchmark, value, u
         );
     }
 
-    if ( categories.length > 0 && index !== -1 ) {
-
-        categories[index].benchmarks.push(
-            {
-                benchmark: selectedBenchmark,
-                value: value
-            }
-        );
-    }
-
     return categories;
 }
 
@@ -136,10 +157,14 @@ export const addBenchmark = async (selectedCategory, selectedBenchmark, value, u
 export const updateBenchmark = async (category, benchmark, uid, newValue) => {
 
     const categories = await fetchCategories(uid);
-    const index = categories.findIndex(object => object.category === category);
-    const benchmarkIndex = categories[index].benchmarks.findIndex(object => object.benchmark === benchmark);
 
-    categories[index].benchmarks[benchmarkIndex].value = newValue;
+    if ( categories ) {
+
+        const index = categories.findIndex(object => object.category === category);
+        const benchmarkIndex = categories[index].benchmarks.findIndex(object => object.benchmark === benchmark);
+    
+        categories[index].benchmarks[benchmarkIndex].value = newValue;
+    }
 
     return categories;
 }
@@ -151,12 +176,16 @@ export const updateBenchmark = async (category, benchmark, uid, newValue) => {
 export const deleteBenchmark = async (category, benchmark, uid) => {
 
     const categories = await fetchCategories(uid);
-    const index = categories.findIndex(object => object.category === category);
-    const benchmarkIndex = categories[index].benchmarks.findIndex(object => object.benchmark === benchmark);
 
-    categories[index].benchmarks.splice(benchmarkIndex, 1);
+    if ( categories ) {
 
-    if ( categories[index].benchmarks.length === 0 ) categories.splice(index, 1);
+        const index = categories.findIndex(object => object.category === category);
+        const benchmarkIndex = categories[index].benchmarks.findIndex(object => object.benchmark === benchmark);
+    
+        categories[index].benchmarks.splice(benchmarkIndex, 1);
+    
+        if ( categories[index].benchmarks.length === 0 ) categories.splice(index, 1);
+    }
 
     return categories;
 }
@@ -166,11 +195,15 @@ export const benchmarkExists = async (category, benchmark, uid) => {
     let exists = false;
 
     const categories = await fetchCategories(uid);
-    const index = categories.findIndex(object => object.category === category);
 
-    if ( categories[index] ) {
+    if ( categories ) {
 
-        categories[index].benchmarks.map(currentBenchmark => {  if ( currentBenchmark.benchmark === benchmark ) exists = true; });
+        const index = categories.findIndex(object => object.category === category);
+
+        if ( categories[index] ) {
+    
+            categories[index].benchmarks.map(currentBenchmark => {  if ( currentBenchmark.benchmark === benchmark ) exists = true; });
+        }
     }
 
     return exists;

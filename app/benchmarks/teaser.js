@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     teaser: {
         width: 200,
         height: 120,
-        backgroundColor: '#71797E',
+        backgroundColor: '#486581',
         borderRadius: 10,
         padding: 10,
         marginRight: 20
